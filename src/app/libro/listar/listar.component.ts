@@ -4,6 +4,8 @@ import { BookService } from "src/app/servicio/book.service";
 import { Book } from "src/app/book";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { AuthorService } from "src/app/servicio/author.service";
+import { Author } from "src/app/author";
 @Component({
   selector: "app-listar",
   templateUrl: "./listar.component.html",
@@ -16,7 +18,7 @@ export class ListarComponent implements OnInit {
   closeResult: any;
 
   libroSeleccionado: any;
-  // books:Array<any>;
+  author: Author;
   books: Book[];
   //  book: Book;
   // result:any;
@@ -25,7 +27,8 @@ export class ListarComponent implements OnInit {
     private router: Router,
     private bookService: BookService,
     private modalService: NgbModal,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private authorService: AuthorService
   ) {}
 
   ngOnInit() {
@@ -35,8 +38,7 @@ export class ListarComponent implements OnInit {
     this.bookService.getAll().subscribe(
       result => {
         console.log("aqui");
-        // console.log(result.status);
-        // console.log(result.error);
+
         console.log(result.response);
         this.books = result.response;
         console.log("libros");
@@ -47,17 +49,24 @@ export class ListarComponent implements OnInit {
       }
     );
   }
-  getBook(book) {
+  getBook(edit, book) {
+    // this.modalService
+    //   .open(edit, { ariaLabelledBy: "modal-basic-title" })
+    //   .result.then(
+    //     result => {
+    //       this.closeResult = `Closed with: ${result}`;
+    //     },
+    //     reason => {
+    //       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    //     }
+    // );
     this.mostrarForm = true;
     console.log("Dentro de getBook");
     this.libroSeleccionado = book;
-
     console.log(book.idLibro);
-
     this.bookService.getBookId(book.idLibro).subscribe(
       result => {
         this.book = result.response;
-
         console.log(this.book);
       },
       error => {

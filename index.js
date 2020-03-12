@@ -44,6 +44,14 @@ app.get("/api/libros", (req, res) => {
     res.send({ response: results });
   });
 });
+app.get("/api/libros/all", (req, res) => {
+  let sql = "SELECT * FROM book INNER JOIN author ON book.id_autor=author.id";
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    // res.send(JSON.stringify({ "status": 200, "error": null, "response": results }));
+    res.send({ response: results });
+  });
+});
 
 //show single book
 app.get("/api/libros/:id", (req, res) => {
