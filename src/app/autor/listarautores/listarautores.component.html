@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>AUTORES</h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>NOMBRE</th>
+                    <th>APELLIDO</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                <tr class="tr" *ngFor="let autor of autores" id="tr">
+                    <td>{{autor.nombre}}</td>
+                    <td>{{autor.apellido}}</td>
+                    <!-- <td (click)="getBook(book)">{{book.name}}</td> -->
+                    <!-- <td> <button (click)="editar(persona)" class="btn btn-warning">Editar</button> -->
+                    <td><button (click)="eliminar(autor.idAutor)" class="btn btn-danger">Delete</button></td>
+                    <!-- </td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

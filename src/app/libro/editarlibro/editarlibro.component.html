@@ -1,0 +1,43 @@
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Agregar Libro</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form name="formularioLibro" action="">
+      <div class="form-group">
+        <label for="">Titulo:</label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          [(ngModel)]="book.nombre"
+          name="name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="">Isbn:</label>
+        <input
+          class="form-control"
+          required
+          [(ngModel)]="book.isbn"
+          name="isbn"
+        />
+      </div>
+      <div class="form-group">
+        <label for="">ID autor</label>
+        <input
+          class="form-control"
+          required
+          [(ngModel)]="book.idAutor"
+          name="id_autor"
+        />
+      </div>
+    </form>
+    <button type="button" (click)="actualizarLibro()" class="btn btn-danger">
+      Guardar
+    </button>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<app-editarlibro
+    *ngIf="mostrarForm"
+    (voted)="onVoted($event)"
+    [book]="libroSeleccionado"
+></app-editarlibro>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>LIBROS</h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>LIBRO</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let book of books" class="text-center">
+                    <td (click)="getBook(book)">{{book.nombre}}</td>
+
+                    <td> 
+                        <button (click)="getBook(book)" class="btn btn-warning">Editar</button>
+                        <button (click)="eliminar(book)" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
