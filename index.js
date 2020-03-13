@@ -44,6 +44,7 @@ app.get("/api/libros", (req, res) => {
     res.send({ response: results });
   });
 });
+//get all book and authors
 app.get("/api/libros/all", (req, res) => {
   let sql = "SELECT * FROM book INNER JOIN author ON book.id_autor=author.id";
   let query = conn.query(sql, (err, results) => {
@@ -64,6 +65,18 @@ app.get("/api/libros/:id", (req, res) => {
     // res.send({ "response": result });
   });
 });
+
+//find single autor in table book
+app.get("/api/libros/autor/:id", (req, res) => {
+  const id = req.params.id;
+  let sql = "SELECT * FROM book WHERE id_autor =" + id;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify({ status: 200, error: null, response: results }));
+    // res.send({ "response": result });
+  });
+});
+
 
 //add new book
 app.post("/api/libros", (req, res) => {
