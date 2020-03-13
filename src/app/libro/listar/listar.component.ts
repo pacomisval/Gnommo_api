@@ -63,6 +63,7 @@ export class ListarComponent implements OnInit {
   eliminar(book) {
     this.bookService.deleteBook(book.id).subscribe(results => {
       alert("Libro borrado" );
+      this.getLibros();
     },
     error => { alert("Libro no eliminado")});
   }
