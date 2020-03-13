@@ -14,11 +14,11 @@
             </thead>
             <tbody class="tbody">
                 <tr class="tr" *ngFor="let autor of autores" id="tr">
-                    <td>{{autor.nombre}}</td>
-                    <td>{{autor.apellido}}</td>
+                    <td>{{autor.first_name}}</td>
+                    <td>{{autor.last_name}}</td>
                     <!-- <td (click)="getBook(book)">{{book.name}}</td> -->
                     <!-- <td> <button (click)="editar(persona)" class="btn btn-warning">Editar</button> -->
-                    <td><button (click)="eliminar(autor.idAutor)" class="btn btn-danger">Delete</button></td>
+                    <td><button (click)="eliminar(autor.id)" class="btn btn-danger">Delete</button></td>
                     <!-- </td> -->
                 </tr>
             </tbody>
