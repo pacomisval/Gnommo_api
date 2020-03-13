@@ -1,111 +1,111 @@
 <!-- <app-editarlibro *ngIf="mostrarForm" (voted)="onVoted($event)" [book]="libroSeleccionado"></app-editarlibro> -->
 <div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h3>LIBROS</h3>
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <h3>LIBROS</h3>
     </div>
-    <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>LIBRO</th>
-                    <th>ACCIONES</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let book of books">
-                    <td (click)="getBook(modalGetBook, book)">{{ book.name }}</td>
-                    <td>
-                        <button (click)="editBook(modalEditBook, book)" class="btn btn-warning">
+  </div>
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>LIBRO</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td (click)="getBook(modalGetBook, book)">{{ book.name }}</td>
+          <td>
+            <button (click)="editBook(modalEditBook, book)" class="btn btn-warning">
               Editar
             </button>
-                        <button (click)="deleteBook(confirmacionDeleteGetBook,book)" class="btn btn-danger">
+            <button (click)="deleteBook(confirmacionDeleteBook,book)" class="btn btn-danger">
               Delete
             </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <ng-template #modalGetBook let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
-    </div>
-    <div class="modal-body">
-        <p>
-            Titulo:&nbsp;<span>{{ book.name }}</span>
-        </p>
-        <p>
-            Isbn:&nbsp;<span>{{ book.isbn }}</span>
-        </p>
-        <hr />
-        <p>
-            Autor&nbsp;
-        </p>
-        <p>
-            Nombre:&nbsp;<span>{{ book.first_name }}</span>
-        </p>
-        <p>
-            Apellido:&nbsp;<span>{{ book.last_name }}</span>
-        </p>
-    </div>
+  </div>
+  <div class="modal-body">
+    <p>
+      Titulo:&nbsp;<span>{{ book.name }}</span>
+    </p>
+    <p>
+      Isbn:&nbsp;<span>{{ book.isbn }}</span>
+    </p>
+    <hr />
+    <p>
+      Autor&nbsp;
+    </p>
+    <p>
+      Nombre:&nbsp;<span>{{ book.first_name }}</span>
+    </p>
+    <p>
+      Apellido:&nbsp;<span>{{ book.last_name }}</span>
+    </p>
+  </div>
 </ng-template>
 
 <ng-template #modalEditBook let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="name">Titulo:&nbsp;</label>
+      <div class="input-group">
+        <input id="name" class="form-control" placeholder="{{ book.name }}" name="name" />
+      </div>
     </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label for="name">Titulo:&nbsp;</label>
-            <div class="input-group">
-                <input id="name" class="form-control" placeholder="{{ book.name }}" name="name" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="isbn">Isbn:&nbsp;</label>
-            <div class="input-group">
-                <input id="isbn" class="form-control" placeholder="{{ book.isbn }}" name="isbn" />
-            </div>
-        </div>
-        <hr />
-        <p>
-            Autor&nbsp;
-        </p>
-        <div class="form-group">
-            <label for="first_name">Nombre:&nbsp;</label>
-            <div class="input-group">
-                <input id="first_name" class="form-control" placeholder="{{ book.first_name }}" name="first_name" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="last_name">Nombre:&nbsp;</label>
-            <div class="input-group">
-                <input id="last_name" class="form-control" placeholder="{{ book.last_name }}" name="last_name" />
-            </div>
-        </div>
+    <div class="form-group">
+      <label for="isbn">Isbn:&nbsp;</label>
+      <div class="input-group">
+        <input id="isbn" class="form-control" placeholder="{{ book.isbn }}" name="isbn" />
+      </div>
+    </div>
+    <hr />
+    <p>
+      Autor&nbsp;
+    </p>
+    <div class="form-group">
+      <label for="first_name">Nombre:&nbsp;</label>
+      <div class="input-group">
+        <input id="first_name" class="form-control" placeholder="{{ book.first_name }}" name="first_name" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="last_name">Nombre:&nbsp;</label>
+      <div class="input-group">
+        <input id="last_name" class="form-control" placeholder="{{ book.last_name }}" name="last_name" />
+      </div>
+    </div>
 
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
-        Descartar cambios
-      </button>
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
-        Guardar cambios
-      </button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
+      Descartar cambios
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
+      Guardar cambios
+    </button>
+  </div>
 </ng-template>
 
-<ng-template #confirmacionDeleteGetBook let-modal>
+<ng-template #confirmacionDeleteBook let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -133,10 +133,10 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
-    Cancelar
+      Cancelar
     </button>
-    <button type="button" class="btn btn-outline-dark" (click)="delete(infor,book)">
-     Borrar
+    <button type="button" class="btn btn-outline-dark" (click)="delete(infor,book);modal.close()">
+      Borrar
     </button>
   </div>
 </ng-template>
@@ -149,77 +149,15 @@
   </div>
   <div class="modal-body">
     <h1>El libro se ha eliminado</h1>
-    
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
       Cerrar
     </button>
-  
+
   </div>
 </ng-template>
-<!-- <ng-template #edit let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
-     <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p>
-      Titulo:&nbsp;<span>{{ book.name }}</span>
-    </p>
-    <p>
-      Isbn:&nbsp;<span>{{ book.isbn }}</span>
-    </p>
-    <hr />
-    <p>
-      Autor&nbsp;
-    </p>
-    <!-- <p>
-      Nombre:&nbsp;<span>{{ book.first_name }}</span>
-    </p>
-    <p>
-      Apellido:&nbsp;<span>{{ book.last_name }}</span>
-    </p> -->
-<!-- <form>
-      <div class="form-group">
-        <label for="dateOfBirth">Date of birth</label>
-        <div class="input-group">
-          <input
-            id="dateOfBirth"
-            class="form-control"
-            placeholder="yyyy-mm-dd"
-            name="dp"
-            ngbDatepicker
-            #dp="ngbDatepicker"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary calendar"
-              (click)="dp.toggle()"
-              type="button"
-            ></button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-outline-dark"
-      (click)="modal.close('Save click')"
-    >
-      Save
-    </button>
-  </div>
-</ng-template> -->
 
 <hr />
 

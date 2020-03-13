@@ -46,7 +46,9 @@ app.get("/api/libros", (req, res) => {
 });
 //get all book and authors
 app.get("/api/libros/all", (req, res) => {
-  let sql = "SELECT * FROM book INNER JOIN author ON book.id_autor=author.id";
+  let sql = "SELECT book.id,book.name,book.isbn,book.id_autor,author.id as idAuthor,author.first_name,author.last_name FROM book INNER JOIN author ON book.id_autor=author.id";
+
+
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     // res.send(JSON.stringify({ "status": 200, "error": null, "response": results }));

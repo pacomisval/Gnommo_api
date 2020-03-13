@@ -23,7 +23,7 @@ export class ListarComponent implements OnInit {
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
     private authorService: AuthorService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getLibros();
@@ -40,32 +40,32 @@ export class ListarComponent implements OnInit {
   }
 
 
-  deleteBook(confirmacionDeleteGetBook,book) {
-    // this.bookService.deleteBook(book.id).toPromise().then(res => {
-    //   const respuesta = res;
-      this.modalService.open(confirmacionDeleteGetBook, { ariaLabelledBy: 'modal-basic-title' });
-    // })
-    // .catch(err => { console.log(err) });
+  deleteBook(modalName, book) {
+
+    this.book = book;
+    this.modalService.open(modalName, { ariaLabelledBy: 'modal-basic-title' });
+
   }
   delete(modalName, book) {
-  
-     this.bookService.deleteBook(book.id).toPromise().then(res => {
-      
-      this.modalService.open(modalName, { ariaLabelledBy: 'modal-basic-title' });
-    })
-    .catch(err => { console.log(err) });
-  }
-    
-
-
-getBook(modalGetBook, book) {
     this.book = book;
-    this.modalService.open(modalGetBook, { ariaLabelledBy: 'modal-basic-title',centered:true });
+    console.log(book);
+    this.bookService.deleteBook(book.id).toPromise().then(res => {
+      this.modalService.open(modalName, { ariaLabelledBy: 'modal-basic-title' });
+      this.getLibros();
+    })
+      .catch(err => { console.log(err) });
+  }
+
+
+
+  getBook(modalGetBook, book) {
+    this.book = book;
+    this.modalService.open(modalGetBook, { ariaLabelledBy: 'modal-basic-title', centered: true });
   }
   editBook(modalEditBook, book) {
-  this.book = book;
-  this.modalService.open(modalEditBook, { ariaLabelledBy: 'modal-basic-title' });
-}
+    this.book = book;
+    this.modalService.open(modalEditBook, { ariaLabelledBy: 'modal-basic-title' });
+  }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
