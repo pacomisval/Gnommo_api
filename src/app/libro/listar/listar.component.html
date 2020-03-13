@@ -20,7 +20,7 @@
                         <button (click)="editBook(modalEditBook, book)" class="btn btn-warning">
               Editar
             </button>
-                        <button (click)="eliminar(book)" class="btn btn-danger">
+                        <button (click)="deleteBook(confirmacionDeleteGetBook,book)" class="btn btn-danger">
               Delete
             </button>
                     </td>
@@ -56,6 +56,7 @@
         </p>
     </div>
 </ng-template>
+
 <ng-template #modalEditBook let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
@@ -101,8 +102,61 @@
         <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
         Guardar cambios
       </button>
-
     </div>
+</ng-template>
+
+<ng-template #confirmacionDeleteGetBook let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h1>El libro va a ser borrado</h1>
+    <p>
+      Titulo:&nbsp;<span>{{ book.name }}</span>
+    </p>
+    <p>
+      Isbn:&nbsp;<span>{{ book.isbn }}</span>
+    </p>
+    <hr />
+    <p>
+      Autor&nbsp;
+    </p>
+    <p>
+      Nombre:&nbsp;<span>{{ book.first_name }}</span>
+    </p>
+    <p>
+      Apellido:&nbsp;<span>{{ book.last_name }}</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+    Cancelar
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="delete(infor,book)">
+     Borrar
+    </button>
+  </div>
+</ng-template>
+<ng-template #infor let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h1>El libro se ha eliminado</h1>
+    
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+      Cerrar
+    </button>
+  
+  </div>
 </ng-template>
 <!-- <ng-template #edit let-modal>
   <div class="modal-header">

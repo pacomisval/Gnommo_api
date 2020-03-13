@@ -40,17 +40,27 @@ export class ListarComponent implements OnInit {
   }
 
 
-  eliminar(book) {
-    this.bookService.deleteBook(book.id).subscribe(results => {
-      alert("Libro borrado" );
-      this.getLibros();
-    },
-    error => { alert("Libro no eliminado")});
+  deleteBook(confirmacionDeleteGetBook,book) {
+    // this.bookService.deleteBook(book.id).toPromise().then(res => {
+    //   const respuesta = res;
+      this.modalService.open(confirmacionDeleteGetBook, { ariaLabelledBy: 'modal-basic-title' });
+    // })
+    // .catch(err => { console.log(err) });
   }
+  delete(modalName, book) {
+  
+     this.bookService.deleteBook(book.id).toPromise().then(res => {
+      
+      this.modalService.open(modalName, { ariaLabelledBy: 'modal-basic-title' });
+    })
+    .catch(err => { console.log(err) });
+  }
+    
+
 
 getBook(modalGetBook, book) {
     this.book = book;
-    this.modalService.open(modalGetBook, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(modalGetBook, { ariaLabelledBy: 'modal-basic-title',centered:true });
   }
   editBook(modalEditBook, book) {
   this.book = book;
