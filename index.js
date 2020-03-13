@@ -23,7 +23,7 @@ app.use(bodyParser.json(), (req, res, next) => {
 const conn = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "root",
   database: "libreria"
 });
 
