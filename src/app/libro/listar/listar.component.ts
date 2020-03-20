@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { BookService } from 'src/app/servicio/book.service';
-import { Book } from 'src/app/book';
+import { BookService } from 'src/app/services/book.service';
+import { Book } from 'src/app/models/book';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AuthorService } from 'src/app/servicio/author.service';
-import { Author } from 'src/app/author';
+import { AuthorService } from 'src/app/services/author.service';
+import { Author } from 'src/app/models/author';
 @Component({
   selector: 'app-listar',
   templateUrl: './listar.component.html',
@@ -53,7 +53,7 @@ export class ListarComponent implements OnInit {
       this.modalService.open(modalName, { ariaLabelledBy: 'modal-basic-title' });
       this.getLibros();
     })
-      .catch(err => { console.log(err) });
+      .catch(err => { console.log(err); });
   }
 
 

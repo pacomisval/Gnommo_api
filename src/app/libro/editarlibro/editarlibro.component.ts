@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Router } from "@angular/router";
-import { BookService } from "src/app/servicio/book.service";
-import { AuthorService } from "src/app/servicio/author.service";
-import { CommonModule } from "@angular/common";
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { BookService } from 'src/app/services/book.service';
+import { AuthorService } from 'src/app/services/author.service';
+import { CommonModule } from '@angular/common';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: "app-editarlibro",
-  templateUrl: "./editarlibro.component.html",
-  styleUrls: ["./editarlibro.component.css"]
+  selector: 'app-editarlibro',
+  templateUrl: './editarlibro.component.html',
+  styleUrls: ['./editarlibro.component.css']
 })
 export class EditarlibroComponent implements OnInit {
   closeResult: string;
@@ -37,10 +37,10 @@ export class EditarlibroComponent implements OnInit {
     };
     this.bookService.updateBook(data).subscribe(
       results => {
-        alert("libro updateado");
+        alert('libro updateado');
       },
       error => {
-        alert("NO updateado" + error);
+        alert('NO updateado' + error);
       }
     );
   }
@@ -50,7 +50,7 @@ export class EditarlibroComponent implements OnInit {
 
   open(content) {
     this.modalService
-      .open(content, { ariaLabelledBy: "modal-basic-title" })
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
         result => {
           this.closeResult = `Closed with: ${result}`;
@@ -63,9 +63,9 @@ export class EditarlibroComponent implements OnInit {
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
+      return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
+      return 'by clicking on a backdrop';
     } else {
       return `with: ${reason}`;
     }

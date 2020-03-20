@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {AuthorService} from 'src/app/servicio/author.service';
-import { BookService } from 'src/app/servicio/book.service';
+import {AuthorService} from 'src/app/services/author.service';
+import { BookService } from 'src/app/services/book.service';
 
 @Component({
   selector: 'app-listarautores',
@@ -14,24 +14,28 @@ export class ListarautoresComponent implements OnInit {
   autor: any;
   id: any;
 
-  constructor(private router: Router,private authorService: AuthorService, private activatedRoute: ActivatedRoute, private bookService: BookService) { }
+  constructor(
+    private router: Router,
+    private authorService: AuthorService,
+    private activatedRoute: ActivatedRoute,
+    private bookService: BookService
+  ) { }
 
   ngOnInit() {
-    this.id = this.activatedRoute.snapshot.params['id'];
-    if(this.id != null) {
+    this.id = this.activatedRoute.snapshot.params.id;
+    if (this.id != null) {
       this.getAutor();
-      
-    }
-    else {
+
+    } else {
       this.getAll();
     }
-    
+
   }
   getAll() {
     this.authorService.getAll().subscribe(
       result => {
         console.log(result.response);
-        this.autores= result.response;
+        this.autores = result.response;
       },
       error => {
         console.log(error);
@@ -56,26 +60,26 @@ export class ListarautoresComponent implements OnInit {
   }
 
   eliminar(x) {
-    //var existe;
-    var count = 0; 
+    // var existe;
+    const count = 0;
     this.id = x;
-    console.log("existe");
+    console.log('existe');
     console.log(this.id);
 
     this.bookService.getBookFromAutor(this.id).subscribe(result => {
       console.log(result.response[0]);
-  
-      
+
+
+      // tslint:disable-next-line: triple-equals
       if (result.response[0] != undefined) {
-        alert("No se puede eliminar un autor que tiene libros registrados");
-      }    
-      else {
-         console.log("estoy en el else");
+        alert('No se puede eliminar un autor que tiene libros registrados');
+      } else {
+         console.log('estoy en el else');
          this.authorService.deleteAutor(this.id).subscribe(result => {
-           console.log("Se ha eliminado correctamente");
+           console.log('Se ha eliminado correctamente');
            this.getAll();
-         }); 
-      }  
+         });
+      }
     },
     error => {
       console.log(error);

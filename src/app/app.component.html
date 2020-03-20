@@ -1,13 +1,64 @@
 <div style="text-align:center">
-  <h1>Welcome to {{title}} </h1>
+    <h1>Welcome to {{title}} </h1>
 </div>
 <div class="container">
-  <button routerLink="/" class="btn btn-info">inicio </button>
-  <button (click)="listar()" class="btn btn-info" style="margin-left:10px">Lista Libros</button>
-  <button (click)="listarAutores()" class="btn btn-info" style="margin-left:10px">Lista Autores</button>
-  <button (click)="newBook()" class="btn btn-info" style="margin-left:10px">Nuevo Libro</button>
-  <button (click)="newAuthor()" class="btn btn-info" style="margin-left:10px">Nuevo Autor</button>
+    <button routerLink="/" class="btn btn-info">inicio </button>
+    <button (click)="listar()" class="btn btn-info" style="margin-left:10px">Lista Libros</button>
+    <button (click)="listarAutores()" class="btn btn-info" style="margin-left:10px">Lista Autores</button>
+    <button (click)="newBook()" class="btn btn-info" style="margin-left:10px">Nuevo Libro</button>
+    <button (click)="newAuthor()" class="btn btn-info" style="margin-left:10px">Nuevo Autor</button>
+    <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">Registrarse</button>
+
 
 </div>
+
+
+
+<ng-template #registerModal let-modal>
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="userName">Nombre</label>
+            <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.userName.errors }" />
+            <div *ngIf="submitted && rfc.userName.errors" class="invalid-feedback">
+                <div *ngIf="rfc.userName.errors.required">UserName is required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.email.errors }" />
+            <div *ngIf="submitted && rfc.email.errors" class="invalid-feedback">
+                <div *ngIf="rfc.email.errors.required">Email is required</div>
+                <div *ngIf="rfc.email.errors.email">Email must be a valid email address</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.password.errors }" />
+            <div *ngIf="submitted && rfc.password.errors" class="invalid-feedback">
+                <div *ngIf="rfc.password.errors.required">Password is required</div>
+                <div *ngIf="rfc.password.errors.minlength">Password must be at least 6 characters</div>
+                <div *ngIf="rfc.confirmPassword.errors.mustMatch">Passwords must match</div>
+
+            </div>
+        </div>
+        <!-- //////////////// -->
+        <div class="form-group">
+            <label for="passwordRepeat">passwordRepeat</label>
+            <input type="password" formControlName="passwordRepeat" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.passwordRepeat.errors }" />
+            <div *ngIf="submitted && rfc.passwordRepeat.errors" class="invalid-feedback">
+                <div *ngIf="rfc.passwordRepeat.errors.required">PasswordRepeat is required</div>
+                <div *ngIf="rfc.passwordRepeat.errors.mustMatch">PasswordRepeat must be at least 6 characters</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">Register</button>
+            <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+            />
+            <a (click)="modal.close()" class="btn btn-link">Cancel</a>
+        </div>
+    </form>
+</ng-template>
 
 <router-outlet></router-outlet>

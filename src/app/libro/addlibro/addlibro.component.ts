@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BookService } from 'src/app/servicio/book.service';
+import { BookService } from 'src/app/services/book.service';
 import { Router } from '@angular/router';
-import { AuthorService } from 'src/app/servicio/author.service';
+import { AuthorService } from 'src/app/services/author.service';
 
 @Component({
   selector: 'app-addlibro',
@@ -11,7 +11,7 @@ import { AuthorService } from 'src/app/servicio/author.service';
 export class AddlibroComponent implements OnInit {
 
   autores: any;
-  seleccionado: any = "";
+  seleccionado: any = '';
   id_autor: any;
 
   book = {
@@ -26,10 +26,10 @@ export class AddlibroComponent implements OnInit {
       this.autores = results.response;
       console.log(this.autores);
     });
-    
+
   }
   GuardarLibro() {
-    //console.log(this.seleccionado.id_autor);
+    // console.log(this.seleccionado.id_autor);
     const data = {
       name: this.book.title,
       isbn: this.book.isbn,
