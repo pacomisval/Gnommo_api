@@ -17,6 +17,9 @@ import { ListarautoresComponent } from './autor/listarautores/listarautores.comp
 
 import { BookService } from './services/book.service';
 import { AuthorService } from './services/author.service';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { AuthenticationService } from './services/authentication.service';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,8 @@ import { AuthorService } from './services/author.service';
     EditarlibroComponent,
     ListarComponent,
     AddautorComponent,
-    ListarautoresComponent
+    ListarautoresComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,7 @@ import { AuthorService } from './services/author.service';
     NgbModule,
     ReactiveFormsModule,
   ],
-  providers: [BookService, AuthorService, NgbActiveModal, NgForm, ],
+  providers: [BookService, AuthorService, NgbActiveModal, NgForm, AuthInterceptorService, AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

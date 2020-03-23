@@ -11,8 +11,10 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
-import { MustMatch } from './helpers/mustmach.validator';
+
+import { MustMatch } from './_helpers';
 import { UserService } from './services/user.service';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -26,20 +28,28 @@ export class AppComponent {
   loading = false;
   submitted = false;
   registerModal: NgbModalRef;
+  hayUser: boolean;
 
   constructor(
     private router: Router,
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private authenticationService: AuthenticationService,
   ) {}
  /**
   * Valida campos input
   *
   * @memberof AppComponent
   */
- ngOnInit() {
+ // tslint:disable-next-line: use-lifecycle-interface
+  ngOnInit() {
+    const usuario = localStorage.getItem('currentUser');
+    console.log(usuario);
+    this.hayUser = (usuario != null);
+    // console.log(this.hayUser);
+    // if (usuario != null) {this.hayUser = true;}
     this.registerForm = this.formBuilder.group(
       {
         userName: ['', Validators.required],
@@ -64,6 +74,13 @@ export class AppComponent {
   }
   newBook() {
     this.router.navigate(['agregarLibro']);
+  }
+  login() {
+    this.router.navigate(['login']);
+  }
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/']);
   }
   /**
    * Abrir ventana para registrarse
@@ -114,6 +131,7 @@ export class AppComponent {
         results => {
           this.registerModal.close();
           alert('Registration successful');
+          // Que hacer una vez registrado ////////////////////////////////////////////
           // this.alertService.success('Registration successful', true);
           //           this.router.navigate(['/']);
         },

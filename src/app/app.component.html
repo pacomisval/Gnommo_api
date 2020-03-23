@@ -8,7 +8,14 @@
     <button (click)="newBook()" class="btn btn-info" style="margin-left:10px">Nuevo Libro</button>
     <button (click)="newAuthor()" class="btn btn-info" style="margin-left:10px">Nuevo Autor</button>
     <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">Registrarse</button>
-
+    <!-- <button  (click)="login()" class="btn btn-info" style="margin-left:10px">Login</button> -->
+    <ng-container *ngIf="hayUser; then thenTemplate; else elseTemplate"></ng-container>
+    <ng-template #thenTemplate>
+        <button (click)="logout()" class="btn btn-info" style="margin-left:10px">Logout</button>
+    </ng-template>
+    <ng-template #elseTemplate>
+        <button (click)="login()" class="btn btn-info" style="margin-left:10px">Login</button>
+    </ng-template>
 
 </div>
 
