@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 
-const apiUrl = 'http://localhost:3000/api';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {

@@ -34,10 +34,13 @@ export class ListarautoresComponent implements OnInit {
   getAll() {
     this.authorService.getAll().subscribe(
       result => {
-        console.log(result.response);
-        this.autores = result.response;
+        console.log('respuesta autores');
+       // console.log(result.response);
+        console.log(result);
+        this.autores = result;
       },
       error => {
+        console.log('respuesta error autores');
         console.log(error);
       }
     );
