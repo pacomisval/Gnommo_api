@@ -37,7 +37,10 @@ export class ListarautoresComponent implements OnInit {
         console.log('respuesta autores');
        // console.log(result.response);
         console.log(result);
+        console.log('autores');
         this.autores = result;
+        console.log(this.autores);
+
       },
       error => {
         console.log('respuesta error autores');

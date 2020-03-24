@@ -31,14 +31,15 @@ export class ListarComponent implements OnInit {
   getLibros() {
     this.bookService.getAll().subscribe(
       result => {
-        this.books = result.response;
+        console.log('respuesta libros');
+        console.log(result);
+        this.books = result;
       },
       error => {
         console.log(error);
       }
     );
   }
-
 
   deleteBook(modalName, book) {
 
