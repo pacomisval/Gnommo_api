@@ -13,6 +13,7 @@ import { UserService } from '../services/user.service';
 import { MustMatch } from '../_helpers';
 
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -26,6 +27,13 @@ export class LoginComponent implements OnInit {
   error: string;
   registerModal: NgbModalRef;
   registerForm: FormGroup;
+  user = {
+    userName: '',
+    email: '',
+    password: '',
+    rol: '',
+    token: '',
+  };
 
 
   constructor(
@@ -57,7 +65,8 @@ export class LoginComponent implements OnInit {
         userName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
-        passwordRepeat: ['', Validators.required]
+        passwordRepeat: ['', Validators.required],
+        rol: ['', Validators.required],
       },
       {
         validators: MustMatch('password', 'passwordRepeat')
@@ -68,8 +77,9 @@ export class LoginComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
-
+  get lfc() { return this.loginForm.controls; }
+  get rfc() { return this.registerForm.controls;
+  }
 
   onSubmit() {
     this.submitted = true;
@@ -80,7 +90,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value);
+    this.authenticationService.login(this.lfc.username.value, this.lfc.password.value);
     // .pipe(first())
     // .subscribe(
     //     data => {
@@ -101,7 +111,34 @@ export class LoginComponent implements OnInit {
       ariaLabelledBy: 'modal-basic-title'
     });
   }
-  get rfc() {
-    return this.registerForm.controls;
+
+  registrar() {
+    console.log('registrando');
+    if (this.registerForm.invalid) {
+      console.log('formulario invalido');
+      return;
+    }
+    this.loading = true;
+    const data = {
+      id: '',
+      nombre: this.rfc.userName.value,
+      password: this.rfc.password.value,
+      email: this.rfc.email.value,
+      rol: this.rfc.rol.value,
+      tok: '',
+    };
+    console.log('data');
+    console.log(data);
+    this.userService.createUser(data).subscribe(results => {
+      alert('usuario Agregado');
+
+    }, error => {
+        alert('usuario NO Agregado');
+        console.log(error);
+
+    });
+
+
   }
+
 }
