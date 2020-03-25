@@ -1,4 +1,3 @@
-<!-- <app-editarlibro *ngIf="mostrarForm" (voted)="onVoted($event)" [book]="libroSeleccionado"></app-editarlibro> -->
 <div class="container">
     <div class="card">
         <div class="card-header">
@@ -17,12 +16,12 @@
                 <tr *ngFor="let book of books">
                     <td (click)="getBook(modalGetBook, book)">{{ book.nombre }}</td>
                     <td>
-                        <button (click)="editBook(modalEditBook, book)" class="btn btn-warning">
-              Editar
-            </button>
+                        <button (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning">
+                           Editar
+                        </button>
                         <button (click)="deleteBook(confirmacionDeleteBook,book)" class="btn btn-danger">
-              Delete
-            </button>
+                           Delete
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -30,6 +29,7 @@
     </div>
 </div>
 
+<!-- VENTANA MODAL MUESTRA UN LIBRO -->
 <ng-template #modalGetBook let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
@@ -57,7 +57,8 @@
     </div>
 </ng-template>
 
-<ng-template #modalEditBook let-modal>
+<!-- VENTANA MODAL EDITAR UN LIBRO -->
+<ng-template #editBookModal let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -65,45 +66,50 @@
     </button>
     </div>
     <div class="modal-body">
-        <div class="form-group">
-            <label for="name">Titulo:&nbsp;</label>
-            <div class="input-group">
-                <input id="name" class="form-control" placeholder="{{ book.nombre }}" name="name" />
+        <form [formGroup]="editBookForm">
+            <div class="form-group">
+                <label for="name">Titulo:&nbsp;</label>
+                <div class="input-group">
+                    <input id="name" class="form-control" [(ngModel)]="book.nombre" formControlName="nombre" [ngClass]="{ 'is-invalid':submitted && ebfc.nombre.errors }" />
+                    <div *ngIf="submitted && ebfc.nombre.errors" class="invalid-feedback">
+                      <div *ngIf="ebfc.nombre.errors.required">titulo is required</div>
+                  </div>
+                  </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="isbn">Isbn:&nbsp;</label>
-            <div class="input-group">
-                <input id="isbn" class="form-control" placeholder="{{ book.isbn }}" name="isbn" />
+            <div class="form-group">
+                <label for="isbn">Isbn:&nbsp;</label>
+                <div class="input-group">
+                    <input id="isbn" class="form-control" [(ngModel)]=" book.isbn" formControlName="isbn" />
+                </div>
             </div>
-        </div>
-        <hr />
-        <p>
-            Autor&nbsp;
-        </p>
-        <div class="form-group">
-            <label for="first_name">Nombre:&nbsp;</label>
-            <div class="input-group">
-                <input id="first_name" class="form-control" placeholder="{{ book.first_name }}" name="first_name" />
+            <hr />
+            <p>
+                Autor&nbsp;
+            </p>
+            <div class="form-group">
+                <label for="first_name">Nombre:&nbsp;</label>
+                <div class="input-group">
+                    <input id="first_name" class="form-control" formControlName="first_name" [(ngModel)]="book.first_name" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="last_name">Nombre:&nbsp;</label>
-            <div class="input-group">
-                <input id="last_name" class="form-control" placeholder="{{ book.last_name }}" name="last_name" />
+            <div class="form-group">
+                <label for="last_name">Nombre:&nbsp;</label>
+                <div class="input-group">
+                    <input id="last_name" class="form-control" [(ngModel)]="book.last_name" formControlName="last_name" />
+                </div>
             </div>
-        </div>
-
+        </form>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
-      Descartar cambios
-    </button>
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
-      Guardar cambios
-    </button>
+          Descartar cambios
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="editBook(book)">
+           Guardar cambios
+        </button>
     </div>
 </ng-template>
+
 
 <ng-template #confirmacionDeleteBook let-modal>
     <div class="modal-header">

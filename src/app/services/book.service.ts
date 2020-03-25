@@ -31,6 +31,8 @@ export class BookService {
   }
 
   updateBook(data) {
+    console.log('entra en updateBook');
+    console.log(data);
     return this.http.patch<any>(Globals.apiUrl + '/libros/' + data.id, data);
   }
 

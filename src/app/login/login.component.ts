@@ -131,11 +131,13 @@ export class LoginComponent implements OnInit {
     console.log(data);
     this.userService.createUser(data).subscribe(results => {
       alert('usuario Agregado');
+      console.log(results);
       // guardar token en local storage
       window.location.reload();
       this.router.navigate(['/']);
     },
       error => {
+
         alert('usuario NO Agregado');
         console.log(error);
     });
