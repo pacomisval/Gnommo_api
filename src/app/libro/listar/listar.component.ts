@@ -104,34 +104,27 @@ export class ListarComponent implements OnInit {
   editBook(book: Book) {
     this.submitted = true;
     console.log(book);
-     // const datos = {
-    //   id: this.book.id,
-    //   nombre: this.ebfc.nombre.value,
-    //   isbn: this.ebfc.isbn.value,
-    //   idAutor: this.book.idAutor,
-    //   first_name: this.ebfc.first_name.value,
-    //   last_name: this.ebfc.last_name.value,
-    // };
     const datosAutor = {
       id: this.book.idAutor,
       first_name: this.ebfc.first_name.value,
       last_name: this.ebfc.last_name.value,
     };
-
     const datosLibro = {
       id: this.book.id,
       nombre: this.ebfc.nombre.value,
       isbn: this.ebfc.isbn.value,
       idAutor: this.book.idAutor,
     };
-   // console.log(data);
     this.authorService.putAutor(datosAutor).subscribe(
       result => {
         console.log('autor modificado');
         console.log(result);
+        alert("updateado autor");
       },
       error => {
+        console.log('Error en autor modificado');
         console.log(error);
+        alert("updateado no autor");
       }
     );
 
@@ -139,9 +132,12 @@ export class ListarComponent implements OnInit {
       result => {
         console.log('respuesta editingBook');
         console.log(result);
+        alert("updateado libro");
       },
       error => {
         console.log(error);
+        alert(" no updateado libro");
+
       }
     );
   }

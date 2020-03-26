@@ -46,8 +46,14 @@ export class AuthorService {
     return this.http.post<any>(Globals.apiUrl + '/autores', data, { headers });
   }
 // es put
-  putAutor(data) {
-    const id = data.id;
+  putAutor(datosAutor) {
+    const id = datosAutor.id;
+    const data = {
+      first_name: datosAutor.first_name,
+      last_name:  datosAutor.last_name,
+    };
+    console.log("mandando datos");
+    console.log(data);
     return this.http.put<any>(Globals.apiUrl + '/autores/' + id, data);
   }
 
