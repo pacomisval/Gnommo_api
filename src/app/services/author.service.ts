@@ -46,8 +46,9 @@ export class AuthorService {
     return this.http.post<any>(Globals.apiUrl + '/autores', data, { headers });
   }
 // es put
-  patchAutor(id: number, data) {
-    return this.http.post<any>(Globals.apiUrl + '/autores/' + id, data);
+  putAutor(data) {
+    const id = data.id;
+    return this.http.put<any>(Globals.apiUrl + '/autores/' + id, data);
   }
 
 

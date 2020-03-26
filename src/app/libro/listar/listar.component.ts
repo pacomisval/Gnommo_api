@@ -18,7 +18,7 @@ export class ListarComponent implements OnInit {
   author: Author;
   books: Book[];
   editBookForm: FormGroup;
-  submitted=false;
+  submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +40,12 @@ export class ListarComponent implements OnInit {
       }
     );
   }
+/** abreviatura de this.editBookForm.controls
+ *
+ * @readonly
+ * @memberof ListarComponent
+ */
+  get ebfc() { return this.editBookForm.controls; }
 
   /**  Obtiene la lista de todos los libros
    *
@@ -88,8 +94,7 @@ export class ListarComponent implements OnInit {
       ariaLabelledBy: 'modal-basic-title'
     });
   }
-  get ebfc() { return this.editBookForm.controls;
-  }
+
 /** Guarda las modificaciones del libro provenientes
  * del formulario de su ventana modal
  *
@@ -97,10 +102,9 @@ export class ListarComponent implements OnInit {
  * @memberof ListarComponent
  */
   editBook(book: Book) {
-    this.submitted=true;
-
+    this.submitted = true;
     console.log(book);
-    // const datos = {
+     // const datos = {
     //   id: this.book.id,
     //   nombre: this.ebfc.nombre.value,
     //   isbn: this.ebfc.isbn.value,
@@ -108,15 +112,30 @@ export class ListarComponent implements OnInit {
     //   first_name: this.ebfc.first_name.value,
     //   last_name: this.ebfc.last_name.value,
     // };
-    const data = {
+    const datosAutor = {
+      id: this.book.idAutor,
+      first_name: this.ebfc.first_name.value,
+      last_name: this.ebfc.last_name.value,
+    };
+
+    const datosLibro = {
       id: this.book.id,
       nombre: this.ebfc.nombre.value,
       isbn: this.ebfc.isbn.value,
       idAutor: this.book.idAutor,
-    }
-    console.log(data);
-   // id, nombre, isbn, idAutor
-    this.bookService.updateBook(data).subscribe(
+    };
+   // console.log(data);
+    this.authorService.putAutor(datosAutor).subscribe(
+      result => {
+        console.log('autor modificado');
+        console.log(result);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
+    this.bookService.updateBook(datosLibro).subscribe(
       result => {
         console.log('respuesta editingBook');
         console.log(result);

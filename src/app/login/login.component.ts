@@ -92,18 +92,21 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.lfc.username.value, this.lfc.password.value);
     // .pipe(first())
-    // .subscribe(
-    //     data => {
-    //         this.router.navigate([this.returnUrl]);
+    //  .subscribe(
+    //    data => {
+    //      console.log("respuesta");
+    //      console.log(data);
+    //      // this.router.navigate([this.returnUrl]);
     //     },
-    //     error => {
+    //    error => {
+    //     console.log("respuesta error");
     //         this.error = error;
     //         this.loading = false;
     //     });
-    // eliminar cuando tengamos respuesta
-    // this.router.navigate([this.returnUrl]);
-    window.location.reload();
-    this.router.navigate(['/']);
+   // eliminar cuando tengamos respuesta
+  //  this.router.navigate([this.returnUrl]);
+ //   window.location.reload();
+ //  this.router.navigate(['/']);
 
   }
   abrirRegisterModal(modalName: any) {
@@ -132,14 +135,13 @@ export class LoginComponent implements OnInit {
     this.userService.createUser(data).subscribe(results => {
       alert('usuario Agregado');
       console.log(results);
-      // guardar token en local storage
-      window.location.reload();
-      this.router.navigate(['/']);
     },
       error => {
-
         alert('usuario NO Agregado');
         console.log(error);
     });
   }
 }
+  // guardar token en local storage
+    //  window.location.reload();
+    //  this.router.navigate(['/']);
