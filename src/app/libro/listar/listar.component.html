@@ -19,7 +19,7 @@
                         <button (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning">
                            Editar
                         </button>
-                        <button (click)="deleteBook(confirmacionDeleteBook,book)" class="btn btn-danger">
+                        <button (click)="deleteBook(confirmDeleteBookModal,book)" class="btn btn-danger">
                            Delete
                         </button>
                     </td>
@@ -72,9 +72,9 @@
                 <div class="input-group">
                     <input id="name" class="form-control" [(ngModel)]="book.nombre" formControlName="nombre" [ngClass]="{ 'is-invalid':submitted && ebfc.nombre.errors }" />
                     <div *ngIf="submitted && ebfc.nombre.errors" class="invalid-feedback">
-                      <div *ngIf="ebfc.nombre.errors.required">titulo is required</div>
-                  </div>
-                  </div>
+                        <div *ngIf="ebfc.nombre.errors.required">titulo is required</div>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label for="isbn">Isbn:&nbsp;</label>
@@ -110,8 +110,9 @@
     </div>
 </ng-template>
 
+<!-- VENTANA MODAL CONFIRMAR DELETE UN LIBRO -->
 
-<ng-template #confirmacionDeleteBook let-modal>
+<ng-template #confirmDeleteBookModal let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -141,12 +142,13 @@
         <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
       Cancelar
     </button>
-        <button type="button" class="btn btn-outline-dark" (click)="delete(infor,book);modal.close()">
+        <button type="button" class="btn btn-outline-dark" (click)="delete(inforDeleteBook,book);modal.close()">
       Borrar
     </button>
     </div>
 </ng-template>
-<ng-template #infor let-modal>
+<!-- VENTANA MODAL INFORMA DELETE UN LIBRO -->
+<ng-template #inforDeleteBook let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">

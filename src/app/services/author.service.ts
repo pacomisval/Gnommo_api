@@ -45,18 +45,17 @@ export class AuthorService {
     headers.set('Content-Type', 'application/json; charset=utf-8');
     return this.http.post<any>(Globals.apiUrl + '/autores', data, { headers });
   }
-// es put
+
   putAutor(datosAutor) {
     const id = datosAutor.id;
     const data = {
       first_name: datosAutor.first_name,
       last_name:  datosAutor.last_name,
     };
-    console.log("mandando datos");
+    console.log('mandando datos');
     console.log(data);
     return this.http.put<any>(Globals.apiUrl + '/autores/' + id, data);
   }
-
 
   deleteAutor(id: number) {
     return this.http.delete<any>(Globals.apiUrl + '/autores/' + id);

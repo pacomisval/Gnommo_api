@@ -10,7 +10,7 @@ import { FormsModule, NgControl, NgForm, ReactiveFormsModule } from '@angular/fo
 import { HttpClientModule } from '@angular/common/http';
 
 import { AddlibroComponent } from './libro/addlibro/addlibro.component';
-import { EditarlibroComponent } from './libro/editarlibro/editarlibro.component';
+// import { EditarlibroComponent } from './libro/editarlibro/editarlibro.component';
 import { ListarComponent } from './libro/listar/listar.component';
 import { AddautorComponent } from './autor/addautor/addautor.component';
 import { ListarautoresComponent } from './autor/listarautores/listarautores.component';
@@ -25,7 +25,7 @@ import { LoginComponent } from './login/login.component';
   declarations: [
     AppComponent,
     AddlibroComponent,
-    EditarlibroComponent,
+ //   EditarlibroComponent,
     ListarComponent,
     AddautorComponent,
     ListarautoresComponent,

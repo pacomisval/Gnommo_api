@@ -31,21 +31,22 @@ export class ListarComponent implements OnInit {
 
   ngOnInit() {
     this.getLibros();
-    this.editBookForm = this.formBuilder.group(
-      {
-       nombre: ['', Validators.required],
-       isbn: ['', Validators.required],
-       first_name: ['', [Validators.required]],
-       last_name: ['', Validators.required],
-      }
-    );
+    this.editBookForm = this.formBuilder.group({
+      nombre: ['', Validators.required],
+      isbn: ['', Validators.required],
+      first_name: ['', [Validators.required]],
+      last_name: ['', Validators.required]
+    });
   }
-/** abreviatura de this.editBookForm.controls
- *
- * @readonly
- * @memberof ListarComponent
- */
-  get ebfc() { return this.editBookForm.controls; }
+
+  /** abreviatura de this.editBookForm.controls
+   *
+   * @readonly
+   * @memberof ListarComponent
+   */
+  get ebfc() {
+    return this.editBookForm.controls;
+  }
 
   /**  Obtiene la lista de todos los libros
    *
@@ -95,85 +96,76 @@ export class ListarComponent implements OnInit {
     });
   }
 
-/** Guarda las modificaciones del libro provenientes
- * del formulario de su ventana modal
- *
- * @param {*} book
- * @memberof ListarComponent
- */
+  /** Guarda las modificaciones del libro
+   * (provenientes del formulario de su ventana modal)
+   *
+   * @param {*} book
+   * @memberof ListarComponent
+   */
   editBook(book: Book) {
     this.submitted = true;
     console.log(book);
-    const datosAutor = {
-      id: this.book.idAutor,
-      first_name: this.ebfc.first_name.value,
-      last_name: this.ebfc.last_name.value,
-    };
+
     const datosLibro = {
       id: this.book.id,
       nombre: this.ebfc.nombre.value,
       isbn: this.ebfc.isbn.value,
-      idAutor: this.book.idAutor,
+      idAutor: this.book.idAutor
     };
-    this.authorService.putAutor(datosAutor).subscribe(
-      result => {
+
+    const datosAutor = {
+      id: this.book.idAutor,
+      first_name: this.ebfc.first_name.value,
+      last_name: this.ebfc.last_name.value
+    };
+
+    // /////////// Modificar el autor ///////////////////////
+    this.authorService.putAutor(datosAutor).toPromise()
+      .then(result => {
         console.log('autor modificado');
-        console.log(result);
-        alert("updateado autor");
-      },
-      error => {
+    //       //////Cuando ha Modificado el autor entonces Modifica el libro //////////
+        this.bookService.updateBook(datosLibro).toPromise()
+          .then(value => {
+          console.log('respuesta updateBook correcto');
+          this.modalService.dismissAll();
+          });
+      })
+      .catch(err => {
         console.log('Error en autor modificado');
-        console.log(error);
-        alert("updateado no autor");
-      }
-    );
+        console.log('respuesta updateBook error');
+      });
 
-    this.bookService.updateBook(datosLibro).subscribe(
-      result => {
-        console.log('respuesta editingBook');
-        console.log(result);
-        alert("updateado libro");
-      },
-      error => {
-        console.log(error);
-        alert(" no updateado libro");
-
-      }
-    );
   }
 
-
-
-  deleteBook(modalName, book: Book) {
+/**Abre Ventana Modal para que el usuario confirme el libro a eliminar
+ *
+ *
+ * @param {*} confirmDeleteBookModal
+ * @param {Book} book
+ * @memberof ListarComponent
+ */
+deleteBook(confirmDeleteBookModal, book: Book) {
     this.book = book;
-    this.modalService.open(modalName, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(confirmDeleteBookModal, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  delete(modalName, book: Book) {
+/**
+ * Solicita borrado del libro de la BD,
+ * Informa del resultado en Ventana Modal
+ *
+ * @param {*} inforDeleteBook
+ * @param {Book} book
+ * @memberof ListarComponent
+ */
+delete(inforDeleteBook, book: Book) {
     this.book = book;
-    this.bookService
-      .deleteBook(this.book.id)
-      .toPromise()
+    this.bookService.deleteBook(this.book.id).toPromise()
       .then(res => {
-        this.modalService.open(modalName, {
-          ariaLabelledBy: 'modal-basic-title'
-        });
+        this.modalService.open(inforDeleteBook, {ariaLabelledBy: 'modal-basic-title'});
         this.getLibros();
       })
       .catch(err => {
         console.log(err);
       });
   }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      console.log('modificar libro');
-      return `with: ${reason}`;
-    }
-  }
-
 }
