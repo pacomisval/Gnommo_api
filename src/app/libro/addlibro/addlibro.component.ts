@@ -27,7 +27,8 @@ export class AddlibroComponent implements OnInit {
 
   ngOnInit() {
 
-    if (this.bookTitleTemp != null) {this.book.title = this.bookTitleTemp; }
+    this.book.title = localStorage.getItem('nombre');
+    this.book.isbn = localStorage.getItem('isbn');
     this.authorService.getAll().subscribe(results => {
       this.autores = results;
       this.autorSeleccionado = this.autores[0];
@@ -47,10 +48,11 @@ export class AddlibroComponent implements OnInit {
       this.authorService.addAutorLibro();
       console.log('ir a añadir autor');
       localStorage.setItem('nombre', this.book.title);
-      this.bookTitleTemp = this.book.title;
+      localStorage.setItem('isbn', this.book.isbn);
       this.router.navigate(['agregarAutores']);
-
     } else {
+      localStorage.setItem('nombre', '');
+      localStorage.setItem('isbn', '');
       this.bookService.createBook(data).subscribe(results => {
         alert('Libro Agregado');
         this.router.navigate(['listar']);
