@@ -73,7 +73,7 @@ export class ListarComponent implements OnInit {
    * @param {*} book
    * @memberof ListarComponent
    */
-  getBook(modalGetBook, book: Book) {
+  getBook(modalGetBook: any, book: Book) {
     this.book = book;
     this.modalService.open(modalGetBook, {
       ariaLabelledBy: 'modal-basic-title',
@@ -88,7 +88,7 @@ export class ListarComponent implements OnInit {
    * @param {*} book
    * @memberof ListarComponent
    */
-  openEditBookModal(editBookModal, book: Book) {
+  openEditBookModal(editBookModal: any, book: Book) {
     console.log(book);
     this.book = book;
     this.modalService.open(editBookModal, {
@@ -144,7 +144,7 @@ export class ListarComponent implements OnInit {
  * @param {Book} book
  * @memberof ListarComponent
  */
-deleteBook(confirmDeleteBookModal, book: Book) {
+deleteBook(confirmDeleteBookModal: any, book: Book) {
     this.book = book;
     this.modalService.open(confirmDeleteBookModal, { ariaLabelledBy: 'modal-basic-title' });
   }
@@ -157,7 +157,7 @@ deleteBook(confirmDeleteBookModal, book: Book) {
  * @param {Book} book
  * @memberof ListarComponent
  */
-delete(inforDeleteBook, book: Book) {
+delete(inforDeleteBook: any, book: Book) {
     this.book = book;
     this.bookService.deleteBook(this.book.id).toPromise()
       .then(res => {

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthorService } from 'src/app/services/author.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {NgForm} from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-addautor',
@@ -16,20 +17,19 @@ export class AddautorComponent implements OnInit {
     last_name: ''
   };
 
-  constructor(private router: Router, private authorService: AuthorService) { }
+  constructor(private router: Router, private authorService: AuthorService,private location:Location) { }
 
 
   ngOnInit() {
   }
 
   Guardar() {
-
+    console.log(this.authorService.mandadoLibro);
     const data = {
       first_name: this.autor.first_name,
       last_name: this.autor.last_name
     };
 
-    // tslint:disable-next-line: triple-equals
     if (this.autor.first_name != '' && this.autor.last_name != '') {
 
       console.log(this.autor.first_name);
@@ -37,7 +37,10 @@ export class AddautorComponent implements OnInit {
 
       this.authorService.postAutor(data).subscribe(results => {
         alert('Autor Agregado');
-        this.router.navigate(['listarAutores']);
+        console.log(this.authorService.mandadoLibro);
+        if (this.authorService.mandadoLibro) { this.router.navigate(['agregarLibro'],{ queryParamsHandling: 'preserve' });} else {
+          this.router.navigate(['listarAutores']);
+        }
       }, error => {
           alert('NO Agregado');
           this.router.navigate(['/']);

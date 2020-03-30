@@ -14,12 +14,9 @@
             </thead>
             <tbody class="tbody">
                 <tr class="tr" *ngFor="let autor of autores" id="tr">
-                    <td>{{autor.first_name}}</td>
-                    <td>{{autor.last_name}}</td>
-                    <!-- <td (click)="getBook(book)">{{book.name}}</td> -->
-                    <!-- <td> <button (click)="editar(persona)" class="btn btn-warning">Editar</button> -->
-                    <td><button (click)="eliminar(autor.id)" class="btn btn-danger">Delete</button></td>
-                    <!-- </td> -->
+                    <td *ngIf="autor.id!=1 && autor.id!=2 ">{{autor.first_name}}</td>
+                    <td *ngIf="autor.id!=1 && autor.id!=2 ">{{autor.last_name}}</td>
+                    <td *ngIf="autor.id!=1 && autor.id!=2 "><button (click)="eliminar(autor.id)" class="btn btn-danger">Delete</button></td>
                 </tr>
             </tbody>
         </table>

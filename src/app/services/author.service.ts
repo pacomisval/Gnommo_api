@@ -11,7 +11,7 @@ import { Globals } from '../Global';
 export class AuthorService {
   author: Author;
   id: number;
-
+  mandadoLibro = false;
   constructor(private http: HttpClient) {}
 
   getAll() {
@@ -59,5 +59,8 @@ export class AuthorService {
 
   deleteAutor(id: number) {
     return this.http.delete<any>(Globals.apiUrl + '/autores/' + id);
+  }
+  addAutorLibro() {
+    this.mandadoLibro = true;
   }
 }
