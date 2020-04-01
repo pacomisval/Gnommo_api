@@ -18,7 +18,7 @@
                 <label for="selectAutores">Selecciona el autor</label><br />
                 <select id="selectAutores" name="miselect" [(ngModel)]="autorSeleccionado">
                     <option [ngValue]="autor" *ngFor="let autor of autores">
-                       &nbsp; {{ autor.first_name }}&nbsp;{{ autor.last_name }} &nbsp;{{ autor.id }}&nbsp;
+                       &nbsp; {{ autor.first_name }}&nbsp;{{ autor.last_name }} &nbsp;
                     </option>
                 </select>
             </div>

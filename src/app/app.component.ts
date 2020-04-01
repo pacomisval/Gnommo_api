@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   NgbModal,
   NgbActiveModal,
@@ -15,6 +15,7 @@ import {
 import { MustMatch } from './_helpers';
 import { UserService } from './services/user.service';
 import { AuthenticationService } from './services/authentication.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -22,15 +23,23 @@ import { AuthenticationService } from './services/authentication.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'appApiNode';
-  titulo = 'Biblioteca';
+  cookieMessage = 'Estamos obligados a darte el coñazo con esto de las cukis';
+  cookieDismiss = 'Cerrar';
+  cookieLinkText = 'Vea que las cukis solo guardan informacion util para ti';
+
+  title = 'Biblioteca de Gnomo';
+ // titulo = 'Biblioteca';
   registerForm: FormGroup;
+  registerModal: NgbModalRef;
+
   loading = false;
   submitted = false;
-  registerModal: NgbModalRef;
-  hayUser: boolean;
+  CukiExits: boolean;
+  cukiJson;
   currentUser;
-  n = 0;
+
+
+
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -38,23 +47,23 @@ export class AppComponent {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private authenticationService: AuthenticationService,
+    private cookieService: CookieService
   ) {
-    this.n++;
-    console.log('entra' + this.n);
+
+    console.log('entra constructor' );
     this.currentUser = this.authenticationService.currentUserValue;
   }
- /**
-  * Valida campos input
-  *
-  * @memberof AppComponent
-  */
- // tslint:disable-next-line: use-lifecycle-interface
+  /**
+   * Valida campos input
+   *
+   * @memberof AppComponent
+   */
   ngOnInit() {
-    const usuario = localStorage.getItem('currentUser');
-    console.log(usuario);
-    this.hayUser = (usuario != null);
-    // console.log(this.hayUser);
-    // if (usuario != null) {this.hayUser = true;}
+    console.log('entra oninit' );
+    this.politicaCukis();
+
+    this.comprobarCookie();
+
     this.registerForm = this.formBuilder.group(
       {
         userName: ['', Validators.required],
@@ -66,6 +75,46 @@ export class AppComponent {
         validators: MustMatch('password', 'passwordRepeat')
       }
     );
+  }
+  politicaCukis() {
+    let cc = window as any;
+    cc.cookieconsent.initialise({
+      palette: {
+        popup: {
+          background: '#164969'
+        },
+        button: {
+          background: '#ffe000',
+          text: '#164969'
+        }
+      },
+      theme: 'classic',
+      content: {
+        message: this.cookieMessage,
+        dismiss: this.cookieDismiss,
+        link: this.cookieLinkText,
+        href: 'https://developers.de/privacy-policy/'
+        // environment.Frontend + "/dataprivacy"
+      }
+    });
+
+  }
+
+  comprobarCookie() {
+    const myCuki = this.cookieService.get('cuki');
+    console.log(myCuki);
+    if (myCuki) {
+      this.CukiExits = true;
+      console.log('Existe');
+      this.cukiJson = JSON.parse(myCuki);
+      console.log(this.cukiJson);
+      console.log(this.cukiJson.id);
+      console.log(this.cukiJson.Nombre);
+      console.log(this.cukiJson.rol);
+      console.log(this.cukiJson.token);
+    } else {
+      console.log('No Existe');
+    }
   }
 
   listar() {
@@ -88,60 +137,5 @@ export class AppComponent {
     window.location.reload();
     this.router.navigate(['/']);
   }
-
-  // abrirRegisterModal(modalName: any) {
-  //   this.registerModal = this.modalService.open(modalName, {
-  //     ariaLabelledBy: 'modal-basic-title'
-  //   });
-  // }
-
-  /**
-   * Abreviatura de this.registerForm.controls
-   *
-   * @readonly
-   * @memberof AppComponent
-   */
-  // get rfc() {
-  //   return this.registerForm.controls;
-  // }
-
-  // onSubmit() {
-  //   console.log('guardar usuario');
-  //   this.submitted = true;
-  //   // stop here if form is invalid
-  //   if (this.registerForm.invalid) {
-  //     return;
-  //   }
-  //   // display form values on success
-  //   // alert(
-  //   //   'SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4)
-  //   // );
-  //   this.loading = true;
-  //   const data = this.registerForm.value;
-  //   delete data.passwordRepeat;
-  //   const rol = 'rol';
-  //   const token = 'token';
-  //   data[rol] = 'admin';
-  //   data[token] = 'elToken';
-  //   // this.userService.register(this.registerForm.value)
-  //   alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
-  //   this.userService
-  //     .createUser(this.registerForm.value)
-  //     // .pipe(first())
-  //     .subscribe(
-  //       results => {
-  //         this.registerModal.close();
-  //         alert('Registration successful');
-  //         // Que hacer una vez registrado ////////////////////////////////////////////
-  //         // this.alertService.success('Registration successful', true);
-  //         //           this.router.navigate(['/']);
-  //       },
-  //       error => {
-  //         alert('Registration unsuccessful');
-  //         // this.alertService.error(error);
-  //         this.loading = false;
-  //       }
-  //     );
-  // }
 
 }

@@ -29,7 +29,7 @@ import { LoginComponent } from './login/login.component';
     ListarComponent,
     AddautorComponent,
     ListarautoresComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

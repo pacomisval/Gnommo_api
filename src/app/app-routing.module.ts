@@ -5,6 +5,7 @@ import { ListarautoresComponent } from './autor/listarautores/listarautores.comp
 import { AddautorComponent } from './autor/addautor/addautor.component';
 import { AddlibroComponent } from './libro/addlibro/addlibro.component';
 import { LoginComponent } from './login/login.component';
+import { AppComponent } from './app.component';
 
 
 const routes: Routes = [
@@ -15,12 +16,13 @@ const routes: Routes = [
   { path: 'agregarAutores', component: AddautorComponent },
   { path: 'agregarLibro', component: AddlibroComponent },
   { path: 'login', component: LoginComponent },
-
+ // { path: '', component: AppComponent}
 ];
 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+
+exports: [RouterModule]
 })
 export class AppRoutingModule { }

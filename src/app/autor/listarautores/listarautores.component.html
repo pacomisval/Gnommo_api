@@ -14,8 +14,8 @@
             </thead>
             <tbody class="tbody">
                 <tr class="tr" *ngFor="let autor of autores" id="tr">
-                    <td *ngIf="autor.id!=1 && autor.id!=2 ">{{autor.first_name}}</td>
-                    <td *ngIf="autor.id!=1 && autor.id!=2 ">{{autor.last_name}}</td>
+                    <td *ngIf="autor.id!=1 ">{{autor.first_name}}</td>
+                    <td *ngIf="autor.id!=1 ">{{autor.last_name}}</td>
                     <td *ngIf="autor.id!=1 && autor.id!=2 "><button (click)="eliminar(autor.id)" class="btn btn-danger">Delete</button></td>
                 </tr>
             </tbody>

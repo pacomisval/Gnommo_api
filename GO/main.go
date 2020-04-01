@@ -51,8 +51,17 @@ type Token struct {
 	Email  string
 	*jwt.StandardClaims
 }
+type Value struct {
+	Id     string `json:"id"`
+	Nombre string `json:"Nombre"`
+	Rol    string `json:"rol"`
+	Token  string `json:"token"`
+}
 type Answer struct {
 	Token string `json:"token"`
+}
+type Toki struct {
+	Token string
 }
 
 var db *sql.DB
@@ -292,13 +301,14 @@ func crearToken(id, nombre, password, email string) string {
 		panic(err.Error())
 
 	}
-	resp := tokenString
+
+	// resp := tokenString
 
 	//fmt.Println("Token string: ", tokenString)
 
 	guardarToken(tokenString, id)
 
-	return resp
+	return tokenString
 }
 
 ///////////////////////////////// FIN ENCRIPTACION ////////////////////////////////
@@ -688,6 +698,97 @@ func getUsuario(w http.ResponseWriter, r *http.Request) {
 
 /////////////////// POST USUARIO ////////////////////////
 
+func postUsuario(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	stmt, err := db.Prepare("INSERT INTO usuarios(id, nombre, password, email, rol, tok) VALUES (?,?,?,?,?,?)")
+	if err != nil {
+		panic(err.Error())
+	}
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+	key := make(map[string]string)
+	json.Unmarshal(body, &key)
+
+	id := key["id"]
+	nombre := key["nombre"]
+	password := key["password"]
+	email := key["email"]
+	rol := key["rol"]
+	tok := key["tok"]
+
+	pass := encriptarPass(password, email)
+	tok = crearToken(id, nombre, password, email)
+
+	_, err = stmt.Exec(&id, &nombre, &pass, &email, &rol, &tok)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	result, err := db.Query("SELECT * FROM usuarios WHERE email like ?", &email)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer result.Close()
+
+	var usuario Usuario
+
+	for result.Next() {
+		err := result.Scan(&usuario.Id, &usuario.Nombre, &usuario.Password, &usuario.Email, &usuario.Rol, &usuario.Tok)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	value := Value{usuario.Id, usuario.Nombre, usuario.Rol, usuario.Tok}
+	crearCookie(w, "postUsuario", tok)
+	json.NewEncoder(w).Encode(value)
+
+	//fmt.Println(w)
+
+	fmt.Println("ESTO ES POST USUARIO")
+}
+
+// nueva version1////
+// func postUsuario(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "application/json")
+
+// 	stmt, err := db.Prepare("INSERT INTO usuarios(id, nombre, password, email, rol, tok) VALUES (?,?,?,?,?,?)")
+// 	if err != nil {
+// 		panic(err.Error())
+// 	}
+// 	body, err := ioutil.ReadAll(r.Body)
+// 	if err != nil {
+// 		panic(err.Error())
+// 	}
+// 	key := make(map[string]string)
+// 	json.Unmarshal(body, &key)
+
+// 	id := key["id"]
+// 	nombre := key["nombre"]
+// 	password := key["password"]
+// 	email := key["email"]
+// 	rol := key["rol"]
+// 	tok := key["tok"]
+
+// 	pass := encriptarPass(password, email)
+// 	tok = crearToken(id, nombre, password, email)
+
+// 	_, err = stmt.Exec(&id, &nombre, &pass, &email, &rol, &tok)
+// 	if err != nil {
+// 		panic(err.Error())
+// 	}
+// 	value := Value{Id: usuario.Id, Rol: usuario.Rol, Token: usuario.Tok}
+// 	crearCookie(w, "postUsuario", value)
+// 	//	io.WriteString(w, "Cookie App_Gnommo_api")
+
+// 	fmt.Println(w)
+// 	fmt.Println("ESTO ES POST USUARIO")
+// }
+
+// nueva version 2////
 // func postUsuario(w http.ResponseWriter, r *http.Request) {
 // 	w.Header().Set("Content-Type", "application/json")
 
@@ -731,49 +832,17 @@ func getUsuario(w http.ResponseWriter, r *http.Request) {
 // 			panic(err.Error())
 // 		}
 // 	}
-// 	json.NewEncoder(w).Encode(usuario)
 
+// 	/*json.NewEncoder(w).Encode(usuario) */
+// 	value := Value{Id: usuario.Id, Rol: usuario.Rol, Token: usuario.Tok}
+// 	fmt.Println(value)
+// 	crearCookie(w, "postUsuario", value)
+// 	//	io.WriteString(w, "Cookie App_Gnommo_api")
+
+// 	// fmt.Println("Respuesta postUsuario: ", w)
 // 	fmt.Println(w)
-
 // 	fmt.Println("ESTO ES POST USUARIO")
 // }
-
-// nueva version////
-func postUsuario(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	stmt, err := db.Prepare("INSERT INTO usuarios(id, nombre, password, email, rol, tok) VALUES (?,?,?,?,?,?)")
-	if err != nil {
-		panic(err.Error())
-	}
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		panic(err.Error())
-	}
-	key := make(map[string]string)
-	json.Unmarshal(body, &key)
-
-	id := key["id"]
-	nombre := key["nombre"]
-	password := key["password"]
-	email := key["email"]
-	rol := key["rol"]
-	tok := key["tok"]
-
-	pass := encriptarPass(password, email)
-	tok = crearToken(id, nombre, password, email)
-
-	_, err = stmt.Exec(&id, &nombre, &pass, &email, &rol, &tok)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	crearCookie(w, "postUsuario", tok)
-	io.WriteString(w, "Cookie App_Gnommo_api")
-
-	fmt.Println(w)
-	fmt.Println("ESTO ES POST USUARIO")
-}
 
 ///////////////////// PUT USUARIO ///////////////////////
 func putUsuario(w http.ResponseWriter, r *http.Request) {
@@ -827,13 +896,18 @@ func deleteUsuario(w http.ResponseWriter, r *http.Request) {
 
 ////////////////////////////////// FIN API USUARIOS //////////////////////////////
 
-func crearCookie(w http.ResponseWriter, nombre string, value string) {
-	expire := time.Now().Add(time.Minute * 15)
-	cookie := http.Cookie{
-		Name:     nombre,
-		Value:    value,
-		Expires:  expire,
-		HttpOnly: true,
-	}
+func crearCookie(w http.ResponseWriter, nombre string, toki string) {
+	fmt.Println("entra en cookie")
+	expiration := time.Now().Add(365 * 24 * time.Hour)
+	cookie := http.Cookie{Name: "micookie", Value: toki, Expires: expiration}
 	http.SetCookie(w, &cookie)
+	fmt.Println("sale cookie2")
+	// expire := time.Now().Add(time.Minute * 15)
+	// cookie := http.Cookie{
+	// 	Name:    "mi cookie",
+	// 	Value:   "toki",
+	// 	Expires: expire,
+	// 	//	HttpOnly: true,
+	// }
+	// http.SetCookie(w, &cookie)
 }

@@ -1,7 +1,4 @@
-<div style="text-align:center">
-    <h1>Welcome to {{title}} </h1>
-</div>
-<div class="container">
+<div class="container mt-2 mb-4">
     <button routerLink="/" class="btn btn-info">inicio </button>
     <button (click)="listar()" class="btn btn-info" style="margin-left:10px">Lista Libros</button>
     <button (click)="listarAutores()" class="btn btn-info" style="margin-left:10px">Lista Autores</button>
@@ -9,16 +6,19 @@
     <button (click)="newAuthor()" class="btn btn-info" style="margin-left:10px">Nuevo Autor</button>
     <!-- <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">Registrarse</!-->
     <!-- <button  (click)="login()" class="btn btn-info" style="margin-left:10px">Login</button> -->
-    <ng-container *ngIf="hayUser; then thenTemplate; else elseTemplate"></ng-container>
+    <ng-container *ngIf="CukiExits; then thenTemplate; else elseTemplate"></ng-container>
     <ng-template #thenTemplate>
         <button (click)="logout()" class="btn btn-info" style="margin-left:10px">Logout</button>
+        <div class="perfil">{{cukiJson.Nombre}}</div>
     </ng-template>
     <ng-template #elseTemplate>
         <button (click)="login()" class="btn btn-info" style="margin-left:10px">Login</button>
     </ng-template>
 
 </div>
-
+<div style="text-align:center; margin-bottom: 50px;">
+    <h1>Welcome to {{title}} </h1>
+</div>
 
 <!--
 <ng-template #registerModal let-modal>

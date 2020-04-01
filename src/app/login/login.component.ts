@@ -11,6 +11,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../services/user.service';
 import { MustMatch } from '../_helpers';
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -42,12 +43,9 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private modalService: NgbModal,
-
-
     public activeModal: NgbActiveModal,
-
     private userService: UserService,
-
+    private cookieService: CookieService,
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -109,13 +107,13 @@ export class LoginComponent implements OnInit {
  //  this.router.navigate(['/']);
 
   }
-  abrirRegisterModal(modalName: any) {
-    this.registerModal = this.modalService.open(modalName, {
+  abrirRegisterModal(registerModal: any) {
+    this.registerModal = this.modalService.open(registerModal, {
       ariaLabelledBy: 'modal-basic-title'
     });
   }
 
-  registrar() {
+  addUserDB() {
     console.log('registrando');
     if (this.registerForm.invalid) {
       console.log('formulario invalido');
@@ -135,6 +133,16 @@ export class LoginComponent implements OnInit {
     this.userService.createUser(data).subscribe(results => {
       alert('usuario Agregado');
       console.log(results);
+      const cukiUser = JSON.stringify(results);
+      console.log(cukiUser);
+      this.cookieService.set(
+        'cuki',
+        cukiUser,
+        1
+      );
+      this.registerModal.dismiss();
+      window.location.reload();
+      this.router.navigate(['/']);
     },
       error => {
         alert('usuario NO Agregado');
@@ -142,6 +150,3 @@ export class LoginComponent implements OnInit {
     });
   }
 }
-  // guardar token en local storage
-    //  window.location.reload();
-    //  this.router.navigate(['/']);

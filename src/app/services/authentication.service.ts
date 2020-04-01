@@ -2,22 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    private currentUserSubject: BehaviorSubject<any>;
-    public currentUser: Observable<any>;
+  private currentUserSubject: BehaviorSubject<any>;
+  public currentUser: Observable<any>;
 
-    constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
+  constructor(private http: HttpClient, private cookieService: CookieService) {
+    this.currentUserSubject = new BehaviorSubject<any>(
+      JSON.parse(localStorage.getItem('currentUser'))
+    );
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
-    public get currentUserValue() {
-        return this.currentUserSubject.value;
-    }
+  public get currentUserValue() {
+    return this.currentUserSubject.value;
+  }
 
   login(username, password) {
     const user1 = {
@@ -37,11 +38,13 @@ export class AuthenticationService {
     //             this.currentUserSubject.next(user);
     //             return user;
     //         }));
-    }
+  }
 
-    logout() {
-        // remove user from local storage and set current user to null
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
-    }
+  logout() {
+    // remove user from local storage and set current user to null
+  //  localStorage.removeItem('currentUser');
+  //  this.currentUserSubject.next(null);
+     this.cookieService.delete('cuki');
+
+  }
 }
