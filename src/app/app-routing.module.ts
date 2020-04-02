@@ -7,10 +7,12 @@ import { AddlibroComponent } from './libro/addlibro/addlibro.component';
 import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth.guard';
+import { HomeComponent } from './home/home.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent},
   { path: 'listar', component: ListarComponent },
 
   { path: 'listarAutores', component: ListarautoresComponent },

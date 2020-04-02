@@ -137,8 +137,8 @@ export class AppComponent {
   }
   logout() {
     this.authenticationService.logout();
-    window.location.reload();
-    this.router.navigate(['/']);
+    this.router.navigate(['home']).then
+    (() =>  window.location.reload());
   }
 
 }

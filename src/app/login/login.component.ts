@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
+      this.router.navigate(['home']);
     }
   }
 
@@ -109,10 +109,8 @@ export class LoginComponent implements OnInit {
               cukiUser,
               1
             );
-
-            // this.router.navigate([this.returnUrl]);
-            window.location.reload();
-            this.router.navigate(['/']);
+            this.router.navigate(['home']).then
+             (() =>  window.location.reload());
           }
         },
        error => {
@@ -155,12 +153,10 @@ export class LoginComponent implements OnInit {
         cukiUser,
         1
       );
-
       this.userService.currentUserType = data.rol;
-
       this.registerModal.dismiss();
-      window.location.reload();
-      this.router.navigate(['/']);
+      this.router.navigate(['home']).then
+      (() =>  window.location.reload());
     },
       error => {
         alert('usuario NO Agregado');

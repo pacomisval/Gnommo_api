@@ -20,6 +20,7 @@ import { AuthorService } from './services/author.service';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AuthenticationService } from './services/authentication.service';
 import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { LoginComponent } from './login/login.component';
     AddautorComponent,
     ListarautoresComponent,
     LoginComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
