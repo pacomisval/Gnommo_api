@@ -7,6 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthorService } from 'src/app/services/author.service';
 import { Author } from 'src/app/models/author';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-listar',
@@ -19,6 +20,7 @@ export class ListarComponent implements OnInit {
   books: Book[];
   editBookForm: FormGroup;
   submitted = false;
+  admin = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,7 +28,8 @@ export class ListarComponent implements OnInit {
     private bookService: BookService,
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
-    private authorService: AuthorService
+    private authorService: AuthorService,
+    private userService: UserService,
   ) {}
 
   ngOnInit() {
@@ -37,6 +40,7 @@ export class ListarComponent implements OnInit {
       first_name: ['', [Validators.required]],
       last_name: ['', Validators.required]
     });
+    this.admin = this.userService.userAdmin();
   }
 
   /** abreviatura de this.editBookForm.controls
@@ -149,8 +153,7 @@ deleteBook(confirmDeleteBookModal: any, book: Book) {
     this.modalService.open(confirmDeleteBookModal, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-/**
- * Solicita borrado del libro de la BD,
+/**Solicita borrado del libro de la BD,
  * Informa del resultado en Ventana Modal
  *
  * @param {*} inforDeleteBook
@@ -168,4 +171,5 @@ delete(inforDeleteBook: any, book: Book) {
         console.log(err);
       });
   }
+
 }

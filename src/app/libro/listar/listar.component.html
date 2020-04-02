@@ -16,10 +16,10 @@
                 <tr *ngFor="let book of books">
                     <td (click)="getBook(modalGetBook, book)">{{ book.nombre }}</td>
                     <td>
-                        <button (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning">
+                        <button *ngIf="admin" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning">
                            Editar
                         </button>
-                        <button (click)="deleteBook(confirmDeleteBookModal,book)" class="btn btn-danger">
+                        <button *ngIf="admin" (click)="deleteBook(confirmDeleteBookModal,book)" class="btn btn-danger">
                            Delete
                         </button>
                     </td>

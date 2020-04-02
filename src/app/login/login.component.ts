@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
     this.registerForm = this.formBuilder.group(
@@ -80,6 +80,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('entra en summit');
     this.submitted = true;
 
     // stop here if form is invalid
@@ -88,23 +89,37 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.lfc.username.value, this.lfc.password.value);
+    this.authenticationService.login(this.lfc.email.value, this.lfc.password.value)
     // .pipe(first())
-    //  .subscribe(
-    //    data => {
-    //      console.log("respuesta");
-    //      console.log(data);
-    //      // this.router.navigate([this.returnUrl]);
-    //     },
-    //    error => {
-    //     console.log("respuesta error");
-    //         this.error = error;
-    //         this.loading = false;
-    //     });
-   // eliminar cuando tengamos respuesta
-  //  this.router.navigate([this.returnUrl]);
- //   window.location.reload();
- //  this.router.navigate(['/']);
+      .subscribe(
+       results => {
+         console.log('respuesta');
+         console.log(results.id);
+         if (results.id == 0) {
+            // error
+            console.log('id =0');
+            // PENDIENTE MOSTRAR MODALES CON ERRORES
+          } else {
+            console.log('id distinto 0');
+            // no error
+            const cukiUser = JSON.stringify(results);
+            console.log(cukiUser);
+            this.cookieService.set(
+              'cuki',
+              cukiUser,
+              1
+            );
+
+            // this.router.navigate([this.returnUrl]);
+            window.location.reload();
+            this.router.navigate(['/']);
+          }
+        },
+       error => {
+        console.log('respuesta error');
+        this.error = error;
+        this.loading = false;
+        });
 
   }
   abrirRegisterModal(registerModal: any) {
@@ -140,6 +155,9 @@ export class LoginComponent implements OnInit {
         cukiUser,
         1
       );
+
+      this.userService.currentUserType = data.rol;
+
       this.registerModal.dismiss();
       window.location.reload();
       this.router.navigate(['/']);

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {AuthorService} from 'src/app/services/author.service';
 import { BookService } from 'src/app/services/book.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-listarautores',
@@ -13,12 +14,14 @@ export class ListarautoresComponent implements OnInit {
   autores: any;
   autor: any;
   id: any;
+  admin = false;
 
   constructor(
     private router: Router,
     private authorService: AuthorService,
     private activatedRoute: ActivatedRoute,
-    private bookService: BookService
+    private bookService: BookService,
+    private userService: UserService,
   ) { }
 
   ngOnInit() {
@@ -29,7 +32,7 @@ export class ListarautoresComponent implements OnInit {
     } else {
       this.getAll();
     }
-
+    this.admin = this.userService.userAdmin();
   }
   getAll() {
     this.authorService.getAll().subscribe(

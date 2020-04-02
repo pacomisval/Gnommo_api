@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
+import { Globals } from '../Global';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -20,24 +21,22 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(username, password) {
-    const user1 = {
-      userName: 'jose',
-      email: 'jose@gmail.com',
-      password: '123456',
-      rol: 'admin',
-      token: 'el token'
-    };
-    localStorage.setItem('currentUser', JSON.stringify(user1));
-    this.currentUserSubject.next(user1);
-    return user1;
-    // return this.http.post<any>(`${apiUrl}/users/authenticate`, { username, password })
-    //         .pipe(map(user => {
-    //             // store user details and jwt token in local storage to keep user logged in between page refreshes
-    //             localStorage.setItem('currentUser', JSON.stringify(user));
-    //             this.currentUserSubject.next(user);
-    //             return user;
-    //         }));
+  login(email, password) {
+  console.log("entra en autenticationservice.login")
+   return this.http.post<any>(Globals.apiUrl + '/login', { email, password })
+
+    // const user1 = {
+    //   userName: 'jose',
+    //   email: 'jose@gmail.com',
+    //   password: '123456',
+    //   rol: 'admin',
+    //   token: 'el token'
+    // };
+    // localStorage.setItem('currentUser', JSON.stringify(user1));
+    // this.currentUserSubject.next(user1);
+    // return user1;
+
+
   }
 
   logout() {

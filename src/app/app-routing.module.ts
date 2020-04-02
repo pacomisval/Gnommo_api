@@ -6,17 +6,21 @@ import { AddautorComponent } from './autor/addautor/addautor.component';
 import { AddlibroComponent } from './libro/addlibro/addlibro.component';
 import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
+import { AuthGuard } from './auth.guard';
 
 
 const routes: Routes = [
-  { path: 'listar', component: ListarComponent },
   { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: 'listar', component: ListarComponent },
+
   { path: 'listarAutores', component: ListarautoresComponent },
   { path: 'listarAutores/:id', component: ListarautoresComponent },
-  { path: 'agregarAutores', component: AddautorComponent },
-  { path: 'agregarLibro', component: AddlibroComponent },
+
+  { path: 'agregarAutores', component: AddautorComponent , canActivate: [AuthGuard]},
+  { path: 'agregarLibro', component: AddlibroComponent, canActivate: [AuthGuard] },
+
   { path: 'login', component: LoginComponent },
- // { path: '', component: AppComponent}
+
 ];
 
 

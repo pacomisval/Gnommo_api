@@ -112,8 +112,11 @@ export class AppComponent {
       console.log(this.cukiJson.Nombre);
       console.log(this.cukiJson.rol);
       console.log(this.cukiJson.token);
+      this.userService.currentUserType = this.cukiJson.rol;
+
     } else {
       console.log('No Existe');
+      this.CukiExits = false;
     }
   }
 

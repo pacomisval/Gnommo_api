@@ -11,19 +11,17 @@ import { Globals } from '../Global';
 
 export class UserService {
  // Globals.apiUrl = 'http://localhost:8000/api';
-  user: User;
+  currentUserType;
 
   constructor(private http: HttpClient) { }
 
   createUser(data) {
-    // const headers = new HttpHeaders();
-    // console.log('enviando peticion');
-    // console.log(data);
-    // headers.set('Content-Type', 'application/json; charset=utf-8');
-   // return this.http.post<any>(Globals.apiUrl + '/usuarios', data, { headers });
     return this.http.post<any>(Globals.apiUrl + '/usuarios', data);
-
   }
 
-
+  userAdmin() {
+    console.log('userAdmin');
+    console.log(this.currentUserType);
+    return this.currentUserType == 'admin' ? true : false;
+  }
 }

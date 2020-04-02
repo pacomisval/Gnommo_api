@@ -75,8 +75,7 @@ func main() {
 
 	defer db.Close()
 
-	token := recuperarToken("13")
-	fmt.Println("Main token: ", token)
+	fmt.Println("Funcionando.......")
 
 	router := mux.NewRouter()
 
@@ -143,6 +142,7 @@ func validarPass(passInput, passwordDB string) bool {
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("entra en login ")
 
 	user := &Usuario{}
 	err := json.NewDecoder(r.Body).Decode(user)
@@ -152,48 +152,69 @@ func login(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(resp)
 		return
 	}
-	resp := encontrarUsuario(user.Password, user.Email)
+	fmt.Println("Va a encontrar usuario: ")
 
-	json.NewEncoder(w).Encode(resp)
+	value := encontrarUsuario(user.Password, user.Email)
+	fmt.Println("Vuelve encontrar usuario: ")
+
+	// value := Value{usuario.Id, usuario.Nombre, usuario.Rol, usuario.Tok}
+	fmt.Println("valor")
+	fmt.Println(value)
+	json.NewEncoder(w).Encode(value)
 }
 
-func encontrarUsuario(password, email string) map[string]interface{} {
+func encontrarUsuario(password, email string) Value {
 	var user []Usuario
 	var ok bool
 	var id string
 	var nombre string
 	var passDB string
 	var mail string
+	var rol string
+	var resultVacio bool
+	resultVacio = true
 
 	expireAt := time.Now().Add(time.Minute * 5).Unix()
-
 	result, err := db.Query("SELECT * FROM usuarios WHERE email like ?", &email)
 	if err != nil {
-		var resp = map[string]interface{}{"status": 404, "message": "Email not found"}
-		return resp
+		panic(err.Error())
 	}
 	defer result.Close()
-
 	for result.Next() {
+		resultVacio = false
+		fmt.Println("entra en for result.next")
 		var usuario Usuario
 		err := result.Scan(&usuario.Id, &usuario.Nombre, &usuario.Password, &usuario.Email, &usuario.Rol, &usuario.Tok)
 		if err != nil {
 			panic(err.Error())
 		}
 		user = append(user, usuario)
-
 		id = usuario.Id
 		nombre = usuario.Nombre
 		passDB = usuario.Password
 		mail = usuario.Email
+		rol = usuario.Rol
 	}
 
+	if resultVacio {
+		//	fmt.Println("Es usuario vacio")
+		Id := "0"
+		Nombre := "error"
+		Rol := "NO se ha encontrado el Email"
+		Token := "Email not Found"
+		value := Value{Id, Nombre, Rol, Token}
+		return value
+	}
 	contra := encriptarPass(password, email)
 
 	ok = validarPass(contra, passDB)
-	if !ok || email != mail {
-		var resp = map[string]interface{}{"status": false, "message": "No coinciden las contraseñas, login invalido"}
-		return resp
+	if !ok {
+		Id := "0"
+		Nombre := "error"
+		Rol := "Contraseña Incorrecta"
+		Token := "Error NO coinciden las contraseñas"
+		value := Value{Id, Nombre, Rol, Token}
+		return value
 	}
 
 	claims := Token{
@@ -208,16 +229,17 @@ func encontrarUsuario(password, email string) map[string]interface{} {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(Secret)
 	if err != nil {
-		var resp = map[string]interface{}{"status": false, "message": "No se ha creado el token"}
-		return resp
+		Id := "0"
+		Nombre := "error"
+		Rol := "NO se ha creado el token"
+		Token := "Error en el token"
+		value := Value{Id, Nombre, Rol, Token}
+		return value
 	}
-	var resp = map[string]interface{}{"status": "Ok", "message": "logged in"}
-	resp["token"] = tokenString
-	fmt.Println("Token string: ", tokenString)
 
 	guardarToken(tokenString, id)
-
-	return resp
+	value := Value{id, nombre, rol, tokenString}
+	return value
 }
 
 func guardarToken(token, id string) {
@@ -260,7 +282,7 @@ func guardarToken(token, id string) {
 		panic(err.Error())
 	}
 
-	fmt.Println("ESTO ES SOLO POST TOKEN")
+	fmt.Println("ESTO ES GUARDAR TOKEN")
 
 }
 
@@ -743,7 +765,7 @@ func postUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	value := Value{usuario.Id, usuario.Nombre, usuario.Rol, usuario.Tok}
-	crearCookie(w, "postUsuario", tok)
+	//	crearCookie(w, "postUsuario", tok)
 	json.NewEncoder(w).Encode(value)
 
 	//fmt.Println(w)
