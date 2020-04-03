@@ -1,13 +1,17 @@
+<app-home></app-home>
+
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-<div class="modal-dialog modal-content">
-    <div class="modal-header">
+<div class="container ">
 
-        <h2>Login</h2>
-    </div>
-    <div class="modal-body">
+    <div class="modal-dialog modal-content">
+        <div class="modal-header">
 
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <!-- <div class="form-group">
+            <h2>Login</h2>
+        </div>
+        <div class="modal-body">
+
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <!-- <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && lfc.username.errors }" />
                 <div *ngIf="submitted && lfc.username.errors" class="invalid-feedback">
@@ -15,94 +19,127 @@
                 </div>
             </div> -->
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && lfc.email.errors }" />
-                <div *ngIf="submitted && lfc.email.errors" class="invalid-feedback">
-                    <div *ngIf="lfc.email.errors.required">Email is required</div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && lfc.email.errors }" />
+                    <div *ngIf="submitted && lfc.email.errors" class="invalid-feedback">
+                        <div *ngIf="lfc.email.errors.required">Email is required</div>
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && lfc.password.errors }" />
-                <div *ngIf="submitted && lfc.password.errors" class="invalid-feedback">
-                    <div *ngIf="lfc.password.errors.required">Password is required</div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && lfc.password.errors }" />
+                    <div *ngIf="submitted && lfc.password.errors" class="invalid-feedback">
+                        <div *ngIf="lfc.password.errors.required">Password is required</div>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
 
-    <div class="modal-footer">
-        <div class="form-group">
-            <button [disabled]="loading" (click)="onSubmit()" class="btn btn-primary">
+        <div class="modal-footer">
+            <div class="form-group">
+                <button [disabled]="loading" (click)="onSubmit()" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Login
         </button>
-            <!-- <a routerLink="/register" class="btn btn-link">Register</a> -->
-            <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">Registrarse</button>
+                <!-- <a routerLink="/register" class="btn btn-link">Register</a> -->
+                <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">Registrarse</button>
+
+            </div>
 
         </div>
-
     </div>
+
+    <!-- <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">Registrarse</button> -->
+
+
+    <ng-template #registerModal let-modal>
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <h2>Register</h2>
+                    </div>
+                    <span aria-hidden="true">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="userName">Nombre</label>
+                            <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.userName.errors }" />
+                            <div *ngIf="submitted && rfc.userName.errors" class="invalid-feedback">
+                                <div *ngIf="rfc.userName.errors.required">UserName is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.email.errors }" />
+                            <div *ngIf="submitted && rfc.email.errors" class="invalid-feedback">
+                                <div *ngIf="rfc.email.errors.required">Email is required</div>
+                                <div *ngIf="rfc.email.errors.email">Email must be a valid email address</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group ">
+                                    <label for="password">Password</label>
+                                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.password.errors }" />
+                                    <div *ngIf="submitted && rfc.password.errors" class="invalid-feedback">
+                                        <div *ngIf="rfc.password.errors.required">Password is required</div>
+                                        <div *ngIf="rfc.password.errors.minlength">Password must be at least 6 characters</div>
+                                        <div *ngIf="rfc.confirmPassword.errors.mustMatch">Passwords must match</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- //////////////// -->
+                            <div class="col">
+                                <div class="form-group">
+
+                                    <label for="passwordRepeat">passwordRepeat</label>
+                                    <input type="password" formControlName="passwordRepeat" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.passwordRepeat.errors }" />
+                                    <div *ngIf="submitted && rfc.passwordRepeat.errors" class="invalid-feedback">
+                                        <div *ngIf="rfc.passwordRepeat.errors.required">PasswordRepeat is required</div>
+                                        <div *ngIf="rfc.passwordRepeat.errors.mustMatch">PasswordRepeat must be at least 6 characters</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="rol">Rol</label>
+                            <input type="text" formControlName="rol" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.rol.errors }" />
+                            <div *ngIf="submitted && rfc.rol.errors" class="invalid-feedback">
+                                <div *ngIf="rfc.rol.errors.required">Rol is required</div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-check">
+                            <p>Rol</p>
+                            <input class="form-check-input form-check-inline" type="radio" name="roles" id="roles1" value="user" checked>
+                            <label class="form-check-label" for="roles1">
+                           Usuario
+                        </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input form-check-inline" type="radio" name="roles" id="roles2" value="admin">
+                            <label class="form-check-label" for="roles2">
+                          Administrador
+                        </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Imagen de Perfil</label>
+                            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                        </div> -->
+                    </form>
+                    <div class="modal-footer ">
+                        <div class="form-group">
+                            <a (click)="modal.close()" class="btn btn-link">Cancel</a>
+                            <button [disabled]="loading" (click)="addUserDB()" class="btn btn-primary">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
 </div>
-
-<!-- <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">Registrarse</button> -->
-
-
-<ng-template #registerModal let-modal>
-    <h2>Register</h2>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="userName">Nombre</label>
-            <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.userName.errors }" />
-            <div *ngIf="submitted && rfc.userName.errors" class="invalid-feedback">
-                <div *ngIf="rfc.userName.errors.required">UserName is required</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.email.errors }" />
-            <div *ngIf="submitted && rfc.email.errors" class="invalid-feedback">
-                <div *ngIf="rfc.email.errors.required">Email is required</div>
-                <div *ngIf="rfc.email.errors.email">Email must be a valid email address</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.password.errors }" />
-            <div *ngIf="submitted && rfc.password.errors" class="invalid-feedback">
-                <div *ngIf="rfc.password.errors.required">Password is required</div>
-                <div *ngIf="rfc.password.errors.minlength">Password must be at least 6 characters</div>
-                <div *ngIf="rfc.confirmPassword.errors.mustMatch">Passwords must match</div>
-
-            </div>
-        </div>
-        <!-- //////////////// -->
-        <div class="form-group">
-            <label for="passwordRepeat">passwordRepeat</label>
-            <input type="password" formControlName="passwordRepeat" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.passwordRepeat.errors }" />
-            <div *ngIf="submitted && rfc.passwordRepeat.errors" class="invalid-feedback">
-                <div *ngIf="rfc.passwordRepeat.errors.required">PasswordRepeat is required</div>
-                <div *ngIf="rfc.passwordRepeat.errors.mustMatch">PasswordRepeat must be at least 6 characters</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="rol">Rol</label>
-            <input type="text" formControlName="rol" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.rol.errors }" />
-            <div *ngIf="submitted && rfc.rol.errors" class="invalid-feedback">
-                <div *ngIf="rfc.rol.errors.required">Rol is required</div>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <button [disabled]="loading" (click)="addUserDB()" class="btn btn-primary">Register</button>
-            <!-- <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-            /> -->
-            <a (click)="modal.close()" class="btn btn-link">Cancel</a>
-        </div>
-    </form>
-
-</ng-template>

@@ -2,10 +2,11 @@
     <button routerLink="/" class="btn btn-info">inicio </button>
     <button (click)="listar()" class="btn btn-info" style="margin-left:10px">Lista Libros</button>
     <button (click)="listarAutores()" class="btn btn-info" style="margin-left:10px">Lista Autores</button>
-    <button (click)="newBook()" class="btn btn-info" style="margin-left:10px">Nuevo Libro</button>
-    <button (click)="newAuthor()" class="btn btn-info" style="margin-left:10px">Nuevo Autor</button>
-    <!-- <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">Registrarse</!-->
-    <!-- <button  (click)="login()" class="btn btn-info" style="margin-left:10px">Login</button> -->
+    <ng-container *ngIf="adminExits; then thenTemplateAdminExits"></ng-container>
+    <ng-template #thenTemplateAdminExits>
+        <button (click)="newBook()" class="btn btn-info" style="margin-left:10px">Nuevo Libro</button>
+        <button (click)="newAuthor()" class="btn btn-info" style="margin-left:10px">Nuevo Autor</button>
+    </ng-template>
     <ng-container *ngIf="CukiExits; then thenTemplate; else elseTemplate"></ng-container>
     <ng-template #thenTemplate>
         <button (click)="logout()" class="btn btn-info" style="margin-left:10px">Logout</button>
@@ -15,10 +16,11 @@
         <button (click)="login()" class="btn btn-info" style="margin-left:10px">Login</button>
     </ng-template>
 
-</div>
 
 
-<!--
+
+
+    <!--
 <ng-template #registerModal let-modal>
     <h2>Register</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -66,4 +68,4 @@
     </form>
 </ng-template> -->
 
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>

@@ -35,6 +35,7 @@ export class AppComponent {
   loading = false;
   submitted = false;
   CukiExits: boolean;
+  adminExits: boolean;
   cukiJson;
   currentUser;
 
@@ -105,18 +106,22 @@ export class AppComponent {
     console.log(myCuki);
     if (myCuki) {
       this.CukiExits = true;
-      console.log('Existe');
       this.cukiJson = JSON.parse(myCuki);
+
+      console.log('Existe');
+
       console.log(this.cukiJson);
       console.log(this.cukiJson.id);
       console.log(this.cukiJson.Nombre);
       console.log(this.cukiJson.rol);
       console.log(this.cukiJson.token);
       this.userService.currentUserType = this.cukiJson.rol;
+      this.adminExits = this.userService.userAdmin();
 
     } else {
       console.log('No Existe');
       this.CukiExits = false;
+      this.adminExits = false;
     }
   }
 

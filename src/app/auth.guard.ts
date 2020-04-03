@@ -7,18 +7,22 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  cuki;
   constructor(private cookieService: CookieService, private router: Router) {}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.cookieService.get('cuki')) {
-      console.log("existe cookie");
+      this.cuki = JSON.parse(this.cookieService.get('cuki'));
+      if (this.cuki.rol == 'admin') {
+        console.log('existe this.cuki.rol == admin');
         return true;
-    } else {
-      console.log("no existe cookie")
-      this.router.navigate(['login']);
-      return false;
       }
+    }
+    console.log('no existe this.cuki.rol == admin');
+    this.router.navigate(['login']);
+    return false;
+
   }
 
 }
