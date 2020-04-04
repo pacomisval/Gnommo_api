@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
@@ -23,8 +23,11 @@ import { CookieService } from 'ngx-cookie-service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
-  submitted = false;
-  returnUrl: string;
+  loginOpen = true;
+  submittedLogin = false;
+  submittedRegister = false;
+  Administrador = false;
+//  returnUrl: string;
   error: string;
   registerModal: NgbModalRef;
   registerForm: FormGroup;
@@ -46,14 +49,19 @@ export class LoginComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private userService: UserService,
     private cookieService: CookieService,
+    private cd: ChangeDetectorRef,
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['home']);
     }
   }
-
-  ngOnInit() {
+/** Parametros para validar los formularios
+ *
+ *
+ * @memberof LoginComponent
+ */
+ngOnInit() {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -64,31 +72,48 @@ export class LoginComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         passwordRepeat: ['', Validators.required],
-        rol: ['', Validators.required],
+        image: ['', [Validators.required]],
+        // image: ['', [Validators.required, requiredFileType('png')]],
+
       },
       {
         validators: MustMatch('password', 'passwordRepeat')
       }
     );
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+  // get return url from route parameters or default to '/'
+  //  this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
-  // convenience getter for easy access to form fields
+  /** Abreviatura de loginForm.controls
+   *
+   *
+   * @readonly
+   * @memberof LoginComponent
+   */
   get lfc() { return this.loginForm.controls; }
-  get rfc() { return this.registerForm.controls;
-  }
 
-  onSubmit() {
+  /** Abreviatura de registerForm.controls
+   *
+   *
+   * @readonly
+   * @memberof LoginComponent
+   */
+  get rfc() { return this.registerForm.controls; }
+
+/**
+ *
+ *
+ * @returns
+ * @memberof LoginComponent
+ */
+onSubmit() {
     console.log('entra en summit');
-    this.submitted = true;
-
+    this.submittedLogin = true;
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
-
-    this.loading = true;
+//    this.loading = true;
     this.authenticationService.login(this.lfc.email.value, this.lfc.password.value)
     // .pipe(first())
       .subscribe(
@@ -121,12 +146,16 @@ export class LoginComponent implements OnInit {
 
   }
   abrirRegisterModal(registerModal: any) {
+    // cierra ventana login
+    this.loginOpen = false;
+    // abre ventana register
     this.registerModal = this.modalService.open(registerModal, {
       ariaLabelledBy: 'modal-basic-title'
     });
   }
 
   addUserDB() {
+    this.submittedRegister = true;
     console.log('registrando');
     if (this.registerForm.invalid) {
       console.log('formulario invalido');
@@ -138,7 +167,7 @@ export class LoginComponent implements OnInit {
       nombre: this.rfc.userName.value,
       password: this.rfc.password.value,
       email: this.rfc.email.value,
-      rol: this.rfc.rol.value,
+      rol: 'user',
       tok: '',
     };
     console.log('data');
@@ -163,4 +192,31 @@ export class LoginComponent implements OnInit {
         console.log(error);
     });
   }
-}
+  get myForm() {
+    return this.registerForm.get('rol');
+  }
+
+  onFileChange(event) {
+    const reader = new FileReader();
+
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+      console.log(file);
+      // reader.onload = () => {
+      //   this.registerForm.patchValue({
+      //     file: reader.result
+      //  });
+      // need to run CD since file load runs outside of zone
+      //  this.cd.markForCheck();
+      }
+  }
+  closeRegister() {
+    // Cerrar modal Register
+    this.modalService.dismissAll();
+    // Abrir login
+    this.loginOpen = true;
+  }
+  }
+
+// }
