@@ -5,7 +5,7 @@ import { AuthorService } from 'src/app/services/author.service';
 import { Author } from 'src/app/models/author';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 /**
- * Clase para añadir libro
+ * Componente para añadir libro
  *
  * @export
  * @class AddlibroComponent
@@ -51,6 +51,7 @@ export class AddlibroComponent implements OnInit {
    * @memberof AddlibroComponent
    */
   message = '';
+
   /**
    * Creates an instance of AddlibroComponent.
    * @param {Router} router Necesario para enrutar
@@ -79,9 +80,9 @@ export class AddlibroComponent implements OnInit {
   }
 
   /**
-   * Redirecciona el codigo en funcion del formulario
+   * Redirecciona el codigo en funcion de las modificaciones
    *
-   * Modifica localStorage para mejorar experiencia del usuario
+   * LocalStorage para mejorar experiencia del usuario
    *
    * @memberof AddlibroComponent
    */
@@ -101,7 +102,7 @@ export class AddlibroComponent implements OnInit {
   /**
    * Obtiene la lista de autores
    *
-   * Inicializa el select a Nuevo Autor
+   * Inicializa el select a "Nuevo Autor"
    *
    * @memberof AddlibroComponent
    */
@@ -110,7 +111,7 @@ export class AddlibroComponent implements OnInit {
       (results) => {
         this.authors = results;
         this.selectedAuthor = this.authors[0];
-        //  console.log(this.authors);
+       //  console.log(this.authors);
       },
       (err) => {
        // error al cargar autores
@@ -122,7 +123,7 @@ export class AddlibroComponent implements OnInit {
   }
 
   /**
-   * Abre ventana de nuevo autor
+   * Abre Pagina de nuevo autor
    *
    * @memberof AddlibroComponent
    */
@@ -146,11 +147,13 @@ export class AddlibroComponent implements OnInit {
     };
     this.bookService.createBook(data).subscribe(
       (results) => {
-        alert('Libro Agregado');
+        this.message = 'Libro añadido';
+        this.openInformationWindows();
         this.router.navigate(['listar']);
       },
       (error) => {
-        alert('NO Agregado');
+        this.message = 'El libro no se ha añadido:';
+        this.openInformationWindows();
         this.router.navigate(['/']);
       }
     );
@@ -165,8 +168,3 @@ export class AddlibroComponent implements OnInit {
     this.modalService.open(this.modalInformation);
   }
 }
-
-// http$.subscribe(
-//   res => console.log('HTTP response', res),
-//   err => console.log('HTTP Error', err),
-//   () => console.log('HTTP request completed.')

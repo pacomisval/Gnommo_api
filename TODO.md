@@ -6,6 +6,7 @@
 - [ ] Tema Cookies  
 - [ ] Añadir imagenes  
 - [ ] Cambiar nombre rutas a mas amigables  
+- [ ] Corregir Añadir libro problema FK  
 
 ### In Progress
 

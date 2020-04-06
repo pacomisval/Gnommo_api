@@ -148,6 +148,12 @@
                                 <a href="#book">book</a>
                             </li>
                             <li>
+                                <a href="#message">message</a>
+                            </li>
+                            <li>
+                                <a href="#modalInformation">modalInformation</a>
+                            </li>
+                            <li>
                                 <a href="#selectedAuthor">selectedAuthor</a>
                             </li>
                         </ul>
@@ -163,13 +169,16 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#addBook">addBook</a>
+                            </li>
+                            <li>
                                 <a href="#getAuthors">getAuthors</a>
                             </li>
                             <li>
-                                <a href="#GuardarLibro">GuardarLibro</a>
+                                <a href="#ngOnInit">ngOnInit</a>
                             </li>
                             <li>
-                                <a href="#ngOnInit">ngOnInit</a>
+                                <a href="#openInformationWindows">openInformationWindows</a>
                             </li>
                             <li>
                                 <a href="#optionNewAuthor">optionNewAuthor</a>
@@ -195,12 +204,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, bookService: <a href="../injectables/BookService.html">BookService</a>, authorService: <a href="../injectables/AuthorService.html">AuthorService</a>)</code>
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, bookService: <a href="../injectables/BookService.html">BookService</a>, authorService: <a href="../injectables/AuthorService.html">AuthorService</a>, modalService: NgbModal)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:41</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:53</a></div>
                             </td>
                         </tr>
 
@@ -268,6 +277,20 @@
 </code>
                                                         </td>
                                                 </tr>
+                                                <tr>
+                                                        <td>modalService</td>
+                                                  
+                                                        <td>
+                                                                    <code>NgbModal</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -290,6 +313,48 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="addBook"></a>
+                    <span class="name">
+                        <b>
+                            addBook
+                        </b>
+                        <a href="#addBook"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addBook()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:88</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Redirecciona el codigo en funcion del formulario</p>
+<p>Modifica localStorage para mejorar experiencia del usuario</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getAuthors"></a>
                     <span class="name">
                         <b>
@@ -308,8 +373,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="90"
-                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:90</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:108</a></div>
                 </td>
             </tr>
 
@@ -317,49 +382,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Obtiene la lista de autores</p>
-<p>Inicializa el select a Nuevo Autor</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="GuardarLibro"></a>
-                    <span class="name">
-                        <b>
-                            GuardarLibro
-                        </b>
-                        <a href="#GuardarLibro"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>GuardarLibro()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:73</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Accion al pulsar guardar  en formulario.</p>
-<p>Modifica localStorage para experiencia del usuario</p>
+<p>Inicializa el select a &quot;Nuevo Autor&quot;</p>
 </div>
 
                     <div class="io-description">
@@ -392,16 +415,57 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="61"
-                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:61</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:75</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Obtiene valores del libro del localStorage</p>
+                    <div class="io-description"><p>Obtiene datos del libro del localStorage</p>
 <p>Obtiene la lista de autores</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openInformationWindows"></a>
+                    <span class="name">
+                        <b>
+                            openInformationWindows
+                        </b>
+                        <a href="#openInformationWindows"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openInformationWindows()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="166"
+                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:166</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Abre Ventana Modal informativa</p>
 </div>
 
                     <div class="io-description">
@@ -434,16 +498,15 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="104"
-                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:104</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="129"
+                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:129</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Genera un nuevo autor</p>
-<p>Guarda valores del libro del localStorage</p>
+                    <div class="io-description"><p>Abre ventana de nuevo autor</p>
 </div>
 
                     <div class="io-description">
@@ -476,8 +539,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="116"
-                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:116</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="140"
+                            class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:140</a></div>
                 </td>
             </tr>
 
@@ -521,7 +584,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:25</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:31</a></div>
                             </td>
                         </tr>
 
@@ -562,13 +625,93 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:38</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:44</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
                         <div class="io-description"><p>Inicializacion del libro</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="message"></a>
+                        <span class="name">
+                            <b>
+                            message</b>
+                            <a href="#message"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:53</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Mensaje a mostrar en Ventana Modal</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="modalInformation"></a>
+                        <span class="name">
+                            <b>
+                            modalInformation</b>
+                            <a href="#modalInformation"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>TemplateRef&lt;any&gt;</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;modalInformation&#x27;, {static: false})<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>View child Ventana Modal con un mensaje</p>
 </div>
                     </td>
                 </tr>
@@ -595,7 +738,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:32</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/libro/addlibro/addlibro.component.ts:38</a></div>
                             </td>
                         </tr>
 
@@ -614,11 +757,12 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ViewChild, TemplateRef } from &#x27;@angular/core&#x27;;
 import { BookService } from &#x27;src/app/services/book.service&#x27;;
 import { Router } from &#x27;@angular/router&#x27;;
 import { AuthorService } from &#x27;src/app/services/author.service&#x27;;
 import { Author } from &#x27;src/app/models/author&#x27;;
+import { NgbModal } from &#x27;@ng-bootstrap/ng-bootstrap&#x27;;
 /**
  * Clase para añadir libro
  *
@@ -632,6 +776,11 @@ import { Author } from &#x27;src/app/models/author&#x27;;
   styleUrls: [&#x27;./addlibro.component.css&#x27;],
 })
 export class AddlibroComponent implements OnInit {
+  /**
+   * View child Ventana Modal con un mensaje
+   */
+  @ViewChild(&#x27;modalInformation&#x27;, { static: false })
+  modalInformation: TemplateRef&lt;any&gt;;
   /**
    * Lista de autores
    *
@@ -656,6 +805,12 @@ export class AddlibroComponent implements OnInit {
     isbn: &#x27;&#x27;,
   };
   /**
+   * Mensaje a mostrar en Ventana Modal
+   *
+   * @memberof AddlibroComponent
+   */
+  message &#x3D; &#x27;&#x27;;
+  /**
    * Creates an instance of AddlibroComponent.
    * @param {Router} router Necesario para enrutar
    * @param {BookService} bookService Servicio de Book
@@ -665,10 +820,12 @@ export class AddlibroComponent implements OnInit {
   constructor(
     private router: Router,
     private bookService: BookService,
-    private authorService: AuthorService
+    private authorService: AuthorService,
+    private modalService: NgbModal
   ) {}
+
   /**
-   * Obtiene valores del libro del localStorage
+   * Obtiene datos del libro del localStorage
    *
    * Obtiene la lista de autores
    *
@@ -679,16 +836,19 @@ export class AddlibroComponent implements OnInit {
     this.book.isbn &#x3D; localStorage.getItem(&#x27;isbn&#x27;);
     this.getAuthors();
   }
+
   /**
-   * Accion al pulsar guardar  en formulario.
+   * Redirecciona el codigo en funcion del formulario
    *
-   * Modifica localStorage para experiencia del usuario
+   * Modifica localStorage para mejorar experiencia del usuario
    *
    * @memberof AddlibroComponent
    */
-  GuardarLibro() {
-    console.log(this.selectedAuthor);
+  addBook() {
+    // console.log(this.selectedAuthor);
     if (this.selectedAuthor.id &#x3D;&#x3D; 1) {
+      localStorage.setItem(&#x27;nombre&#x27;, this.book.title);
+      localStorage.setItem(&#x27;isbn&#x27;, this.book.isbn);
       this.optionNewAuthor();
     } else {
       localStorage.setItem(&#x27;nombre&#x27;, &#x27;&#x27;);
@@ -696,34 +856,41 @@ export class AddlibroComponent implements OnInit {
       this.saveBookDB();
     }
   }
+
   /**
    * Obtiene la lista de autores
    *
-   * Inicializa el select a Nuevo Autor
+   * Inicializa el select a &quot;Nuevo Autor&quot;
    *
    * @memberof AddlibroComponent
    */
   getAuthors() {
-    this.authorService.getAll().subscribe((results) &#x3D;&gt; {
-      this.authors &#x3D; results;
-      this.selectedAuthor &#x3D; this.authors[0];
-      console.log(this.authors);
-    });
+    this.authorService.getAll().subscribe(
+      (results) &#x3D;&gt; {
+        this.authors &#x3D; results;
+        this.selectedAuthor &#x3D; this.authors[0];
+       //  console.log(this.authors);
+      },
+      (err) &#x3D;&gt; {
+       // error al cargar autores
+       // console.log(&#x27;error de autores&#x27;);
+        this.message &#x3D; &#x27;No se ha cargado la lista de autores&#x27;;
+        this.openInformationWindows();
+      }
+    );
   }
+
   /**
-   * Genera un nuevo autor
-   *
-   * Guarda valores del libro del localStorage
+   * Abre ventana de nuevo autor
    *
    * @memberof AddlibroComponent
    */
   optionNewAuthor() {
-    console.log(&#x27;ir a añadir autor&#x27;);
+    //  console.log(&#x27;ir a añadir autor&#x27;);
     this.authorService.vieneAddLibro &#x3D; true;
-    localStorage.setItem(&#x27;nombre&#x27;, this.book.title);
-    localStorage.setItem(&#x27;isbn&#x27;, this.book.isbn);
     this.router.navigate([&#x27;agregarAutores&#x27;]);
   }
+
   /**
    * Guarda el libro en la BD
    *
@@ -738,14 +905,25 @@ export class AddlibroComponent implements OnInit {
     };
     this.bookService.createBook(data).subscribe(
       (results) &#x3D;&gt; {
-        alert(&#x27;Libro Agregado&#x27;);
+        this.message &#x3D; &#x27;Libro añadido&#x27;;
+        this.openInformationWindows();
         this.router.navigate([&#x27;listar&#x27;]);
       },
       (error) &#x3D;&gt; {
-        alert(&#x27;NO Agregado&#x27;);
+        this.message &#x3D; &#x27;El libro no se ha añadido:&#x27;;
+        this.openInformationWindows();
         this.router.navigate([&#x27;/&#x27;]);
       }
     );
+  }
+
+  /**
+   * Abre Ventana Modal informativa
+   *
+   * @memberof ListarComponent
+   */
+  openInformationWindows() {
+    this.modalService.open(this.modalInformation);
   }
 }
 </code></pre>
@@ -778,11 +956,28 @@ export class AddlibroComponent implements OnInit {
             &lt;/div&gt;
             &lt;!-- &lt;p&gt;Id seleccionado: {{ autorSeleccionado.id }}&lt;/p&gt; --&gt;
         &lt;/form&gt;
-        &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;GuardarLibro()&quot; class&#x3D;&quot;btn btn-danger&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;addBook()&quot; class&#x3D;&quot;btn btn-danger&quot;&gt;
       Guardar
     &lt;/button&gt;
     &lt;/div&gt;
-&lt;/div&gt;</code></pre>
+&lt;/div&gt;
+&lt;!-- VENTANA MODAL INFORMATIVA --&gt;
+&lt;ng-template #modalInformation let-modal&gt;
+    &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+        &lt;h4 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;modal-basic-title&quot;&gt;Gnomo Librery&lt;/h4&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; aria-label&#x3D;&quot;Close&quot; (click)&#x3D;&quot;modal.dismiss(&#x27;Cross click&#x27;)&quot;&gt;
+&lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;/span&gt;
+&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+        &lt;p&gt;{{message}}&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-dark&quot; (click)&#x3D;&quot;modal.close()&quot;&gt;
+         Cerrar
+      &lt;/button&gt;
+    &lt;/div&gt;
+&lt;/ng-template&gt;</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-styleData">
@@ -817,7 +1012,7 @@ export class AddlibroComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="container">    <div class="card">        <div class="card-header">            <h3>Agregar Libro</h3>        </div>    </div>    <div class="card-body">        <form name="formularioLibro" action="">            <div class="form-group">                <label for="title">Titulo:</label>                <input type="text" class="form-control" id="title" required [(ngModel)]="book.title" name="title" />            </div>            <div class="form-group">                <label for="isbn">Isbn:</label>                <input class="form-control" id="isbn" required [(ngModel)]="book.isbn" name="isbn" />            </div>            <div class="form-group">                <label for="selectAutores">Selecciona el autor</label><br />                <select id="selectAutores" name="miselect" [(ngModel)]="selectedAuthor">                    <option [ngValue]="autor" *ngFor="let autor of authors">                       &nbsp; {{ autor.first_name }}&nbsp;{{ autor.last_name }} &nbsp;                    </option>                </select>            </div>            <!-- <p>Id seleccionado: {{ autorSeleccionado.id }}</p> -->        </form>        <button type="button" (click)="GuardarLibro()" class="btn btn-danger">      Guardar    </button>    </div></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="container">    <div class="card">        <div class="card-header">            <h3>Agregar Libro</h3>        </div>    </div>    <div class="card-body">        <form name="formularioLibro" action="">            <div class="form-group">                <label for="title">Titulo:</label>                <input type="text" class="form-control" id="title" required [(ngModel)]="book.title" name="title" />            </div>            <div class="form-group">                <label for="isbn">Isbn:</label>                <input class="form-control" id="isbn" required [(ngModel)]="book.isbn" name="isbn" />            </div>            <div class="form-group">                <label for="selectAutores">Selecciona el autor</label><br />                <select id="selectAutores" name="miselect" [(ngModel)]="selectedAuthor">                    <option [ngValue]="autor" *ngFor="let autor of authors">                       &nbsp; {{ autor.first_name }}&nbsp;{{ autor.last_name }} &nbsp;                    </option>                </select>            </div>            <!-- <p>Id seleccionado: {{ autorSeleccionado.id }}</p> -->        </form>        <button type="button" (click)="addBook()" class="btn btn-danger">      Guardar    </button>    </div></div><!-- VENTANA MODAL INFORMATIVA --><ng-template #modalInformation let-modal>    <div class="modal-header">        <h4 class="modal-title" id="modal-basic-title">Gnomo Librery</h4>        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(\'Cross click\')"><span aria-hidden="true">&times;</span></button>    </div>    <div class="modal-body">        <p>{{message}}</p>    </div>    <div class="modal-footer">        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">         Cerrar      </button>    </div></ng-template></div>'
     var COMPONENTS = [{'name': 'AddautorComponent', 'selector': 'app-addautor'},{'name': 'AddlibroComponent', 'selector': 'app-addlibro'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'ListarautoresComponent', 'selector': 'app-listarautores'},{'name': 'ListarComponent', 'selector': 'app-listar'},{'name': 'LoginComponent', 'selector': 'app-login'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'AddlibroComponent'};
