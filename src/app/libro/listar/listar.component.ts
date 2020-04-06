@@ -1,4 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { BookService } from 'src/app/services/book.service';
 import { Book } from 'src/app/models/book';
@@ -8,43 +14,119 @@ import { AuthorService } from 'src/app/services/author.service';
 import { Author } from 'src/app/models/author';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
-
+/**
+ * Componente actua sobre los libros haciendo
+ * READ UPDATE y DELETE
+ * @export
+ * @class ListarComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-listar',
   templateUrl: './listar.component.html',
-  styleUrls: ['./listar.component.css']
+  styleUrls: ['./listar.component.css'],
 })
 export class ListarComponent implements OnInit {
-  @Input() book;
-  author: Author;
-  books: Book[];
-  editBookForm: FormGroup;
-  submitted = false;
-  admin = false;
+  /**
+   * Decorador para recoger los datos del libro
+   *
+   * @memberof ListarComponent
+   */
+  @Input() book: any;
+  /**
+   * View child Ventana Modal con un mensaje
+   */
+  @ViewChild('modalInformation', { static: false })
+  modalInformation: TemplateRef<any>;
 
+  /**
+   * Recoge el autor actual
+   *
+   * @type {Author}
+   * @memberof ListarComponent
+   */
+  author: Author;
+  /**
+   * Recoge el autor antes de modificar
+   *
+   * @type {Author}
+   * @memberof ListarComponent
+   */
+  authorOld: Author;
+  /**
+   * Recoge la lista de libros
+   *
+   * @type {Book[]}
+   * @memberof ListarComponent
+   */
+  books: Book[];
+  /**
+   * Nombre formulario para editar libros
+   *
+   * @type {FormGroup}
+   * @memberof ListarComponent
+   */
+  editBookForm: FormGroup;
+  /**
+   * Booleano para confirmar la ventana modal de editar
+   *
+   * @memberof ListarComponent
+   */
+  submittedEditBook = false;
+  /**
+   * Boolean para describir los roles de los usuarios
+   * rol user boolean=false
+   * rol admin boolean=true
+   *
+   * @memberof ListarComponent
+   */
+  admin = false;
+  /**
+   * Mensaje en ventana modal
+   */
+  information = '';
+
+  /**
+   * Creando una instancia de ListarComponent.
+   * @param {FormBuilder} formBuilder Necesario para formularios
+   * @param {Router} router Necesario para enrutar
+   * @param {NgbModal} modalService Servicio para ventanas modales
+   * @param {NgbActiveModal} activeModal Necesario para ventanas modales
+   * @param {BookService} bookService Servicio para book
+   * @param {AuthorService} authorService Servicio para author
+   * @param {UserService} userService Servicio para user
+   * @memberof ListarComponent
+   */
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private bookService: BookService,
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
+    private bookService: BookService,
     private authorService: AuthorService,
-    private userService: UserService,
+    private userService: UserService
   ) {}
 
+  /**
+   * Da valor a la variable admin del usuario
+   * Parametros de validar editBookForm
+   * Dar valor a la lista de libros
+   *
+   * @memberof ListarComponent
+   */
   ngOnInit() {
     this.getLibros();
+    this.admin = this.userService.userAdmin();
     this.editBookForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       isbn: ['', Validators.required],
       first_name: ['', [Validators.required]],
-      last_name: ['', Validators.required]
+      last_name: ['', Validators.required],
     });
-    this.admin = this.userService.userAdmin();
   }
 
-  /** abreviatura de this.editBookForm.controls
-   *
+  /**
+   * abreviatura de this.editBookForm.controls
    * @readonly
    * @memberof ListarComponent
    */
@@ -52,124 +134,181 @@ export class ListarComponent implements OnInit {
     return this.editBookForm.controls;
   }
 
-  /**  Obtiene la lista de todos los libros
-   *
+  /**
+   * Obtiene la lista de todos los libros
    *
    * @memberof ListarComponent
    */
   getLibros() {
     this.bookService.getAll().subscribe(
-      result => {
-        console.log('respuesta libros');
-        console.log(result);
+      (result) => {
         this.books = result;
+        //   console.log('respuesta libros');
+        //   console.log(result);
       },
-      error => {
-        console.log(error);
+      (error) => {
+        this.information = 'No se ha cargado la lista de libros';
+        this.openInformationWindows();
+        //  console.log(error);
       }
     );
   }
 
-  /** Muestra un libro en ventana Modal
-   *
+  /**
+   * Muestra un libro en ventana Modal
    *
    * @param {*} modalGetBook identificador ventana modal
-   * @param {*} book
+   * @param {*} book libro a mostrar
    * @memberof ListarComponent
    */
   getBook(modalGetBook: any, book: Book) {
     this.book = book;
     this.modalService.open(modalGetBook, {
       ariaLabelledBy: 'modal-basic-title',
-      centered: true
+      centered: true,
     });
   }
 
-  /** Muestra formulario "editBookForm" en ventana Modal
+  /**
+   * Muestra formulario en ventana Modal "editBookForm"
    *
-   *
-   * @param {*} editBookModal
-   * @param {*} book
+   * @param {*} editBookModal identificador ventana modal
+   * @param {*} book libro a editar
    * @memberof ListarComponent
    */
   openEditBookModal(editBookModal: any, book: Book) {
     console.log(book);
     this.book = book;
+    this.authorOld = {
+      id: this.book.idAutor,
+      first_name: this.book.first_name,
+      last_name: this.book.last_name,
+    };
+
     this.modalService.open(editBookModal, {
-      ariaLabelledBy: 'modal-basic-title'
+      ariaLabelledBy: 'modal-basic-title',
     });
   }
 
-  /** Guarda las modificaciones del libro
-   * (provenientes del formulario de su ventana modal)
+  /**
+   * Recoge las modificaciones del formulario
    *
-   * @param {*} book
+   * Modifica el autor
+   *
+   * Modifica el libro
+   *
+   * @param {*} book libro a guardar
    * @memberof ListarComponent
    */
-  editBook(book: Book) {
-    this.submitted = true;
-    console.log(book);
+  editBook(book: Book, modalInformationDelete: any) {
+    //  console.log(book);
+    this.submittedEditBook = true;
+    const datosAutor = {
+      id: this.book.idAutor,
+      first_name: this.ebfc.first_name.value,
+      last_name: this.ebfc.last_name.value,
+    };
+    if (JSON.stringify(this.authorOld) === JSON.stringify(datosAutor)) {
+      this.updateBookDB();
+      //  console.log('autor sin modificador');
+      //  console.log('compara');
+      //  console.log(this.authorOld);
+      //  console.log(datosAutor);
+    } else {
+      // /////////// Modificar el autor ///////////////////////
+      //  console.log('autor a modificar');
+      //  console.log(this.authorOld);
+      //  console.log(datosAutor);
+      this.authorService
+        .modificarAuthor(datosAutor)
+        .toPromise()
+        .then((result) => {
+          //      console.log('autor modificado');
+          this.information = 'Se ha modificado el autor';
+          this.openInformationWindows();
+          // //////Cuando ha Modificado el autor entonces Modifica el libro //////////
+          this.updateBookDB();
+        })
+        .catch((err) => {
+          //     console.log('Error en autor modificado');
+          //     console.log('respuesta updateBook error');
+          this.information = 'No se ha modificado el autor';
+          this.openInformationWindows();
+        });
+    }
+  }
 
+  /**
+   * Guarda las modificaciones del libro en BD
+   *
+   * @memberof ListarComponent
+   */
+  updateBookDB() {
     const datosLibro = {
       id: this.book.id,
       nombre: this.ebfc.nombre.value,
       isbn: this.ebfc.isbn.value,
-      idAutor: this.book.idAutor
+      idAutor: this.book.idAutor,
     };
-
-    const datosAutor = {
-      id: this.book.idAutor,
-      first_name: this.ebfc.first_name.value,
-      last_name: this.ebfc.last_name.value
-    };
-
-    // /////////// Modificar el autor ///////////////////////
-    this.authorService.putAutor(datosAutor).toPromise()
-      .then(result => {
-        console.log('autor modificado');
-    //       //////Cuando ha Modificado el autor entonces Modifica el libro //////////
-        this.bookService.updateBook(datosLibro).toPromise()
-          .then(value => {
-          console.log('respuesta updateBook correcto');
-          this.modalService.dismissAll();
-          });
+    this.bookService
+      .updateBook(datosLibro)
+      .toPromise()
+      .then((value) => {
+        //    console.log('respuesta updateBook correcto');
+        this.modalService.dismissAll();
+        this.information = 'Se han guardado las modificaciones';
+        this.openInformationWindows();
       })
-      .catch(err => {
-        console.log('Error en autor modificado');
-        console.log('respuesta updateBook error');
+      .catch((err) => {
+        //    console.log('respuesta updateBook error');
+        this.information = 'No se han podido efectuar las modificaciones';
+        this.openInformationWindows();
       });
-
   }
 
-/**Abre Ventana Modal para que el usuario confirme el libro a eliminar
- *
- *
- * @param {*} confirmDeleteBookModal
- * @param {Book} book
- * @memberof ListarComponent
- */
-deleteBook(confirmDeleteBookModal: any, book: Book) {
+  /**
+   * Ventana Modal para confirmar el libro a eliminar
+   *
+   * @param {*} confirmDeleteBookModal Identificador de la ventana modal
+   * @param {Book} book Libro a eliminar
+   * @memberof ListarComponent
+   */
+  confirmDeleteBook(confirmDeleteBookModal: any, book: Book) {
     this.book = book;
-    this.modalService.open(confirmDeleteBookModal, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(confirmDeleteBookModal, {ariaLabelledBy: 'modal-basic-title',});
   }
 
-/**Solicita borrado del libro de la BD,
- * Informa del resultado en Ventana Modal
- *
- * @param {*} inforDeleteBook
- * @param {Book} book
- * @memberof ListarComponent
- */
-delete(inforDeleteBook: any, book: Book) {
+  /**
+   * Borra del libro de la BD,
+   *
+   * Informa del resultado en Ventana Modal
+   *
+   * @param {*} inforDeleteBook Nombre de la ventana modal
+   * @param {Book} book Libro a borrar
+   * @memberof ListarComponent
+   */
+  deleteBook(book: Book) {
     this.book = book;
-    this.bookService.deleteBook(this.book.id).toPromise()
-      .then(res => {
-        this.modalService.open(inforDeleteBook, {ariaLabelledBy: 'modal-basic-title'});
+    this.bookService
+      .deleteBook(this.book.id)
+      .toPromise()
+      .then((res) => {
+        this.information = 'el libro se ha eliminado';
+        this.openInformationWindows();
         this.getLibros();
       })
-      .catch(err => {
-        console.log(err);
+      .catch((err) => {
+    //    console.log(err);
+        this.information = 'el libro no se ha eliminado';
+        this.openInformationWindows();
       });
   }
-
+  /**
+   * Abre Ventana Modal informativa
+   *
+   * @memberof ListarComponent
+   */
+  openInformationWindows() {
+    this.modalService.open(this.modalInformation);
+  }
 }

@@ -27,7 +27,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content injectable">
+               <div class="content class">
                    <div class="content-data">
 
 
@@ -36,9 +36,13 @@
 
 
 
+
+
+
+
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li>Globals</li>
+  <li>Classes</li>
+  <li>AppPage</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -56,44 +60,35 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/Global.ts</code>
+            <code>e2e/src/app.po.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>Guarda variables globales</p>
-
-            </p>
 
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
+
 
             <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+
                 <tr>
                     <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
+                        <h6><b>Methods</b></h6>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Static</span>
-                                <a href="#apiUrl">apiUrl</a>
+                                <a href="#getTitleText">getTitleText</a>
+                            </li>
+                            <li>
+                                <a href="#navigateTo">navigateTo</a>
                             </li>
                         </ul>
                     </td>
                 </tr>
-
 
 
 
@@ -107,77 +102,111 @@
 
             <section>
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="apiUrl"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
-                            apiUrl</b>
-                            <a href="#apiUrl"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x60;http://localhost:8000/api&#x60;</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/Global.ts:20</a></div>
-                            </td>
-                        </tr>
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTitleText"></a>
+                    <span class="name">
+                        <b>
+                            getTitleText
+                        </b>
+                        <a href="#getTitleText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTitleText()</code>
+                </td>
+            </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>ruta del servidor</p>
-</div>
-                    </td>
-                </tr>
 
-            </tbody>
-        </table>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="8"
+                            class="link-to-prism">e2e/src/app.po.ts:8</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navigateTo"></a>
+                    <span class="name">
+                        <b>
+                            navigateTo
+                        </b>
+                        <a href="#navigateTo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>navigateTo()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="4"
+                            class="link-to-prism">e2e/src/app.po.ts:4</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;unknown&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
+
+
+
+
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { browser, by, element } from &#x27;protractor&#x27;;
 
-/**
- * Guarda variables globales
- *
- * @export
- * @class Globals
- */
-@Injectable()
+export class AppPage {
+  navigateTo(): Promise&lt;unknown&gt; {
+    return browser.get(browser.baseUrl) as Promise&lt;unknown&gt;;
+  }
 
-export class Globals {
-
-
-  /**
-   * ruta del servidor
-   *
-   * @static
-   * @memberof Globals
-   */
-  static apiUrl &#x3D; &#x60;http://localhost:8000/api&#x60;;
+  getTitleText(): Promise&lt;string&gt; {
+    return element(by.css(&#x27;app-root .content span&#x27;)).getText() as Promise&lt;string&gt;;
+  }
 }
 </code></pre>
     </div>
-
 </div>
-
-
-
-
 
 
 
@@ -202,8 +231,8 @@ export class Globals {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'Globals.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'AppPage.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

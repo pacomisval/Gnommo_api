@@ -16,16 +16,33 @@
             </div>
             <div class="form-group">
                 <label for="selectAutores">Selecciona el autor</label><br />
-                <select id="selectAutores" name="miselect" [(ngModel)]="autorSeleccionado">
-                    <option [ngValue]="autor" *ngFor="let autor of autores">
+                <select id="selectAutores" name="miselect" [(ngModel)]="selectedAuthor">
+                    <option [ngValue]="autor" *ngFor="let autor of authors">
                        &nbsp; {{ autor.first_name }}&nbsp;{{ autor.last_name }} &nbsp;
                     </option>
                 </select>
             </div>
             <!-- <p>Id seleccionado: {{ autorSeleccionado.id }}</p> -->
         </form>
-        <button type="button" (click)="GuardarLibro()" class="btn btn-danger">
+        <button type="button" (click)="addBook()" class="btn btn-danger">
       Guardar
     </button>
     </div>
 </div>
+<!-- VENTANA MODAL INFORMATIVA -->
+<ng-template #modalInformation let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Gnomo Librery</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+<span aria-hidden="true">&times;</span>
+</button>
+    </div>
+    <div class="modal-body">
+        <p>{{message}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+         Cerrar
+      </button>
+    </div>
+</ng-template>

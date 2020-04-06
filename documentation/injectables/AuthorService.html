@@ -81,7 +81,7 @@
                                 <a href="#id">id</a>
                             </li>
                             <li>
-                                <a href="#mandadoLibro">mandadoLibro</a>
+                                <a href="#vieneAddLibro">vieneAddLibro</a>
                             </li>
                         </ul>
                     </td>
@@ -96,9 +96,6 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#addAutorLibro">addAutorLibro</a>
-                            </li>
-                            <li>
                                 <a href="#deleteAutor">deleteAutor</a>
                             </li>
                             <li>
@@ -106,6 +103,9 @@
                             </li>
                             <li>
                                 <a href="#getAutor">getAutor</a>
+                            </li>
+                            <li>
+                                <a href="#modificarAuthor">modificarAuthor</a>
                             </li>
                             <li>
                                 <a href="#postAutor">postAutor</a>
@@ -179,45 +179,6 @@
     <h3 id="methods">
         Methods
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="addAutorLibro"></a>
-                    <span class="name">
-                        <b>
-                            addAutorLibro
-                        </b>
-                        <a href="#addAutorLibro"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>addAutorLibro()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">src/app/services/author.service.ts:63</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -374,6 +335,72 @@
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modificarAuthor"></a>
+                    <span class="name">
+                        <b>
+                            modificarAuthor
+                        </b>
+                        <a href="#modificarAuthor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>modificarAuthor(datosAutor)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="66"
+                            class="link-to-prism">src/app/services/author.service.ts:66</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>datosAutor</td>
 
                                     <td>
                                         No
@@ -593,11 +620,11 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="mandadoLibro"></a>
+                        <a name="vieneAddLibro"></a>
                         <span class="name">
                             <b>
-                            mandadoLibro</b>
-                            <a href="#mandadoLibro"><span class="icon ion-ios-link"></span></a>
+                            vieneAddLibro</b>
+                            <a href="#vieneAddLibro"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
@@ -634,7 +661,7 @@ import { Globals } from &#x27;../Global&#x27;;
 export class AuthorService {
   author: Author;
   id: number;
-  mandadoLibro &#x3D; false;
+  vieneAddLibro &#x3D; false;
   constructor(private http: HttpClient) {}
 
   getAll() {
@@ -683,8 +710,14 @@ export class AuthorService {
   deleteAutor(id: number) {
     return this.http.delete&lt;any&gt;(Globals.apiUrl + &#x27;/autores/&#x27; + id);
   }
-  addAutorLibro() {
-    this.mandadoLibro &#x3D; true;
+  // addAutorLibro() {
+  //   this.vieneAddLibro &#x3D; true;
+  // }
+  modificarAuthor(datosAutor) {
+    // buscar a ver si esta
+    // si esta devolver id del autor
+    // no esta modificar los datos
+    return this.putAutor(datosAutor);
   }
 }
 </code></pre>

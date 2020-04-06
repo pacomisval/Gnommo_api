@@ -1,0 +1,142 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>appapinode documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	      <link rel="stylesheet" href="./styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="./" class="navbar-brand">appapinode documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content getting-started">
+                   <div class="content-data">
+
+<p>Contributing
+Contributions to this project are released to the public under the project&#39;s open source license.</p>
+<p>Everyone is welcome to contribute to Appapinode. Contributing doesn’t just mean submitting pull requests—there are many different ways for you to get involved, including answering questions in chat, reporting or triaging issues, and participating in the Appapinode Evolution process.</p>
+<p>No matter how you want to get involved, we ask that you first learn what’s expected of anyone who participates in the project by reading the Contributor Covenant Code of Conduct. By participating, you are expected to uphold this code.</p>
+<p>We love pull requests. Here&#39;s a quick guide:</p>
+<p>If you&#39;re adding a new feature or changing user-facing APIs, check out the Appapinode Evolution process.
+Check for existing issues for duplicates and confirm that it hasn&#39;t been fixed already in the master branch
+Fork the repo, and clone it locally
+npm link to make your cloned repo available to npm
+Follow Getting Started to generate a testbot
+npm link Appapinode in your newly created bot to use your Appapinode fork
+Create a new branch for your contribution
+Add tests (run with npm test)
+Push to your fork and submit a pull request
+At this point you&#39;re waiting on us. We like to at least comment on, if not accept, pull requests within a few days. We may suggest some changes or improvements or alternatives.</p>
+<p>Some things that will increase the chance that your pull request is accepted:</p>
+<p>Make sure the tests pass</p>
+<p>Update the documentation: code comments, example code, guides. Basically, update everything affected by your contribution.</p>
+<p>Include any information that would be relevant to reproducing bugs, use cases for new features, etc.</p>
+<p>Discuss the impact on existing Appapinode installs, Appapinode adapters, and Appapinode scripts (e.g. backwards compatibility)</p>
+<p>If the change does break compatibility, how can it be updated to become backwards compatible, while directing users to the new way of doing things?
+Your commits are associated with your GitHub user: <a href="https://help.github.com/articles/why-are-my-commits-linked-to-the-wrong-user/">https://help.github.com/articles/why-are-my-commits-linked-to-the-wrong-user/</a></p>
+<p>Make pull requests against a feature branch,</p>
+<p>Follow our commit message conventions:</p>
+<p>use imperative, present tense: “change” not “changed” nor “changes”
+Commit test files with test: … or test(scope): … prefix.
+Commit bug fixes with fix: … or fix(scope): … prefix
+Commit features with feat: … or feat(scope): … prefix
+Commit breaking changes by adding BREAKING CHANGE: in the commit body. The commit subject does not matter. A commit can have multiple BREAKING CHANGE: sections
+Commit changes to package.json, .gitignore and other meta files with chore(filenamewithout.ext): …
+Commit changes to README files or comments with docs(README): …
+Cody style changes with style: standard
+see Angular’s Commit Message Conventions for a full list of recommendations.
+Stale issue and pull request policy
+Issues and pull requests have a shelf life and sometimes they are no longer relevant. All issues and pull requests that have not had any activity for 90 days will be marked as stale. Simply leave a comment with information about why it may still be relevant to keep it open. If no activity occurs in the next 7 days, it will be automatically closed.</p>
+<p>The goal of this process is to keep the list of open issues and pull requests focused on work that is actionable and important for the maintainers and the community.</p>
+<p>Pull Request Reviews &amp; releasing
+Releasing Appapinode is fully automated using semantic-release. Once merged into the master branch, semantic-release will automatically release a new version based on the commit messages of the pull request. For it to work correctly, make sure that the correct commit message conventions have been used. The ones relevant are</p>
+<p>fix: … will bump the fix version, e.g. 1.2.3 → 1.2.4
+feat: … will bump the feature version, e.g. 1.2.3 → 1.3.0
+BREAKING CHANGE: … in the commit body will bump the breaking change version, e.g. 1.2.3 → 2.0.0</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
+            var COMPODOC_CURRENT_PAGE_URL = 'contributing.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="./js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="./js/menu-wc.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+       <script src="./js/libs/zepto.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

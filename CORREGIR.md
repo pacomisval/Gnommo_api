@@ -14,3 +14,7 @@
 - Añadir
 - Editar
 - Eliminar
+
+Documentar Aplicacion
+npm run doc
+compodoc -p ./tsconfig.json -s

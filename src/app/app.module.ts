@@ -21,6 +21,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AuthenticationService } from './services/authentication.service';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { HomeComponent } from './home/home.component';
     NgbModule,
     ReactiveFormsModule,
   ],
-  providers: [BookService, AuthorService, NgbActiveModal, NgForm, AuthInterceptorService, AuthenticationService],
+  providers: [BookService, AuthorService, UserService, NgbActiveModal, NgForm, AuthInterceptorService, AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

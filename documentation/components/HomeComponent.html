@@ -64,14 +64,15 @@
     <code>src/app/home/home.component.ts</code>
 </p>
 
-
-
     <p class="comment">
-        <h3>Implements</h3>
+        <h3>Description</h3>
     </p>
     <p class="comment">
-                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+        <p>Component Home Inicio visual de la aplicacion</p>
+
     </p>
+
+
 
 
 <section>
@@ -136,20 +137,6 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Methods</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                <a href="#ngOnInit">ngOnInit</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
 
 
@@ -170,10 +157,16 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/home/home.component.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/home/home.component.ts:17</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates an instance of HomeComponent.</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -182,51 +175,7 @@
 
 
 
-    <section>
-    
-    <h3 id="methods">
-        Methods
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ngOnInit"></a>
-                    <span class="name">
-                        <b>
-                            ngOnInit
-                        </b>
-                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>ngOnInit()</code>
-                </td>
-            </tr>
 
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="12"
-                            class="link-to-prism">src/app/home/home.component.ts:12</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>
     <section>
     
         <h3 id="inputs">
@@ -246,21 +195,21 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&quot;Biblioteca&quot;</code>
+                            <i>Default value : </i><code>&#x60;Welcome to Biblioteca&#x60;</code>
                         </td>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/home/home.component.ts:9</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/home/home.component.ts:17</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Texto presentacion</p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -271,18 +220,30 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
-
+/**
+ * Component Home Inicio visual de la aplicacion
+ */
 @Component({
   selector: &#x27;app-home&#x27;,
   templateUrl: &#x27;./home.component.html&#x27;,
   styleUrls: [&#x27;./home.component.css&#x27;]
 })
-export class HomeComponent implements OnInit {
-title&#x3D;&quot;Biblioteca&quot;
-  constructor() { }
 
-  ngOnInit(): void {
-  }
+export class HomeComponent {
+/**
+ * Texto presentacion
+ *
+ * @memberof HomeComponent
+ */
+  title &#x3D; &#x60;Welcome to Biblioteca&#x60;;
+ /**
+  * Creates an instance of HomeComponent.
+  * @memberof HomeComponent
+  */
+ constructor() { }
+
+  // ngOnInit(): void {
+  // }
 
 }
 </code></pre>
@@ -290,7 +251,7 @@ title&#x3D;&quot;Biblioteca&quot;
 
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div style&#x3D;&quot;text-align:center; margin-bottom: 50px;&quot;&gt;
-    &lt;h1&gt;Welcome to {{title}} &lt;/h1&gt;
+    &lt;h1&gt;{{title}} &lt;/h1&gt;
 &lt;/div&gt;</code></pre>
     </div>
 
@@ -326,7 +287,7 @@ title&#x3D;&quot;Biblioteca&quot;
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div style="text-align:center; margin-bottom: 50px;">    <h1>Welcome to {{title}} </h1></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div style="text-align:center; margin-bottom: 50px;">    <h1>{{title}} </h1></div></div>'
     var COMPONENTS = [{'name': 'AddautorComponent', 'selector': 'app-addautor'},{'name': 'AddlibroComponent', 'selector': 'app-addlibro'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'ListarautoresComponent', 'selector': 'app-listarautores'},{'name': 'ListarComponent', 'selector': 'app-listar'},{'name': 'LoginComponent', 'selector': 'app-login'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'HomeComponent'};

@@ -24,7 +24,7 @@ export class AddautorComponent implements OnInit {
   }
 
   Guardar() {
-    console.log(this.authorService.mandadoLibro);
+    console.log(this.authorService.vieneAddLibro);
     const data = {
       first_name: this.autor.first_name,
       last_name: this.autor.last_name
@@ -37,8 +37,13 @@ export class AddautorComponent implements OnInit {
 
       this.authorService.postAutor(data).subscribe(results => {
         alert('Autor Agregado');
-        console.log(this.authorService.mandadoLibro);
-        if (this.authorService.mandadoLibro) { this.router.navigate(['agregarLibro'],{ queryParamsHandling: 'preserve' });} else {
+        console.log(this.authorService. vieneAddLibro);
+        if (this.authorService.vieneAddLibro) {
+          this.authorService.vieneAddLibro = false;
+          this.router.navigate(['agregarLibro']);
+        //  this.router.navigate(['agregarLibro'], { queryParamsHandling: 'preserve' });
+
+        } else {
           this.router.navigate(['listarAutores']);
         }
       }, error => {

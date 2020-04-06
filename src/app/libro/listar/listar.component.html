@@ -3,29 +3,29 @@
         <div class="card-header">
             <h3>LIBROS</h3>
         </div>
-    </div>
-    <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>LIBRO</th>
-                    <th *ngIf="admin">ACCIONES</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let book of books">
-                    <td class="selecionable" (click)="getBook(modalGetBook, book)">{{ book.nombre }}</td>
-                    <td>
-                        <button *ngIf="admin" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>LIBRO</th>
+                        <th *ngIf="admin">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let book of books">
+                        <td class="selecionable" (click)="getBook(modalGetBook, book)">{{ book.nombre }}</td>
+                        <td>
+                            <button *ngIf="admin" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning">
                            Editar
                         </button>
-                        <button *ngIf="admin" (click)="deleteBook(confirmDeleteBookModal,book)" class="btn btn-danger">
+                            <button *ngIf="admin" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger">
                            Delete
                         </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -55,8 +55,12 @@
             Apellido:&nbsp;<span>{{ book.last_name }}</span>
         </p>
     </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+      cerrar
+    </button>
+    </div>
 </ng-template>
-
 <!-- VENTANA MODAL EDITAR UN LIBRO -->
 <ng-template #editBookModal let-modal>
     <div class="modal-header">
@@ -70,8 +74,8 @@
             <div class="form-group">
                 <label for="name">Titulo:&nbsp;</label>
                 <div class="input-group">
-                    <input id="name" class="form-control" [(ngModel)]="book.nombre" formControlName="nombre" [ngClass]="{ 'is-invalid':submitted && ebfc.nombre.errors }" />
-                    <div *ngIf="submitted && ebfc.nombre.errors" class="invalid-feedback">
+                    <input id="name" class="form-control" [(ngModel)]="book.nombre" formControlName="nombre" [ngClass]="{ 'is-invalid':submittedEditBook && ebfc.nombre.errors }" />
+                    <div *ngIf="submittedEditBook && ebfc.nombre.errors" class="invalid-feedback">
                         <div *ngIf="ebfc.nombre.errors.required">titulo is required</div>
                     </div>
                 </div>
@@ -101,17 +105,15 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
           Descartar cambios
         </button>
-        <button type="button" class="btn btn-outline-dark" (click)="editBook(book)">
+        <button type="button" class="btn btn-outline-dark" (click)="editBook(book,modalInformation)">
            Guardar cambios
         </button>
     </div>
 </ng-template>
-
 <!-- VENTANA MODAL CONFIRMAR DELETE UN LIBRO -->
-
 <ng-template #confirmDeleteBookModal let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
@@ -142,18 +144,35 @@
         <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
       Cancelar
     </button>
-        <button type="button" class="btn btn-outline-dark" (click)="delete(inforDeleteBook,book);modal.close()">
-      Borrar
+        <button type="button" class="btn btn-outline-dark" (click)="deleteBook(book);modal.close()">
+      Confirmar
     </button>
     </div>
 </ng-template>
-<!-- VENTANA MODAL INFORMA DELETE UN LIBRO -->
-<ng-template #inforDeleteBook let-modal>
+<!-- VENTANA MODAL INFORMATIVA -->
+<ng-template #modalInformation let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Gnomo Librery</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+  <span aria-hidden="true">&times;</span>
+</button>
+    </div>
+    <div class="modal-body">
+        <p>{{information}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+           Cerrar
+        </button>
+    </div>
+</ng-template>
+<!-- VENTANA MODAL INFORMATIVA DELETE -->
+<!-- <ng-template #modalInformationDelete let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <span aria-hidden="true">&times;</span>
+  </button>
     </div>
     <div class="modal-body">
         <h1>El libro se ha eliminado</h1>
@@ -161,10 +180,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
-      Cerrar
-    </button>
-
+    Cerrar
+  </button>
     </div>
-</ng-template>
-
-<hr />
+</ng-template> -->
