@@ -4,24 +4,41 @@ import { AuthorService } from 'src/app/services/author.service';
 import { BookService } from 'src/app/services/book.service';
 import { UserService } from 'src/app/services/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+/**
+ * Componente Lista de autores
+ *
+ * @export
+ * @class ListarautoresComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-listarautores',
   templateUrl: './listarautores.component.html',
   styleUrls: ['./listarautores.component.css'],
 })
+
 export class ListarautoresComponent implements OnInit {
   /**
    * View child Ventana Modal con un mensaje
    */
   @ViewChild('modalInformation', { static: false })
   modalInformation: TemplateRef<any>;
-
+  /**
+   * Boolean para describir rol del usuario
+   *
+   * rol user boolean=false
+   *
+   * rol admin boolean=true
+   *
+   * @memberof ListarComponent
+   */
+  admin = false;
   autores: any;
   autor: any;
   id: any;
-  admin = false;
+
   message = '';
+
   constructor(
     private router: Router,
     private authorService: AuthorService,
@@ -30,32 +47,42 @@ export class ListarautoresComponent implements OnInit {
     private userService: UserService,
     private modalService: NgbModal,
   ) {}
-
-  ngOnInit() {
-    this.id = this.activatedRoute.snapshot.params.id;
-    if (this.id != null) {
-      this.getAutor();
-    } else {
+/**
+ *
+ *
+ * @memberof ListarautoresComponent
+ */
+ngOnInit() {
+  //  this.id = this.activatedRoute.snapshot.params.id;
+  //  if (this.id != null) {
+  //    this.getAutor();
+  //  } else {
       this.getAll();
-    }
-    this.admin = this.userService.userAdmin();
+  //  }
+      this.admin = this.userService.userAdmin();
   }
+  /**
+   * Obtiene la lista de Autores
+   *
+   * @returns
+   * @memberof ListarautoresComponent
+   */
   getAll() {
     this.authorService.getAll().subscribe(
       (result) => {
         console.log('respuesta autores');
-        // console.log(result.response);
         console.log(result);
         console.log('autores');
         this.autores = result;
-        console.log(this.autores);
       },
       (error) => {
         console.log('respuesta error autores');
         console.log(error);
+        this.message = 'No se ha cargado la lista de autores';
+        this.openInformationWindows();
       }
     );
-    return this.autores;
+   // return this.autores;
   }
 
   getAutor() {

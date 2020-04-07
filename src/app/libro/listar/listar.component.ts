@@ -74,8 +74,10 @@ export class ListarComponent implements OnInit {
    */
   submittedEditBook = false;
   /**
-   * Boolean para describir los roles de los usuarios
+   * Boolean para describir rol del usuario
+   *
    * rol user boolean=false
+   *
    * rol admin boolean=true
    *
    * @memberof ListarComponent
