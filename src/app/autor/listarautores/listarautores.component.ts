@@ -4,8 +4,9 @@ import { AuthorService } from 'src/app/services/author.service';
 import { BookService } from 'src/app/services/book.service';
 import { UserService } from 'src/app/services/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Author } from 'src/app/models/author';
 /**
- * Componente Lista de autores
+ * Componente Lista de autores READ & DELETE
  *
  * @export
  * @class ListarautoresComponent
@@ -16,7 +17,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './listarautores.component.html',
   styleUrls: ['./listarautores.component.css'],
 })
-
 export class ListarautoresComponent implements OnInit {
   /**
    * View child Ventana Modal con un mensaje
@@ -33,36 +33,60 @@ export class ListarautoresComponent implements OnInit {
    * @memberof ListarComponent
    */
   admin = false;
-  autores: any;
-  autor: any;
-  id: any;
+  /**
+   * Lista de autores
+   *
+   * @type {Author[]}
+   * @memberof ListarautoresComponent
+   */
+  authors: Author[];
+  /**
+   * autor
+   *
+   * @type {Author}
+   * @memberof ListarautoresComponent
+   */
+  author: Author;
 
+  //  id: number;
+  /**
+   * Mensaje en ventana modal
+   */
   message = '';
 
-  constructor(
+ /**
+  * Creates an instance of ListarautoresComponent.
+  * @param {Router} router Para rutas
+  * @param {ActivatedRoute} activatedRoute Para rutas
+  * @param {NgbModal} modalService Para Ventanas Modales
+  * @param {AuthorService} authorService Servicio de Author
+  * @param {BookService} bookService Servicio de Book
+  * @param {UserService} userService Servicio de User
+  * @memberof ListarautoresComponent
+  */
+ constructor(
     private router: Router,
-    private authorService: AuthorService,
     private activatedRoute: ActivatedRoute,
-    private bookService: BookService,
-    private userService: UserService,
     private modalService: NgbModal,
-  ) {}
-/**
- *
- *
- * @memberof ListarautoresComponent
- */
-ngOnInit() {
-  //  this.id = this.activatedRoute.snapshot.params.id;
-  //  if (this.id != null) {
-  //    this.getAutor();
-  //  } else {
-      this.getAll();
-  //  }
-      this.admin = this.userService.userAdmin();
-  }
+    private authorService: AuthorService,
+    private bookService: BookService,
+    private userService: UserService
+  ) { }
+
   /**
-   * Obtiene la lista de Autores
+   * Obtiene la lista de authors
+   *
+   * Obtiene el rol usuario
+   *
+   * @memberof ListarautoresComponent
+   */
+  ngOnInit() {
+    this.getAll();
+    this.admin = this.userService.userAdmin();
+  }
+
+  /**
+   * Da valor a la lista de Autores
    *
    * @returns
    * @memberof ListarautoresComponent
@@ -70,60 +94,61 @@ ngOnInit() {
   getAll() {
     this.authorService.getAll().subscribe(
       (result) => {
-        console.log('respuesta autores');
-        console.log(result);
-        console.log('autores');
-        this.autores = result;
+        // console.log('respuesta authors');
+        // console.log(result);
+        // console.log('authors');
+        this.authors = result;
       },
       (error) => {
-        console.log('respuesta error autores');
-        console.log(error);
-        this.message = 'No se ha cargado la lista de autores';
+        // console.log('respuesta error authors');
+        // console.log(error);
+        this.message = 'No se ha cargado la lista de authors';
         this.openInformationWindows();
       }
     );
-   // return this.autores;
   }
 
-  getAutor() {
-    this.authorService.getAutor(this.id).subscribe(
+  // getAutor() {
+  //   this.authorService.getAutor(this.id).subscribe(
+  //     (result) => {
+  //       console.log(result.response);
+  //       this.authors = result.response;
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  //   return this.authors;
+  // }
+
+ // addAuthor() {}
+
+  /**
+   * Borra un Autor
+   *
+   * @param {*} author objeto a borrar
+   * @memberof ListarautoresComponent
+   */
+  deleteAuthor(author: Author ) {
+     // console.log(author.id);
+    this.bookService.getBookFromAutor(author.id).subscribe(
       (result) => {
-        console.log(result.response);
-        this.autores = result.response;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-    return this.autores;
-  }
-
-  addAuthor() {}
-
-  eliminar(x) {
-    // var existe;
-    const count = 0;
-    this.id = x;
-    console.log('existe');
-    console.log(this.id);
-
-    this.bookService.getBookFromAutor(this.id).subscribe(
-      (result) => {
-        console.log(result.response[0]);
-
-        // tslint:disable-next-line: triple-equals
-        if (result.response[0] != undefined) {
-          alert('No se puede eliminar un autor que tiene libros registrados');
+       // console.log(result);
+        if (result != null) {
+          this.message = 'No se puede eliminar un autor que tiene libros en la biblioteca';
+          this.openInformationWindows();
         } else {
           console.log('estoy en el else');
-          this.authorService.deleteAutor(this.id).subscribe((result) => {
-            console.log('Se ha eliminado correctamente');
+          this.authorService.deleteAutor(author.id).subscribe((result) => {
+            this.message = 'El autor se ha eliminado correctamente';
+            this.openInformationWindows();
             this.getAll();
           });
         }
       },
       (error) => {
-        console.log(error);
+        this.message = 'El autor no se ha eliminado';
+        this.openInformationWindows();
       }
     );
   }

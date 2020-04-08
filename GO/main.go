@@ -659,7 +659,7 @@ func deleteAutor(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	fmt.Fprintf(w, "Se ha eliminado el autor %s correctamente ", params["id"])
+	//	fmt.Fprintf(w, "Se ha eliminado el autor %s correctamente ", params["id"])
 	fmt.Println("ESTO ES DELETE AUTOR")
 }
 
