@@ -74,7 +74,7 @@ export class ListarautoresComponent implements OnInit {
   ) { }
 
   /**
-   * Obtiene la lista de authors
+   * Obtiene la lista de autores
    *
    * Obtiene el rol usuario
    *
@@ -94,16 +94,16 @@ export class ListarautoresComponent implements OnInit {
   getAll() {
     this.authorService.getAll().subscribe(
       (result) => {
+        this.authors = result;
         // console.log('respuesta authors');
         // console.log(result);
         // console.log('authors');
-        this.authors = result;
       },
       (error) => {
-        // console.log('respuesta error authors');
-        // console.log(error);
         this.message = 'No se ha cargado la lista de authors';
         this.openInformationWindows();
+        // console.log('respuesta error authors');
+        // console.log(error);
       }
     );
   }
@@ -138,7 +138,7 @@ export class ListarautoresComponent implements OnInit {
           this.message = 'No se puede eliminar un autor que tiene libros en la biblioteca';
           this.openInformationWindows();
         } else {
-          console.log('estoy en el else');
+        //  console.log('estoy en el else');
           this.authorService.deleteAutor(author.id).subscribe((result) => {
             this.message = 'El autor se ha eliminado correctamente';
             this.openInformationWindows();
