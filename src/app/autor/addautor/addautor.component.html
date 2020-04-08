@@ -5,15 +5,39 @@
         </div>
     </div>
     <div class="card-body">
-        <form name="miformulario" action="">
+        <form [formGroup]="authorForm" >
             <div class="form-group">
-                <label for="">Nombre:</label>
-                <input type="text" class="form-control" id="first_name" required [(ngModel)]="autor.first_name" name="first_name" />
+                <label for="first_name">Nombre:</label>
+                <input type="text" class="form-control" formControlName="first_name" [(ngModel)]="autor.first_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.first_name.errors }" />
+                <div *ngIf="submittedAuthor && afc.first_name.errors" class="invalid-feedback">
+                   <div *ngIf="afc.first_name.errors.required">Nombre is required</div>
+                </div>
             </div>
             <div class="form-group">
                 <label for="">Apellido:</label>
-                <input class="form-control" id="last_name" required [(ngModel)]="autor.last_name" name="last_name" /> </div>
+                <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.last_name.errors }" />
+                <div *ngIf="submittedAuthor && afc.last_name.errors" class="invalid-feedback">
+                  <div *ngIf="afc.last_name.errors.required">Apellido is required</div>
+                </div>
+            </div>
         </form>
         <button type="button" (click)="Guardar()" class="btn btn-danger">Guardar</button>
     </div>
 </div>
+<!-- VENTANA MODAL INFORMATIVA -->
+<ng-template #modalInformation let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Gnomo`s Librery</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+<span aria-hidden="true">&times;</span>
+</button>
+    </div>
+    <div class="modal-body">
+        <p>{{information}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+         Cerrar
+      </button>
+    </div>
+</ng-template>

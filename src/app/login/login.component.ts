@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
@@ -14,23 +14,31 @@ import { MustMatch } from '../_helpers';
 import { CookieService } from 'ngx-cookie-service';
 
 
-
+/**
+ * Complemento para Login, Logout, Registration
+ *
+ * @export
+ * @class LoginComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  registerModal: NgbModalRef;
+  registerForm: FormGroup;
+
   loading = false;
   loginOpen = true;
   submittedLogin = false;
   submittedRegister = false;
   Administrador = false;
-//  returnUrl: string;
   error: string;
-  registerModal: NgbModalRef;
-  registerForm: FormGroup;
+
   user = {
     userName: '',
     email: '',
@@ -38,6 +46,12 @@ export class LoginComponent implements OnInit {
     rol: '',
     token: '',
   };
+  information: string;
+  /**
+   * View child Ventana Modal con un mensaje
+   */
+  @ViewChild('modalInformation', { static: false })
+  modalInformation: TemplateRef<any>;
 
 
   constructor(
@@ -56,8 +70,8 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['home']);
     }
   }
-/** Parametros para validar los formularios
- *
+/**
+ * Parametros para validar los formularios
  *
  * @memberof LoginComponent
  */
@@ -74,7 +88,6 @@ ngOnInit() {
         passwordRepeat: ['', Validators.required],
         image: ['', [Validators.required]],
         // image: ['', [Validators.required, requiredFileType('png')]],
-
       },
       {
         validators: MustMatch('password', 'passwordRepeat')
@@ -101,7 +114,7 @@ ngOnInit() {
   get rfc() { return this.registerForm.controls; }
 
 /**
- *
+ * Valida al usuario
  *
  * @returns
  * @memberof LoginComponent
@@ -118,15 +131,16 @@ onSubmit() {
     // .pipe(first())
       .subscribe(
        results => {
-         console.log('respuesta');
-         console.log(results.id);
-         if (results.id == 0) {
-            // error
-            console.log('id =0');
-            // PENDIENTE MOSTRAR MODALES CON ERRORES
-          } else {
+          console.log('respuesta');
+          console.log(results);
+
+          console.log(results.id);
+          if (results.id == 0) {  // error
+           console.log('id =0');
+           this.information = results.rol;
+           this.openInformationWindows();
+          } else {    // no error
             console.log('id distinto 0');
-            // no error
             const cukiUser = JSON.stringify(results);
             console.log(cukiUser);
             this.cookieService.set(
@@ -138,13 +152,21 @@ onSubmit() {
              (() =>  window.location.reload());
           }
         },
-       error => {
-        console.log('respuesta error');
-        this.error = error;
-        this.loading = false;
+        error => {
+           this.information = "No podemos logear al usuario";
+           this.openInformationWindows();
+        // console.log('respuesta error');
+        // this.error = error;
+        // this.loading = false;
         });
 
   }
+  /**
+   * Muestra formulario registrar
+   *
+   * @param {*} registerModal
+   * @memberof LoginComponent
+   */
   abrirRegisterModal(registerModal: any) {
     // cierra ventana login
     this.loginOpen = false;
@@ -153,12 +175,16 @@ onSubmit() {
       ariaLabelledBy: 'modal-basic-title'
     });
   }
-
-  addUserDB() {
+/**
+ * Añade usuario a la BD
+ *
+ * @returns
+ * @memberof LoginComponent
+ */
+addUserDB() {
     this.submittedRegister = true;
     console.log('registrando');
     if (this.registerForm.invalid) {
-      console.log('formulario invalido');
       return;
     }
     this.loading = true;
@@ -192,13 +218,13 @@ onSubmit() {
         console.log(error);
     });
   }
-  get myForm() {
-    return this.registerForm.get('rol');
-  }
+
+  // get myForm() {
+  //   return this.registerForm.get('rol');
+  // }
 
   onFileChange(event) {
     const reader = new FileReader();
-
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
@@ -211,11 +237,27 @@ onSubmit() {
       //  this.cd.markForCheck();
       }
   }
+  /**
+   * Cierra ventanas modales
+   *
+   * Muestra pagina Login
+   *
+   * @memberof LoginComponent
+   */
   closeRegister() {
     // Cerrar modal Register
     this.modalService.dismissAll();
     // Abrir login
     this.loginOpen = true;
+  }
+
+  /**
+   * Abre Ventana Modal informativa
+   *
+   * @memberof ListarComponent
+   */
+  openInformationWindows() {
+    this.modalService.open(this.modalInformation);
   }
   }
 

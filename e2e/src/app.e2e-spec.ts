@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('appapinode app is running!');
+    expect(page.getTitleText()).toEqual('Gnomos_Librery app is running!');
   });
 
   afterEach(async () => {

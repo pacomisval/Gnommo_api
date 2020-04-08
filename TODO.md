@@ -2,16 +2,17 @@
 
 ### Todo
 
-- [ ] Ventanas modales  
 - [ ] Tema Cookies  
 - [ ] Añadir imagenes  
 - [ ] Cambiar nombre rutas a mas amigables  
 - [ ] Corregir Añadir libro problema FK  
+- [ ] Comprobar si existe el autor  
+- [ ] Comprobar en libro si esta duplicado  
 
 ### In Progress
 
-- [ ] Ventanas modales  
 
 ### Done ✓
 
+- [x] Ventanas modales  
 

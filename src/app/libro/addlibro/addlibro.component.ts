@@ -129,7 +129,7 @@ export class AddlibroComponent implements OnInit {
    */
   optionNewAuthor() {
     //  console.log('ir a añadir autor');
-    this.authorService.vieneAddLibro = true;
+    this.authorService.comesAddLibro = true;
     this.router.navigate(['agregarAutores']);
   }
 

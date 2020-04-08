@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>appapinode documentation</title>
+        <title>Gnomos_Librery documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,7 +13,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">appapinode documentation</a>
+            <a href="../" class="navbar-brand">Gnomos_Librery documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -78,10 +78,10 @@
                                 <a href="#author">author</a>
                             </li>
                             <li>
-                                <a href="#id">id</a>
+                                <a href="#comesAddLibro">comesAddLibro</a>
                             </li>
                             <li>
-                                <a href="#vieneAddLibro">vieneAddLibro</a>
+                                <a href="#id">id</a>
                             </li>
                         </ul>
                     </td>
@@ -593,6 +593,32 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="comesAddLibro"></a>
+                        <span class="name">
+                            <b>
+                            comesAddLibro</b>
+                            <a href="#comesAddLibro"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/author.service.ts:14</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="id"></a>
                         <span class="name">
                             <b>
@@ -610,32 +636,6 @@
                         <tr>
                             <td class="col-md-4">
                                     <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/services/author.service.ts:13</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="vieneAddLibro"></a>
-                        <span class="name">
-                            <b>
-                            vieneAddLibro</b>
-                            <a href="#vieneAddLibro"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>false</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/author.service.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -661,7 +661,7 @@ import { Globals } from &#x27;../Global&#x27;;
 export class AuthorService {
   author: Author;
   id: number;
-  vieneAddLibro &#x3D; false;
+  comesAddLibro &#x3D; false;
   constructor(private http: HttpClient) {}
 
   getAll() {
@@ -711,7 +711,7 @@ export class AuthorService {
     return this.http.delete&lt;any&gt;(Globals.apiUrl + &#x27;/autores/&#x27; + id);
   }
   // addAutorLibro() {
-  //   this.vieneAddLibro &#x3D; true;
+  //   this.comesAddLibro &#x3D; true;
   // }
   modificarAuthor(datosAutor) {
     // buscar a ver si esta

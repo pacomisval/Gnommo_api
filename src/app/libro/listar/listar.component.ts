@@ -68,7 +68,7 @@ export class ListarComponent implements OnInit {
    */
   editBookForm: FormGroup;
   /**
-   * Booleano para confirmar la ventana modal de editar
+   * Boolean para confirmar la ventana modal de editar
    *
    * @memberof ListarComponent
    */
@@ -145,8 +145,8 @@ export class ListarComponent implements OnInit {
     this.bookService.getAll().subscribe(
       (result) => {
         this.books = result;
-        //   console.log('respuesta libros');
-        //   console.log(result);
+           console.log('respuesta libros');
+           console.log(result);
       },
       (error) => {
         this.information = 'No se ha cargado la lista de libros';
