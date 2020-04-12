@@ -31,7 +31,7 @@
         "jquery": "^3.4.1",
         "mysql": "^2.18.1",
         "ng-bootstrap": "^1.6.3",
-        "ngx-cookie-service": "^3.0.3",
+        "ngx-cookie-service": "^3.0.4",
         "rxjs": "~6.5.4",
         "tslib": "^1.10.0",
         "zone.js": "~0.10.2"

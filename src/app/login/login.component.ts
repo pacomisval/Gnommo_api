@@ -134,30 +134,29 @@ onSubmit() {
           console.log('respuesta');
           console.log(results);
 
-          console.log(results.id);
-          if (results.id == 0) {  // error
-           console.log('id =0');
-           this.information = results.rol;
-           this.openInformationWindows();
-          } else {    // no error
+           /* if (results.id == 0) {
+            // error
+            console.log('id =0');
+            // PENDIENTE MOSTRAR MODALES CON ERRORES
+          } else {
             console.log('id distinto 0');
+            // no error
             const cukiUser = JSON.stringify(results);
-            console.log(cukiUser);
-            this.cookieService.set(
-              'cuki',
-              cukiUser,
-              1
-            );
+            console.log("valor de cukiUser: " + cukiUser);
+            // this.cookieService.set(
+            //   'cuki',
+            //   cukiUser,
+            //   1
+            // );  
             this.router.navigate(['home']).then
              (() =>  window.location.reload());
-          }
+          } */ 
+          this.router.navigate(['home']).then(() =>  window.location.reload());
         },
-        error => {
-           this.information = "No podemos logear al usuario";
-           this.openInformationWindows();
-        // console.log('respuesta error');
-        // this.error = error;
-        // this.loading = false;
+       error => {
+        console.log('respuesta error');
+        this.error = error;
+        this.loading = false;
         });
 
   }

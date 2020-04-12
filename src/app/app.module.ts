@@ -22,6 +22,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { UserService } from './services/user.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { UserService } from './services/user.service';
     NgbModule,
     ReactiveFormsModule,
   ],
-  providers: [BookService, AuthorService, UserService, NgbActiveModal, NgForm, AuthInterceptorService, AuthenticationService],
+  providers: [BookService, AuthorService, UserService, CookieService, NgbActiveModal, NgForm, AuthInterceptorService, AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

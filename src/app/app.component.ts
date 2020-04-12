@@ -16,6 +16,7 @@ import { MustMatch } from './_helpers';
 import { UserService } from './services/user.service';
 import { AuthenticationService } from './services/authentication.service';
 import { CookieService } from 'ngx-cookie-service';
+import { ok } from 'assert';
 
 @Component({
   selector: 'app-root',
@@ -36,8 +37,13 @@ export class AppComponent {
   submitted = false;
   CukiExits: boolean;
   adminExits: boolean;
+  
+
+  verCookieRol: string;
+  verCookieName: string;
+
   cukiJson;
-  currentUser;
+  currentUser: string;
 
 
 
@@ -63,7 +69,11 @@ export class AppComponent {
     console.log('entra oninit' );
     this.politicaCukis();
 
-    this.comprobarCookie();
+    //setTimeout(function(){ this.comprobarCookie; }, 500);
+    this.getCookie("tokensiN");
+    this.getCookie("tokensiR");
+    
+    
 
     this.registerForm = this.formBuilder.group(
       {
@@ -101,9 +111,42 @@ export class AppComponent {
 
   }
 
-  comprobarCookie() {
-    const myCuki = this.cookieService.get('cuki');
-    console.log(myCuki);
+  comprobarCookie(cookie) {
+    if(cookie != "admin") {
+      this.currentUser = cookie;
+    }
+  } 
+
+  getCookie(nombre) {
+    let micookie = "";
+    let i;
+
+    var lista = document.cookie.split(";");
+    for (i in lista) {
+      var busca = lista[i].search(nombre);
+      if (busca > -1) {
+        micookie=lista[i];
+        console.log(micookie);
+      }
+    }
+    var igual = micookie.indexOf("=");
+    var valor = micookie.substring(igual+1);
+
+    if(valor == "admin") {
+      this.CukiExits = true;
+      this.adminExits = true;
+      this.userService.currentUserType = valor;
+      this.adminExits = this.userService.userAdmin();
+    }
+    console.log(nombre);
+    console.log(valor);
+    this.comprobarCookie(valor);
+    return valor;
+  }
+
+  /*comprobarCookie() {
+    const myCuki = this.cookieService.get('tokensiR');
+    console.log("valor de myCuki:" + myCuki);
     if (myCuki) {
       this.CukiExits = true;
       this.cukiJson = JSON.parse(myCuki);
@@ -115,7 +158,7 @@ export class AppComponent {
       console.log(this.cukiJson.Nombre);
       console.log(this.cukiJson.rol);
       console.log(this.cukiJson.token);
-      this.userService.currentUserType = this.cukiJson.rol;
+      this.userService.currentUserType = this.cukiJson;
       this.adminExits = this.userService.userAdmin();
 
     } else {
@@ -124,6 +167,7 @@ export class AppComponent {
       this.adminExits = false;
     }
   }
+  */
 
   listar() {
     this.router.navigate(['listar']);
