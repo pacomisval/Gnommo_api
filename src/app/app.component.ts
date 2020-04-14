@@ -3,13 +3,13 @@ import { Router, RouterLink } from '@angular/router';
 import {
   NgbModal,
   NgbActiveModal,
-  NgbModalRef
+  NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormControl
+  FormControl,
 } from '@angular/forms';
 
 import { MustMatch } from './_helpers';
@@ -20,7 +20,7 @@ import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   cookieMessage = 'Estamos obligados a darte el coñazo con esto de las cukis';
@@ -28,7 +28,7 @@ export class AppComponent {
   cookieLinkText = 'Vea que las cukis solo guardan informacion util para ti';
 
   title = 'Biblioteca de Gnomo';
- // titulo = 'Biblioteca';
+  // titulo = 'Biblioteca';
   registerForm: FormGroup;
   registerModal: NgbModalRef;
 
@@ -36,10 +36,8 @@ export class AppComponent {
   submitted = false;
   CukiExits: boolean;
   adminExits: boolean;
-  cukiJson;
   currentUser;
-
-
+  currentUserName;
 
   constructor(
     private router: Router,
@@ -50,9 +48,9 @@ export class AppComponent {
     private authenticationService: AuthenticationService,
     private cookieService: CookieService
   ) {
-
-    console.log('entra constructor' );
+    console.log('entra constructor');
     this.currentUser = this.authenticationService.currentUserValue;
+    console.log(this.currentUser);
   }
   /**
    * Valida campos input
@@ -60,7 +58,7 @@ export class AppComponent {
    * @memberof AppComponent
    */
   ngOnInit() {
-    console.log('entra oninit' );
+    console.log('entra oninit');
     this.politicaCukis();
 
     this.comprobarCookie();
@@ -70,54 +68,50 @@ export class AppComponent {
         userName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
-        passwordRepeat: ['', Validators.required]
+        passwordRepeat: ['', Validators.required],
       },
       {
-        validators: MustMatch('password', 'passwordRepeat')
+        validators: MustMatch('password', 'passwordRepeat'),
       }
     );
+    console.log('entra oninit2');
+    this.currentUser = this.authenticationService.currentUserValue;
+    console.log(this.currentUser);
   }
   politicaCukis() {
-    let cc = window as any;
+    const cc = window as any;
     cc.cookieconsent.initialise({
       palette: {
         popup: {
-          background: '#164969'
+          background: '#164969',
         },
         button: {
           background: '#ffe000',
-          text: '#164969'
-        }
+          text: '#164969',
+        },
       },
       theme: 'classic',
       content: {
         message: this.cookieMessage,
         dismiss: this.cookieDismiss,
         link: this.cookieLinkText,
-        href: 'https://developers.de/privacy-policy/'
+        href: 'https://developers.de/privacy-policy/',
         // environment.Frontend + "/dataprivacy"
-      }
+      },
     });
-
   }
 
   comprobarCookie() {
-    const myCuki = this.cookieService.get('cuki');
-    console.log(myCuki);
+    const myCuki =this.cookieService.get('Rol');
+    // const myCuki = this.getCookie('Rol');
     if (myCuki) {
       this.CukiExits = true;
-      this.cukiJson = JSON.parse(myCuki);
-
       console.log('Existe');
-
-      console.log(this.cukiJson);
-      console.log(this.cukiJson.id);
-      console.log(this.cukiJson.Nombre);
-      console.log(this.cukiJson.rol);
-      console.log(this.cukiJson.token);
-      this.userService.currentUserType = this.cukiJson.rol;
+      console.log(myCuki);
+      console.log(atob(myCuki));
+      this.userService.currentUserType = atob(myCuki);
       this.adminExits = this.userService.userAdmin();
-
+      this.currentUserName = localStorage.getItem('Nombre');
     } else {
       console.log('No Existe');
       this.CukiExits = false;
@@ -142,8 +136,7 @@ export class AppComponent {
   }
   logout() {
     this.authenticationService.logout();
-    this.router.navigate(['home']).then
-    (() =>  window.location.reload());
+    this.router.navigate(['home']).then(() => window.location.reload());
   }
 
 }

@@ -10,7 +10,8 @@
     <ng-container *ngIf="CukiExits; then thenTemplate; else elseTemplate"></ng-container>
     <ng-template #thenTemplate>
         <button (click)="logout()" class="btn btn-info" style="margin-left:10px">Logout</button>
-        <div class="perfil">{{cukiJson.Nombre}}</div>
+        <div class="perfil">{{currentUserName}}</div>
+        <!-- /////////////////////////////// -->
     </ng-template>
     <ng-template #elseTemplate>
         <button (click)="login()" class="btn btn-info" style="margin-left:10px">Login</button>

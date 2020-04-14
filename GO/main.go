@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -50,6 +51,12 @@ type Token struct {
 	Nombre string
 	Email  string
 	*jwt.StandardClaims
+}
+type Cuki struct {
+	ID     string
+	Nombre string
+	Rol    string
+	token  string
 }
 type Value struct {
 	Id     string `json:"id"`
@@ -104,9 +111,10 @@ func main() {
 
 	//http.ListenAndServe(":8000", router)
 	log.Fatal(http.ListenAndServe(":8000", handlers.CORS(
-		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
+		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization", "Accept", "Accept-Language"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"}),
-		handlers.AllowedOrigins([]string{"*"}))(router)))
+		handlers.AllowCredentials(),
+		handlers.AllowedOrigins([]string{"http://localhost:4200"}))(router)))
 
 }
 
@@ -158,9 +166,62 @@ func login(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Vuelve encontrar usuario: ")
 
 	// value := Value{usuario.Id, usuario.Nombre, usuario.Rol, usuario.Tok}
-	fmt.Println("valor")
-	fmt.Println(value)
+
+	//	I := value.Id
+	//	N := value.Nombre
+	//	R := value.Rol
+	//	T := value.Token
+	textoCuki := Cuki{
+		ID:     value.Id,
+		Nombre: value.Nombre,
+		Rol:    value.Rol,
+		token:  value.Token,
+	}
+	fmt.Println("El valor de textocuki: ", textoCuki)
+	textoCukiJSON, _ := json.Marshal(textoCuki)
+	fmt.Println("El valor de textocukiJSON: ", textoCukiJSON)
+	textoCukiString := string(textoCukiJSON)
+	fmt.Println("El valor de textocukiString: ", textoCukiString)
+
+	// http.SetCookie(w, &http.Cookie{
+	// 	Name:     "cuki",
+	// 	Value:    textoCukiString,
+	// 	Expires:  time.Now().Add(time.Minute * 5),
+	// 	Path:     "/",
+	// 	HttpOnly: false,
+	// })
+	// http.SetCookie(w, &http.Cookie{
+	// 	Name:     "tokensiN",
+	// 	Value:    value.Nombre,
+	// 	Expires:  time.Now().Add(time.Minute * 5),
+	// 	Path:     "/",
+	// 	HttpOnly: false,
+	// })
+	http.SetCookie(w, &http.Cookie{
+		Name:     "Rol",
+		Value:    base64.StdEncoding.EncodeToString([]byte(value.Rol)),
+		Expires:  time.Now().Add(time.Minute * 5),
+		Path:     "/",
+		HttpOnly: false,
+	})
+	// http.SetCookie(w, &http.Cookie{
+	// 	Name:     "tokensiI",
+	// 	Value:    value.Id,
+	// 	Expires:  time.Now().Add(time.Minute * 5),
+	// 	Path:     "/",
+	// 	HttpOnly: false,
+	// })
+	http.SetCookie(w, &http.Cookie{
+		Name:     "token",
+		Value:    value.Token,
+		Expires:  time.Now().Add(time.Minute * 5),
+		Path:     "/",
+		HttpOnly: true,
+	})
+	fmt.Println("valor: ", value)
+	//	json.NewEncoder(w).Encode(value)
 	json.NewEncoder(w).Encode(value)
+	fmt.Println("El valor de W: ", w)
 }
 
 func encontrarUsuario(password, email string) Value {

@@ -5,19 +5,27 @@
         </div>
     </div>
     <div class="card-body">
-        <form [formGroup]="authorForm" >
+         <form [formGroup]="authorForm" > 
+        <!-- <form name="authorForm">  -->
             <div class="form-group">
                 <label for="first_name">Nombre:</label>
-                <input type="text" class="form-control" formControlName="first_name" [(ngModel)]="autor.first_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.first_name.errors }" />
+                <!-- <input type="text" class="form-control" formControlName="first_name" [(ngModel)]="autor.first_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.first_name.errors }" /> -->
+                <input type="text" class="form-control" formControlName="first_name"  [ngClass]="{ 'is-invalid': submittedAuthor && afc.first_name.errors }" />
+                
+            
+              
                 <div *ngIf="submittedAuthor && afc.first_name.errors" class="invalid-feedback">
-                   <div *ngIf="afc.first_name.errors.required">Nombre is required</div>
+                    <div *ngIf="afc.first_name.errors.required">Nombre is required</div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="">Apellido:</label>
-                <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.last_name.errors }" />
+                <!-- <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.last_name.errors }" /> -->
+                <input class="form-control" formControlName="last_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.last_name.errors }" />
+               
+              
                 <div *ngIf="submittedAuthor && afc.last_name.errors" class="invalid-feedback">
-                  <div *ngIf="afc.last_name.errors.required">Apellido is required</div>
+                    <div *ngIf="afc.last_name.errors.required">Apellido is required</div>
                 </div>
             </div>
         </form>
