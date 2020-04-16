@@ -9,9 +9,12 @@ import { Globals } from '../Global';
   providedIn: 'root'
 })
 export class AuthorService {
+
   author: Author;
   id: number;
+
   comesAddLibro = false;
+  
   constructor(private http: HttpClient) {}
 
   getAll() {

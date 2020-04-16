@@ -30,7 +30,6 @@ export class AuthenticationService {
   }
 
   logout() {
-
      this.cookieService.delete('tokensiR');
 
   }

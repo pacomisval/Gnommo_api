@@ -6,8 +6,3 @@ export interface User {
   token: string;
 }
 
-// nombre
-// password
-// email
-// rol  user admin root
-// tok

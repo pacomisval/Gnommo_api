@@ -203,7 +203,7 @@ export class ListarComponent implements OnInit {
    * @memberof ListarComponent
    */
   editBook(book: Book, modalInformationDelete: any) {
-    //  console.log(book);
+    console.log(book);
     this.submittedEditBook = true;
     const datosAutor = {
       id: this.book.idAutor,

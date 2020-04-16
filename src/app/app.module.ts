@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HeaderInterceptor } from './header.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 // import { NgbdModalComponent, NgbdModalContent } from "./modal-component";
 
@@ -44,7 +46,21 @@ import { CookieService } from 'ngx-cookie-service';
     NgbModule,
     ReactiveFormsModule,
   ],
-  providers: [BookService, AuthorService, UserService, CookieService, NgbActiveModal, NgForm, AuthInterceptorService, AuthenticationService],
+  providers: [
+    BookService, 
+    AuthorService, 
+    UserService, 
+    CookieService, 
+    NgbActiveModal,
+    NgForm, 
+    AuthInterceptorService,
+    AuthenticationService,
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HeaderInterceptor,
+    multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

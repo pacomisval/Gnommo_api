@@ -44,6 +44,8 @@ export class AppComponent {
 
   cukiJson;
   currentUser: string;
+  rol: string;
+  token: string;
 
 
 
@@ -69,12 +71,10 @@ export class AppComponent {
     console.log('entra oninit' );
     this.politicaCukis();
 
-    //setTimeout(function(){ this.comprobarCookie; }, 500);
     this.getCookie("tokensiN");
     this.getCookie("tokensiR");
+    this.getCookie("tokensiT")
     
-    
-
     this.registerForm = this.formBuilder.group(
       {
         userName: ['', Validators.required],
@@ -111,10 +111,35 @@ export class AppComponent {
 
   }
 
-  comprobarCookie(cookie) {
-    if(cookie != "admin") {
-      this.currentUser = cookie;
+  comprobarCookie(nombre, cookie) {
+    switch (nombre) {
+      case "tokensiI":
+        
+      break
+      case "tokensiN":
+        this.currentUser = cookie;
+        console.log(this.currentUser);
+      break
+      case "tokensiR":      
+        this.rol = cookie;
+        console.log(this.rol);
+        
+        if(this.rol == "admin") {
+          this.CukiExits = true;
+          this.adminExits = true;
+          this.userService.currentUserType = this.rol;
+          this.adminExits = this.userService.userAdmin();
+        }
+        
+      break
+      case "tokensiT":
+        this.token = cookie;
+        console.log(this.token);
+      break
+      default:
+        console.log("No existe esa cookie");
     }
+    
   } 
 
   getCookie(nombre) {
@@ -126,21 +151,17 @@ export class AppComponent {
       var busca = lista[i].search(nombre);
       if (busca > -1) {
         micookie=lista[i];
+        
         console.log(micookie);
       }
     }
-    var igual = micookie.indexOf("=");
+    var igual = micookie.indexOf("="); 
+    var clave = micookie.substring(1, igual);   
     var valor = micookie.substring(igual+1);
 
-    if(valor == "admin") {
-      this.CukiExits = true;
-      this.adminExits = true;
-      this.userService.currentUserType = valor;
-      this.adminExits = this.userService.userAdmin();
-    }
-    console.log(nombre);
+    console.log(clave);
     console.log(valor);
-    this.comprobarCookie(valor);
+    this.comprobarCookie(clave, valor);
     return valor;
   }
 

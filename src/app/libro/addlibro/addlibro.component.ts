@@ -76,6 +76,8 @@ export class AddlibroComponent implements OnInit {
   ngOnInit() {
     this.book.title = localStorage.getItem('nombre');
     this.book.isbn = localStorage.getItem('isbn');
+    console.log(this.book.title);
+    console.log(this.book.isbn);
     this.getAuthors();
   }
 
@@ -87,7 +89,8 @@ export class AddlibroComponent implements OnInit {
    * @memberof AddlibroComponent
    */
   addBook() {
-    // console.log(this.selectedAuthor);
+    console.log(this.selectedAuthor.id);
+
     if (this.selectedAuthor.id == 1) {
       localStorage.setItem('nombre', this.book.title);
       localStorage.setItem('isbn', this.book.isbn);
@@ -143,6 +146,7 @@ export class AddlibroComponent implements OnInit {
       id: '',
       nombre: this.book.title,
       isbn: this.book.isbn,
+      // idAuthor: this.selectedAuthor.id,
       id_author: this.selectedAuthor.id,
     };
     this.bookService.createBook(data).subscribe(
