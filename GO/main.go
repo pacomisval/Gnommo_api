@@ -71,7 +71,7 @@ var err error
 //var tknStr
 
 func main() {
-	db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/libreria")
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
 		panic(err.Error())
 	}

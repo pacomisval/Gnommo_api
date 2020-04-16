@@ -39,6 +39,8 @@ export class AppComponent {
   adminExits: boolean;
   currentUser;
   currentUserName;
+  rol;
+  token;
 
   constructor(
     private router: Router,

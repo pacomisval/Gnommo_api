@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderInterceptor } from './header.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+//import { HeaderInterceptor } from './header.interceptor';
+//import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +24,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { UserService } from './services/user.service';
 import { HeaderInterceptor } from './header.interceptor';
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -48,7 +49,6 @@ import { HeaderInterceptor } from './header.interceptor';
     ReactiveFormsModule,
   ],
   providers: [
-<<<<<<< HEAD
     BookService,
     AuthorService,
     UserService,
@@ -61,19 +61,6 @@ import { HeaderInterceptor } from './header.interceptor';
     provide: HTTP_INTERCEPTORS,
     useClass: HeaderInterceptor,
     multi: true,
-=======
-    BookService,
-    AuthorService,
-    UserService,
-    NgbActiveModal,
-    NgForm,
-    AuthInterceptorService,
-    AuthenticationService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HeaderInterceptor,
-      multi: true,
->>>>>>> origin/jose
     }
   ],
   bootstrap: [AppComponent]
