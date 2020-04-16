@@ -3,13 +3,13 @@ import { Router, RouterLink } from '@angular/router';
 import {
   NgbModal,
   NgbActiveModal,
-  NgbModalRef
+  NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormControl
+  FormControl,
 } from '@angular/forms';
 
 import { MustMatch } from './_helpers';
@@ -21,7 +21,7 @@ import { ok } from 'assert';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   cookieMessage = 'Estamos obligados a darte el coñazo con esto de las cukis';
@@ -29,7 +29,7 @@ export class AppComponent {
   cookieLinkText = 'Vea que las cukis solo guardan informacion util para ti';
 
   title = 'Biblioteca de Gnomo';
- // titulo = 'Biblioteca';
+  // titulo = 'Biblioteca';
   registerForm: FormGroup;
   registerModal: NgbModalRef;
 
@@ -37,17 +37,8 @@ export class AppComponent {
   submitted = false;
   CukiExits: boolean;
   adminExits: boolean;
-  
-
-  verCookieRol: string;
-  verCookieName: string;
-
-  cukiJson;
-  currentUser: string;
-  rol: string;
-  token: string;
-
-
+  currentUser;
+  currentUserName;
 
   constructor(
     private router: Router,
@@ -58,9 +49,9 @@ export class AppComponent {
     private authenticationService: AuthenticationService,
     private cookieService: CookieService
   ) {
-
-    console.log('entra constructor' );
+    console.log('entra constructor');
     this.currentUser = this.authenticationService.currentUserValue;
+    console.log(this.currentUser);
   }
   /**
    * Valida campos input
@@ -68,69 +59,71 @@ export class AppComponent {
    * @memberof AppComponent
    */
   ngOnInit() {
-    console.log('entra oninit' );
+    console.log('entra oninit');
     this.politicaCukis();
 
     this.getCookie("tokensiN");
     this.getCookie("tokensiR");
     this.getCookie("tokensiT")
-    
+
     this.registerForm = this.formBuilder.group(
       {
         userName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
-        passwordRepeat: ['', Validators.required]
+        passwordRepeat: ['', Validators.required],
       },
       {
-        validators: MustMatch('password', 'passwordRepeat')
+        validators: MustMatch('password', 'passwordRepeat'),
       }
     );
+    console.log('entra oninit2');
+    this.currentUser = this.authenticationService.currentUserValue;
+    console.log(this.currentUser);
   }
   politicaCukis() {
-    let cc = window as any;
+    const cc = window as any;
     cc.cookieconsent.initialise({
       palette: {
         popup: {
-          background: '#164969'
+          background: '#164969',
         },
         button: {
           background: '#ffe000',
-          text: '#164969'
-        }
+          text: '#164969',
+        },
       },
       theme: 'classic',
       content: {
         message: this.cookieMessage,
         dismiss: this.cookieDismiss,
         link: this.cookieLinkText,
-        href: 'https://developers.de/privacy-policy/'
+        href: 'https://developers.de/privacy-policy/',
         // environment.Frontend + "/dataprivacy"
-      }
+      },
     });
-
   }
 
   comprobarCookie(nombre, cookie) {
     switch (nombre) {
       case "tokensiI":
-        
+
       break
       case "tokensiN":
         this.currentUser = cookie;
         console.log(this.currentUser);
       break
-      case "tokensiR":      
+      case "tokensiR":
         this.rol = cookie;
         console.log(this.rol);
-        
+
         if(this.rol == "admin") {
           this.CukiExits = true;
           this.adminExits = true;
           this.userService.currentUserType = this.rol;
           this.adminExits = this.userService.userAdmin();
         }
-        
+
       break
       case "tokensiT":
         this.token = cookie;
@@ -139,8 +132,8 @@ export class AppComponent {
       default:
         console.log("No existe esa cookie");
     }
-    
-  } 
+
+  }
 
   getCookie(nombre) {
     let micookie = "";
@@ -151,12 +144,12 @@ export class AppComponent {
       var busca = lista[i].search(nombre);
       if (busca > -1) {
         micookie=lista[i];
-        
+
         console.log(micookie);
       }
     }
-    var igual = micookie.indexOf("="); 
-    var clave = micookie.substring(1, igual);   
+    var igual = micookie.indexOf("=");
+    var clave = micookie.substring(1, igual);
     var valor = micookie.substring(igual+1);
 
     console.log(clave);
@@ -170,18 +163,12 @@ export class AppComponent {
     console.log("valor de myCuki:" + myCuki);
     if (myCuki) {
       this.CukiExits = true;
-      this.cukiJson = JSON.parse(myCuki);
-
       console.log('Existe');
-
-      console.log(this.cukiJson);
-      console.log(this.cukiJson.id);
-      console.log(this.cukiJson.Nombre);
-      console.log(this.cukiJson.rol);
-      console.log(this.cukiJson.token);
-      this.userService.currentUserType = this.cukiJson;
+      console.log(myCuki);
+      console.log(atob(myCuki));
+      this.userService.currentUserType = atob(myCuki);
       this.adminExits = this.userService.userAdmin();
-
+      this.currentUserName = localStorage.getItem('Nombre');
     } else {
       console.log('No Existe');
       this.CukiExits = false;
@@ -207,8 +194,7 @@ export class AppComponent {
   }
   logout() {
     this.authenticationService.logout();
-    this.router.navigate(['home']).then
-    (() =>  window.location.reload());
+    this.router.navigate(['home']).then(() => window.location.reload());
   }
 
 }

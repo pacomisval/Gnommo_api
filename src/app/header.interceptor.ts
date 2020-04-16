@@ -12,4 +12,8 @@ export class HeaderInterceptor implements HttpInterceptor {
   });
   return next.handle(request);
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/jose

@@ -25,8 +25,25 @@ export class AuthenticationService {
   login(email, password) {
      
   console.log("entra en autenticationservice.login")
+<<<<<<< HEAD
    return this.http.post<any>(Globals.apiUrl + '/login', { email, password },{ observe: "response",  withCredentials: true,});
  
+=======
+   return this.http.post<any>(Globals.apiUrl + '/login', { email, password },{ observe: "response",  withCredentials: true})
+
+    // const user1 = {
+    //   userName: 'jose',
+    //   email: 'jose@gmail.com',
+    //   password: '123456',
+    //   rol: 'admin',
+    //   token: 'el token'
+    // };
+    // localStorage.setItem('currentUser', JSON.stringify(user1));
+    // this.currentUserSubject.next(user1);
+    // return user1;
+
+
+>>>>>>> origin/jose
   }
 
   logout() {
