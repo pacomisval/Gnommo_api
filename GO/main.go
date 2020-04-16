@@ -45,18 +45,11 @@ type Usuario struct {
 	Rol      string `json:"rol"`
 	Tok      string `json:"tok"`
 }
-
-type Token struct {
+type Claims struct {
 	//Id     uint
 	Nombre string
 	Email  string
 	*jwt.StandardClaims
-}
-type Cuki struct {
-	ID     string
-	Nombre string
-	Rol    string
-	token  string
 }
 type Value struct {
 	Id     string `json:"id"`
@@ -64,12 +57,13 @@ type Value struct {
 	Rol    string `json:"rol"`
 	Token  string `json:"token"`
 }
-type Answer struct {
-	Token string `json:"token"`
-}
-type Toki struct {
-	Token string
-}
+
+// type Answer struct {
+// 	Token string `json:"token"`
+// }
+// type Toki struct {
+// 	Token string
+// }
 
 var db *sql.DB
 var err error
@@ -115,7 +109,6 @@ func main() {
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"}),
 		handlers.AllowCredentials(),
 		handlers.AllowedOrigins([]string{"http://localhost:4200"}))(router)))
-
 }
 
 ////////////////////////////////////// INICIO ENCRIPTACION /////////////////////////////////////
@@ -165,63 +158,86 @@ func login(w http.ResponseWriter, r *http.Request) {
 	value := encontrarUsuario(user.Password, user.Email)
 	fmt.Println("Vuelve encontrar usuario: ")
 
-	// value := Value{usuario.Id, usuario.Nombre, usuario.Rol, usuario.Tok}
+	I := value.Id
+	N := value.Nombre
+	R := value.Rol
+	T := value.Token
 
-	//	I := value.Id
-	//	N := value.Nombre
-	//	R := value.Rol
-	//	T := value.Token
-	textoCuki := Cuki{
-		ID:     value.Id,
-		Nombre: value.Nombre,
-		Rol:    value.Rol,
-		token:  value.Token,
-	}
-	fmt.Println("El valor de textocuki: ", textoCuki)
-	textoCukiJSON, _ := json.Marshal(textoCuki)
-	fmt.Println("El valor de textocukiJSON: ", textoCukiJSON)
-	textoCukiString := string(textoCukiJSON)
-	fmt.Println("El valor de textocukiString: ", textoCukiString)
+	expiration := time.Now().Add(time.Minute * 5)
 
-	// http.SetCookie(w, &http.Cookie{
-	// 	Name:     "cuki",
-	// 	Value:    textoCukiString,
-	// 	Expires:  time.Now().Add(time.Minute * 5),
-	// 	Path:     "/",
-	// 	HttpOnly: false,
-	// })
-	// http.SetCookie(w, &http.Cookie{
-	// 	Name:     "tokensiN",
-	// 	Value:    value.Nombre,
-	// 	Expires:  time.Now().Add(time.Minute * 5),
-	// 	Path:     "/",
-	// 	HttpOnly: false,
-	// })
+	cookie1 := &http.Cookie{
+		Name:     "tokensiI",
+		Value:    I,
+		Path:     "/",
+		Expires:  expiration,
+		HttpOnly: false,
+		//SameSite: Lax,
+		Secure: false}
+
+	http.SetCookie(w, cookie1)
+	r.AddCookie(cookie1)
+
+	cookie2 := &http.Cookie{
+		Name:     "tokensiN",
+		Value:    N,
+		Path:     "/",
+		Expires:  expiration,
+		HttpOnly: false,
+		//SameSite: Lax,
+		Secure: false}
+
+	http.SetCookie(w, cookie2)
+	r.AddCookie(cookie2)
+
+	cookie3 := &http.Cookie{
+		Name:     "tokensiR",
+		Value:    R,
+		Path:     "/",
+		Expires:  expiration,
+		HttpOnly: false,
+		//SameSite: Lax,
+		Secure: false}
+
+	http.SetCookie(w, cookie3)
+	r.AddCookie(cookie3)
+
+	cookie4 := &http.Cookie{
+		Name:     "tokensiT",
+		Value:    T,
+		Path:     "/",
+		Expires:  expiration,
+		HttpOnly: false,
+		//SameSite: Lax,
+		Secure: false}
+
+	http.SetCookie(w, cookie4)
+	r.AddCookie(cookie4)
+	////////////COMENTAR SI NO VA/////////VVV
 	http.SetCookie(w, &http.Cookie{
-		Name:     "Rol",
-		Value:    base64.StdEncoding.EncodeToString([]byte(value.Rol)),
-		Expires:  time.Now().Add(time.Minute * 5),
+		Name:    "Rol",
+		Value:   base64.StdEncoding.EncodeToString([]byte(value.Rol)),
+		Expires: time.Now().Add(time.Minute * 5),
+
 		Path:     "/",
 		HttpOnly: false,
 	})
-	// http.SetCookie(w, &http.Cookie{
-	// 	Name:     "tokensiI",
-	// 	Value:    value.Id,
-	// 	Expires:  time.Now().Add(time.Minute * 5),
-	// 	Path:     "/",
-	// 	HttpOnly: false,
-	// })
-	http.SetCookie(w, &http.Cookie{
-		Name:     "token",
-		Value:    value.Token,
-		Expires:  time.Now().Add(time.Minute * 5),
+	cuki := &http.Cookie{
+		Name:    "token",
+		Value:   value.Token,
+		Expires: time.Now().Add(time.Minute * 365 * 24 * 60 * 60),
+		//	Secure:   true,
 		Path:     "/",
 		HttpOnly: true,
-	})
+	}
+	http.SetCookie(w, cuki)
+	r.AddCookie(cuki)
+	////////////COMENTAR SI NO VA/////////^^^^
 	fmt.Println("valor: ", value)
 	//	json.NewEncoder(w).Encode(value)
 	json.NewEncoder(w).Encode(value)
-	fmt.Println("El valor de W: ", w)
+	fmt.Println("El valor de W://////////////////////////////////// ", w)
+
+	return
 }
 
 func encontrarUsuario(password, email string) Value {
@@ -278,7 +294,7 @@ func encontrarUsuario(password, email string) Value {
 		return value
 	}
 
-	claims := Token{
+	claims := Claims{
 		Nombre: nombre,
 		Email:  mail,
 		StandardClaims: &jwt.StandardClaims{
@@ -368,8 +384,8 @@ func recuperarToken(id string) string {
 
 func crearToken(id, nombre, password, email string) string {
 
-	expireAt := time.Now().Add(time.Minute * 5).Unix()
-	claims := Token{
+	expireAt := time.Now().Add(time.Minute * 125).Unix()
+	claims := Claims{
 		Nombre: nombre,
 		Email:  email,
 		StandardClaims: &jwt.StandardClaims{
@@ -382,9 +398,7 @@ func crearToken(id, nombre, password, email string) string {
 	tokenString, err := token.SignedString(Secret)
 	if err != nil {
 		panic(err.Error())
-
 	}
-
 	// resp := tokenString
 
 	//fmt.Println("Token string: ", tokenString)
@@ -394,11 +408,57 @@ func crearToken(id, nombre, password, email string) string {
 	return tokenString
 }
 
+func verificarToken(tknStr, SecretKey string) int {
+	resp := 0 // ok
+	claims := &Claims{}
+
+	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(SecretKey), nil
+	})
+	/* fmt.Println("Valor del token: ", tknStr)
+	fmt.Println("Valor de claims: ", claims) */
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			resp = 1 // StatusUnauthorized
+			return resp
+		}
+		resp = 2 // StatusBadRequest
+	}
+	if !tkn.Valid {
+		resp = 1
+		return resp
+	}
+	fmt.Println("Dentro de verificarToken: ", resp)
+	return resp
+}
+
 ///////////////////////////////// FIN ENCRIPTACION ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// INICIO API LIBROS ////////////////////////////
-
-////////////////// GET LIBROS ////////////////////////
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//////////////////// GET LIBROS ////////////////////////
 func getLibros(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var libros []Libro
@@ -507,9 +567,9 @@ func getLibro(w http.ResponseWriter, r *http.Request) {
 //////////////////// POST LIBRO ///////////////////////
 func postLibro(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	//INSERT INTO books VALUES ('','nuevo','123','5')
 
-	stmt, err := db.Prepare("INSERT INTO books(id, nombre, isbn, idAutor) VALUES(?,?,?,?)")
-	//	stmt, err := db.Prepare("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)")
 
 	if err != nil {
 		panic(err.Error())
@@ -521,13 +581,13 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	keyVal := make(map[string]string)
 	json.Unmarshal(body, &keyVal)
 
-	id := keyVal["id"]
+	//id := keyVal["id"]
 	nombre := keyVal["nombre"]
 	isbn := keyVal["isbn"]
-	idAutor := keyVal["idAutor"]
+	idAutor := keyVal["id_author"] //mirar si falla FK es idAutor
+	//fmt.Println("inserta LIBRO:", id, nombre, isbn, idAutor)
 
-	_, err = stmt.Exec(&id, &nombre, &isbn, &idAutor)
-	//	_, err = stmt.Exec(&nombre, &isbn, &idAutor)
+	_, err = stmt.Exec(&nombre, &isbn, &idAutor)
 
 	if err != nil {
 		panic(err.Error())
@@ -540,7 +600,31 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 ///////////////////// PUT LIBRO /////////////////////
 func putLibro(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
 
+	///////////////////////////////////////////////
+	// for _, cookie := range r.Cookies() {
+	// 	fmt.Fprint(w, cookie.Name)
+	// }
+	c, err := r.Cookie("tokensiT")
+	if err != nil {
+		fmt.Println("ERROR: ", err)
+		if err == http.ErrNoCookie {
+			w.WriteHeader(http.StatusUnauthorized)
+			fmt.Println("Error de StatusUnauthorized")
+			return
+		}
+	}
+	tknStr := c.Value
+
+	secret := "felipe@mail.com"
+
+	fmt.Println("Token en putLibro: ", tknStr)
+
+	resp := verificarToken(tknStr, secret)
+	fmt.Println("Esto es la respuesta de resp en PutLibro: ", resp)
+
+	///////////////////////////////////////////////
 	params := mux.Vars(r)
 
 	stmt, err := db.Prepare("UPDATE books SET id = ?, nombre = ?, isbn = ?, idAutor = ? WHERE id = ?")
@@ -724,6 +808,41 @@ func deleteAutor(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ESTO ES DELETE AUTOR")
 }
 
+///////////////////////BUSCAR Si existe Autor POR NOMBRE ////////////////////
+func buscaAutor(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("entra en buscar autor")
+
+	//params := mux.Vars(r)
+	fmt.Println(r.Body)
+
+	result, err := db.Prepare("SELECT * FROM autor WHERE first_name =? and last_name=?")
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+	clave := make(map[string]string)
+	json.Unmarshal(body, &clave)
+
+	firstName := clave["first_name"]
+	lastName := clave["last_name"]
+
+	_, err = result.Exec(&firstName, &lastName)
+	if err != nil {
+		panic(err.Error())
+	}
+	//var autor Autor
+
+	// for result.Next() {
+	// 	err := result.Scan(&autor.Id, &autor.FirstName, &autor.LastName)
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// }
+	fmt.Println(result)
+
+}
+
 //////////////////////////////// FIN API AUTORES //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// INICIO  API USUARIOS //////////////////////////////
@@ -834,99 +953,6 @@ func postUsuario(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ESTO ES POST USUARIO")
 }
 
-// nueva version1////
-// func postUsuario(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-
-// 	stmt, err := db.Prepare("INSERT INTO usuarios(id, nombre, password, email, rol, tok) VALUES (?,?,?,?,?,?)")
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-// 	body, err := ioutil.ReadAll(r.Body)
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-// 	key := make(map[string]string)
-// 	json.Unmarshal(body, &key)
-
-// 	id := key["id"]
-// 	nombre := key["nombre"]
-// 	password := key["password"]
-// 	email := key["email"]
-// 	rol := key["rol"]
-// 	tok := key["tok"]
-
-// 	pass := encriptarPass(password, email)
-// 	tok = crearToken(id, nombre, password, email)
-
-// 	_, err = stmt.Exec(&id, &nombre, &pass, &email, &rol, &tok)
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-// 	value := Value{Id: usuario.Id, Rol: usuario.Rol, Token: usuario.Tok}
-// 	crearCookie(w, "postUsuario", value)
-// 	//	io.WriteString(w, "Cookie App_Gnommo_api")
-
-// 	fmt.Println(w)
-// 	fmt.Println("ESTO ES POST USUARIO")
-// }
-
-// nueva version 2////
-// func postUsuario(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-
-// 	stmt, err := db.Prepare("INSERT INTO usuarios(id, nombre, password, email, rol, tok) VALUES (?,?,?,?,?,?)")
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-// 	body, err := ioutil.ReadAll(r.Body)
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-// 	key := make(map[string]string)
-// 	json.Unmarshal(body, &key)
-
-// 	id := key["id"]
-// 	nombre := key["nombre"]
-// 	password := key["password"]
-// 	email := key["email"]
-// 	rol := key["rol"]
-// 	tok := key["tok"]
-
-// 	pass := encriptarPass(password, email)
-// 	tok = crearToken(id, nombre, password, email)
-
-// 	_, err = stmt.Exec(&id, &nombre, &pass, &email, &rol, &tok)
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-
-// 	result, err := db.Query("SELECT * FROM usuarios WHERE email like ?", &email)
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-// 	defer result.Close()
-
-// 	var usuario Usuario
-
-// 	for result.Next() {
-// 		err := result.Scan(&usuario.Id, &usuario.Nombre, &usuario.Password, &usuario.Email, &usuario.Rol, &usuario.Tok)
-// 		if err != nil {
-// 			panic(err.Error())
-// 		}
-// 	}
-
-// 	/*json.NewEncoder(w).Encode(usuario) */
-// 	value := Value{Id: usuario.Id, Rol: usuario.Rol, Token: usuario.Tok}
-// 	fmt.Println(value)
-// 	crearCookie(w, "postUsuario", value)
-// 	//	io.WriteString(w, "Cookie App_Gnommo_api")
-
-// 	// fmt.Println("Respuesta postUsuario: ", w)
-// 	fmt.Println(w)
-// 	fmt.Println("ESTO ES POST USUARIO")
-// }
-
 ///////////////////// PUT USUARIO ///////////////////////
 func putUsuario(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -994,3 +1020,22 @@ func crearCookie(w http.ResponseWriter, nombre string, toki string) {
 	// }
 	// http.SetCookie(w, &cookie)
 }
+
+// func check(err) {
+// 	if err != nil {
+// 		panic(err.Error())
+// 	}
+// }
+
+// ////516
+// fmt.Println("*************************************")
+// for _, cookie := range r.Cookies() {
+// 	fmt.Println("Found a cookie named:*************************************", cookie.Name)
+// }
+
+// cookie, err := r.Cookie("token")
+// if err != nil {
+// 	fmt.Printf("Cant find cookie :/\r\n")
+// 	return
+// }
+// fmt.Println("Found a cookie named2:*************************************", cookie.Name)

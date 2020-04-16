@@ -2,12 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-// import { NgbdModalComponent, NgbdModalContent } from "./modal-component";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, NgControl, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AddlibroComponent } from './libro/addlibro/addlibro.component';
 // import { EditarlibroComponent } from './libro/editarlibro/editarlibro.component';
@@ -22,6 +21,9 @@ import { AuthenticationService } from './services/authentication.service';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { UserService } from './services/user.service';
+import { HeaderInterceptor } from './header.interceptor';
+
+
 
 @NgModule({
   declarations: [
@@ -43,7 +45,20 @@ import { UserService } from './services/user.service';
     NgbModule,
     ReactiveFormsModule,
   ],
-  providers: [BookService, AuthorService, UserService, NgbActiveModal, NgForm, AuthInterceptorService, AuthenticationService],
+  providers: [
+    BookService,
+    AuthorService,
+    UserService,
+    NgbActiveModal,
+    NgForm,
+    AuthInterceptorService,
+    AuthenticationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HeaderInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
