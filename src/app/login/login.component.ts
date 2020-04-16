@@ -140,35 +140,6 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (results) => {
           console.log('respuesta');
-<<<<<<< HEAD
-          console.log(results);
-
-           /* if (results.id == 0) {
-            // error
-            console.log('id =0');
-            // PENDIENTE MOSTRAR MODALES CON ERRORES
-          } else {
-            console.log('id distinto 0');
-            // no error
-            const cukiUser = JSON.stringify(results);
-            console.log("valor de cukiUser: " + cukiUser);
-            // this.cookieService.set(
-            //   'cuki',
-            //   cukiUser,
-            //   1
-            // );  
-            this.router.navigate(['home']).then
-             (() =>  window.location.reload());
-          } */ 
-          this.router.navigate(['home']).then(() =>  window.location.reload());
-        },
-       error => {
-        console.log('respuesta error');
-        this.error = error;
-        this.loading = false;
-        });
-
-=======
           console.log(results.body);
           if (results.body.id == 0) {
             // error
@@ -192,7 +163,6 @@ export class LoginComponent implements OnInit {
           this.openInformationWindows();
         }
       );
->>>>>>> origin/jose
   }
   /**
    * Muestra formulario registrar

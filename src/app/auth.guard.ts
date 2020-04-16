@@ -12,21 +12,12 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-<<<<<<< HEAD
     if (this.cookieService.get('tokensiR')) {
       this.cuki = this.cookieService.get('tokensiR');
       if (this.cuki == 'admin') {
         console.log('existe tokensiR == admin');
         return true;
       }
-=======
-    if (this.cookieService.get('Rol')) {
-      this.cuki = this.cookieService.get('Rol');
-      if (this.cuki == btoa('admin')) {
-         console.log('existe this.cuki.rol == admin');
-         return true;
-       }
->>>>>>> origin/jose
     }
     console.log('no existe tokensiR == admin');
     this.router.navigate(['login']);

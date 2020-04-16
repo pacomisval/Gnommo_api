@@ -23,13 +23,9 @@ import { AuthenticationService } from './services/authentication.service';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { UserService } from './services/user.service';
-<<<<<<< HEAD
-import { CookieService } from 'ngx-cookie-service';
-=======
 import { HeaderInterceptor } from './header.interceptor';
 
 
->>>>>>> origin/jose
 
 @NgModule({
   declarations: [
@@ -53,12 +49,12 @@ import { HeaderInterceptor } from './header.interceptor';
   ],
   providers: [
 <<<<<<< HEAD
-    BookService, 
-    AuthorService, 
-    UserService, 
-    CookieService, 
+    BookService,
+    AuthorService,
+    UserService,
+    CookieService,
     NgbActiveModal,
-    NgForm, 
+    NgForm,
     AuthInterceptorService,
     AuthenticationService,
     {
