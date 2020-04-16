@@ -23,7 +23,7 @@ export class AuthenticationService {
 
   login(email, password) {
   console.log("entra en autenticationservice.login")
-   return this.http.post<any>(Globals.apiUrl + '/login', { email, password })
+   return this.http.post<any>(Globals.apiUrl + '/login', { email, password },{ observe: "response",  withCredentials: true})
 
     // const user1 = {
     //   userName: 'jose',

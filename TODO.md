@@ -4,15 +4,15 @@
 
 - [ ] Tema Cookies  
 - [ ] Añadir imagenes  
-- [ ] Cambiar nombre rutas a mas amigables  
-- [ ] Corregir Añadir libro problema FK  
-- [ ] Comprobar si existe el autor  
 - [ ] Comprobar en libro si esta duplicado  
+- [ ] Comprobar si existe el autor  
 
 ### In Progress
 
+- [ ] Cambiar nombre rutas a mas amigables  
 
 ### Done ✓
 
+- [x] Corregir Añadir libro problema FK  
 - [x] Ventanas modales  
 

@@ -98,10 +98,12 @@ export class AddautorComponent implements OnInit {
       return;
     }
     //  console.log(this.authorService.comesAddLibro);
+   
     const data = {
-      first_name: this.autor.first_name,
-      last_name: this.autor.last_name,
+      first_name: this.afc.first_name.value,
+      last_name: this.afc.last_name.value,
     };
+
     // controlamos que no este repetido.
     // repetido=> Damos como agregado
 
