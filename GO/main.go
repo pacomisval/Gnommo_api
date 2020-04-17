@@ -5,7 +5,6 @@ import (
 	"crypto/md5"
 	"crypto/sha256"
 	"database/sql"
-	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -58,20 +57,11 @@ type Value struct {
 	Token  string `json:"token"`
 }
 
-// type Answer struct {
-// 	Token string `json:"token"`
-// }
-// type Toki struct {
-// 	Token string
-// }
-
 var db *sql.DB
 var err error
 
-//var tknStr
-
 func main() {
-	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/libreria")
+	db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -160,6 +150,18 @@ func login(w http.ResponseWriter, r *http.Request) {
 	value := encontrarUsuario(user.Password, user.Email)
 	fmt.Println("Vuelve encontrar usuario: ")
 
+	crearCookie(w, r, value)
+
+	fmt.Println("valor de value: ", value)
+
+	json.NewEncoder(w).Encode(value)
+	fmt.Println("El valor de W: ", w)
+
+	return
+}
+
+func crearCookie(w http.ResponseWriter, r *http.Request, value Value) {
+
 	I := value.Id
 	N := value.Nombre
 	R := value.Rol
@@ -174,8 +176,8 @@ func login(w http.ResponseWriter, r *http.Request) {
 		Expires:  expiration,
 		HttpOnly: false,
 		//SameSite: Lax,
-		Secure: false}
-
+		Secure: false,
+	}
 	http.SetCookie(w, cookie1)
 	r.AddCookie(cookie1)
 
@@ -186,8 +188,8 @@ func login(w http.ResponseWriter, r *http.Request) {
 		Expires:  expiration,
 		HttpOnly: false,
 		//SameSite: Lax,
-		Secure: false}
-
+		Secure: false,
+	}
 	http.SetCookie(w, cookie2)
 	r.AddCookie(cookie2)
 
@@ -198,8 +200,8 @@ func login(w http.ResponseWriter, r *http.Request) {
 		Expires:  expiration,
 		HttpOnly: false,
 		//SameSite: Lax,
-		Secure: false}
-
+		Secure: false,
+	}
 	http.SetCookie(w, cookie3)
 	r.AddCookie(cookie3)
 
@@ -210,36 +212,50 @@ func login(w http.ResponseWriter, r *http.Request) {
 		Expires:  expiration,
 		HttpOnly: false,
 		//SameSite: Lax,
-		Secure: false}
-
+		Secure: false,
+	}
 	http.SetCookie(w, cookie4)
 	r.AddCookie(cookie4)
-	////////////COMENTAR SI NO VA/////////VVV
-	http.SetCookie(w, &http.Cookie{
-		Name:    "Rol",
-		Value:   base64.StdEncoding.EncodeToString([]byte(value.Rol)),
-		Expires: time.Now().Add(time.Minute * 5),
+}
 
-		Path:     "/",
-		HttpOnly: false,
-	})
-	cuki := &http.Cookie{
-		Name:    "token",
-		Value:   value.Token,
-		Expires: time.Now().Add(time.Minute * 365 * 24 * 60 * 60),
-		//	Secure:   true,
-		Path:     "/",
-		HttpOnly: true,
+func eliminarCookie(w http.ResponseWriter, r *http.Request) {
+	expiration := time.Now().Add(time.Minute - 1)
+
+	cookie1 := &http.Cookie{
+		Name:    "tokensiI",
+		Value:   "",
+		Path:    "/",
+		Expires: expiration,
 	}
-	http.SetCookie(w, cuki)
-	r.AddCookie(cuki)
-	////////////COMENTAR SI NO VA/////////^^^^
-	fmt.Println("valor: ", value)
-	//	json.NewEncoder(w).Encode(value)
-	json.NewEncoder(w).Encode(value)
-	fmt.Println("El valor de W://////////////////////////////////// ", w)
+	http.SetCookie(w, cookie1)
+	r.AddCookie(cookie1)
 
-	return
+	cookie2 := &http.Cookie{
+		Name:    "tokensiN",
+		Value:   "",
+		Path:    "/",
+		Expires: expiration,
+	}
+	http.SetCookie(w, cookie2)
+	r.AddCookie(cookie2)
+
+	cookie3 := &http.Cookie{
+		Name:    "tokensiR",
+		Value:   "",
+		Path:    "/",
+		Expires: expiration,
+	}
+	http.SetCookie(w, cookie3)
+	r.AddCookie(cookie3)
+
+	cookie4 := &http.Cookie{
+		Name:    "tokensiT",
+		Value:   "",
+		Path:    "/",
+		Expires: expiration,
+	}
+	http.SetCookie(w, cookie4)
+	r.AddCookie(cookie4)
 }
 
 func encontrarUsuario(password, email string) Value {
@@ -276,7 +292,7 @@ func encontrarUsuario(password, email string) Value {
 	}
 
 	if resultVacio {
-		//	fmt.Println("Es usuario vacio")
+
 		Id := "0"
 		Nombre := "error"
 		Rol := "NO se ha encontrado el Email"
@@ -385,7 +401,7 @@ func recuperarToken(id string) string {
 	return usuario.Tok
 }
 
-func crearToken(id, nombre, password, email string) string {
+func crearToken(id, nombre, email string) string {
 
 	expireAt := time.Now().Add(time.Minute * 125).Unix()
 	claims := Claims{
@@ -402,9 +418,6 @@ func crearToken(id, nombre, password, email string) string {
 	if err != nil {
 		panic(err.Error())
 	}
-	// resp := tokenString
-
-	//fmt.Println("Token string: ", tokenString)
 
 	guardarToken(tokenString, id)
 
@@ -418,8 +431,8 @@ func verificarToken(tknStr, SecretKey string) int {
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
-	/* fmt.Println("Valor del token: ", tknStr)
-	fmt.Println("Valor de claims: ", claims) */
+	fmt.Println("Valor del token: ", tknStr)
+	fmt.Println("Valor de claims: ", claims)
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
 			resp = 1 // StatusUnauthorized
@@ -431,6 +444,7 @@ func verificarToken(tknStr, SecretKey string) int {
 		resp = 1
 		return resp
 	}
+
 	fmt.Println("Dentro de verificarToken: ", resp)
 	return resp
 }
@@ -438,7 +452,7 @@ func verificarToken(tknStr, SecretKey string) int {
 func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 	c, err := r.Cookie("tokensiT")
 	if err != nil {
-		fmt.Println("ERROR: ", err)
+		fmt.Println("ERROR cookie tokensiT: ", err)
 		if err == http.ErrNoCookie {
 			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Println("Error de StatusUnauthorized")
@@ -449,7 +463,7 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 
 	d, err := r.Cookie("tokensiI")
 	if err != nil {
-		fmt.Println("ERROR: ", err)
+		fmt.Println("ERROR cookie tokensiI: ", err)
 		if err == http.ErrNoCookie {
 			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Println("Error de StatusUnauthorized")
@@ -459,7 +473,7 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 	}
 	idStr := d.Value
 
-	result, err := db.Query("SELECT email FROM usuarios WHERE id = ?", idStr)
+	result, err := db.Query("SELECT * FROM usuarios WHERE id = ?", idStr)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -470,7 +484,7 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 
 	for result.Next() {
 
-		err := result.Scan(&usuario.Email)
+		err := result.Scan(&usuario.Id, &usuario.Nombre, &usuario.Password, &usuario.Email, &usuario.Rol, &usuario.Tok)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -482,6 +496,20 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 	fmt.Println("Valor de secret: ", secret)
 
 	resp := verificarToken(tknStr, secret)
+
+	if resp == 0 {
+		token := crearToken(usuario.Id, usuario.Nombre, usuario.Email)
+
+		var value Value
+		value.Id = usuario.Id
+		value.Nombre = usuario.Nombre
+		value.Rol = usuario.Rol
+		value.Token = token
+
+		eliminarCookie(w, r)
+		crearCookie(w, r, value)
+	}
+
 	fmt.Println("Esto es la respuesta de resp en PutLibro: ", resp)
 
 	return resp
@@ -490,29 +518,7 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 ///////////////////////////////// FIN ENCRIPTACION ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// INICIO API LIBROS ////////////////////////////
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 //////////////////// GET LIBROS ////////////////////////
 func getLibros(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -622,7 +628,6 @@ func getLibro(w http.ResponseWriter, r *http.Request) {
 //////////////////// POST LIBRO ///////////////////////
 func postLibro(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	//INSERT INTO books VALUES ('','nuevo','123','5')
 
 	///////////////////////////////////////////////
 	resp := verificarCookies(w, r)
@@ -667,26 +672,12 @@ func putLibro(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
 
 	///////////////////////////////////////////////
-	// for _, cookie := range r.Cookies() {
-	// 	fmt.Fprint(w, cookie.Name)
-	// }
-	c, err := r.Cookie("tokensiT")
-	if err != nil {
-		fmt.Println("ERROR: ", err)
-		if err == http.ErrNoCookie {
-			w.WriteHeader(http.StatusUnauthorized)
-			fmt.Println("Error de StatusUnauthorized")
-			return
-		}
+
+	resp := verificarCookies(w, r)
+
+	if resp != 0 {
+		return
 	}
-	tknStr := c.Value
-
-	secret := "felipe@mail.com"
-
-	fmt.Println("Token en putLibro: ", tknStr)
-
-	resp := verificarToken(tknStr, secret)
-	fmt.Println("Esto es la respuesta de resp en PutLibro: ", resp)
 
 	///////////////////////////////////////////////
 	params := mux.Vars(r)
@@ -805,6 +796,16 @@ func getAutor(w http.ResponseWriter, r *http.Request) {
 func postAutor(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
+	///////////////////////////////////////////////
+
+	resp := verificarCookies(w, r)
+
+	if resp != 0 {
+		return
+	}
+
+	///////////////////////////////////////////////
+
 	stmt, err := db.Prepare("INSERT INTO autor(id, first_name, last_name) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
@@ -824,7 +825,6 @@ func postAutor(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-	// fmt.Fprintf(w, "Se a añadido un nuevo autor con id %s ", clave["id"])
 
 	fmt.Println("ESTO ES POST AUTOR")
 }
@@ -832,6 +832,16 @@ func postAutor(w http.ResponseWriter, r *http.Request) {
 ////////////////////// PUT AUTOR //////////////////////
 func putAutor(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+
+	///////////////////////////////////////////////
+
+	resp := verificarCookies(w, r)
+
+	if resp != 0 {
+		return
+	}
+
+	///////////////////////////////////////////////
 	fmt.Println("ESTO ES PUT AUTOR 1")
 
 	params := mux.Vars(r)
@@ -857,13 +867,23 @@ func putAutor(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-	//	fmt.Fprintf(w, "Se ha actualizado el autor con id %s correctamente", params["id"])
 
 	fmt.Println("ESTO ES UPDATE AUTOR")
 }
 
 //////////////////// DELETE AUTOR ////////////////////////
 func deleteAutor(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	///////////////////////////////////////////////
+
+	resp := verificarCookies(w, r)
+
+	if resp != 0 {
+		return
+	}
+
+	///////////////////////////////////////////////
 
 	params := mux.Vars(r)
 
@@ -877,12 +897,12 @@ func deleteAutor(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	//fmt.Fprintf(w, "Se ha eliminado el autor %s correctamente ", params["id"])
 	fmt.Println("ESTO ES DELETE AUTOR")
 }
 
 ///////////////////////BUSCAR Si existe Autor POR NOMBRE ////////////////////
 func buscaAutor(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Println("entra en buscar autor")
 
 	//params := mux.Vars(r)
@@ -904,14 +924,7 @@ func buscaAutor(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-	//var autor Autor
 
-	// for result.Next() {
-	// 	err := result.Scan(&autor.Id, &autor.FirstName, &autor.LastName)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// }
 	fmt.Println(result)
 
 }
@@ -995,7 +1008,7 @@ func postUsuario(w http.ResponseWriter, r *http.Request) {
 	tok := key["tok"]
 
 	pass := encriptarPass(password, email)
-	tok = crearToken(id, nombre, password, email)
+	tok = crearToken(id, nombre, email)
 
 	_, err = stmt.Exec(&id, &nombre, &pass, &email, &rol, &tok)
 	if err != nil {
@@ -1018,16 +1031,26 @@ func postUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	value := Value{usuario.Id, usuario.Nombre, usuario.Rol, usuario.Tok}
-	//	crearCookie(w, "postUsuario", tok)
-	json.NewEncoder(w).Encode(value)
 
-	//fmt.Println(w)
+	json.NewEncoder(w).Encode(value)
 
 	fmt.Println("ESTO ES POST USUARIO")
 }
 
 ///////////////////// PUT USUARIO ///////////////////////
 func putUsuario(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	///////////////////////////////////////////////
+
+	resp := verificarCookies(w, r)
+
+	if resp != 0 {
+		return
+	}
+
+	///////////////////////////////////////////////
+
 	params := mux.Vars(r)
 
 	stmt, err := db.Prepare("UPDATE usuarios SET id = ?, nombre = ?, password = ?, email = ?, rol = ?, tok = ? WHERE id = ?")
@@ -1060,6 +1083,18 @@ func putUsuario(w http.ResponseWriter, r *http.Request) {
 
 ///////////////////// DELETE USUARIO //////////////////////
 func deleteUsuario(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	///////////////////////////////////////////////
+
+	resp := verificarCookies(w, r)
+
+	if resp != 0 {
+		return
+	}
+
+	///////////////////////////////////////////////
+
 	params := mux.Vars(r)
 
 	stmt, err := db.Prepare("DELETE FROM usuarios WHERE id = ?")
@@ -1077,38 +1112,3 @@ func deleteUsuario(w http.ResponseWriter, r *http.Request) {
 }
 
 ////////////////////////////////// FIN API USUARIOS //////////////////////////////
-
-func crearCookie(w http.ResponseWriter, nombre string, toki string) {
-	fmt.Println("entra en cookie")
-	expiration := time.Now().Add(365 * 24 * time.Hour)
-	cookie := http.Cookie{Name: "micookie", Value: toki, Expires: expiration}
-	http.SetCookie(w, &cookie)
-	fmt.Println("sale cookie2")
-	// expire := time.Now().Add(time.Minute * 15)
-	// cookie := http.Cookie{
-	// 	Name:    "mi cookie",
-	// 	Value:   "toki",
-	// 	Expires: expire,
-	// 	//	HttpOnly: true,
-	// }
-	// http.SetCookie(w, &cookie)
-}
-
-// func check(err) {
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-// }
-
-// ////516
-// fmt.Println("*************************************")
-// for _, cookie := range r.Cookies() {
-// 	fmt.Println("Found a cookie named:*************************************", cookie.Name)
-// }
-
-// cookie, err := r.Cookie("token")
-// if err != nil {
-// 	fmt.Printf("Cant find cookie :/\r\n")
-// 	return
-// }
-// fmt.Println("Found a cookie named2:*************************************", cookie.Name)

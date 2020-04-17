@@ -234,6 +234,7 @@ export class ListarComponent implements OnInit {
         .catch((err) => {
           //     console.log('Error en autor modificado');
           //     console.log('respuesta updateBook error');
+          console.log("Error en editBook: " + err);
           this.information = 'No se ha modificado el autor';
           this.openInformationWindows();
         });
@@ -263,6 +264,7 @@ export class ListarComponent implements OnInit {
       })
       .catch((err) => {
         //    console.log('respuesta updateBook error');
+        console.log("Error en updateBook: " + err);
         this.information = 'No se han podido efectuar las modificaciones';
         this.openInformationWindows();
       });
@@ -300,7 +302,7 @@ export class ListarComponent implements OnInit {
         this.getLibros();
       })
       .catch((err) => {
-    //    console.log(err);
+        console.log("Error en deleteBook: " + err);
         this.information = 'el libro no se ha eliminado';
         this.openInformationWindows();
       });

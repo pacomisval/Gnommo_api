@@ -37,8 +37,8 @@ export class AppComponent {
   submitted = false;
   CukiExits: boolean;
   adminExits: boolean;
-  currentUser;
-  currentUserName;
+  currentUser: string;
+  currentUserName: string;
   rol;
   token;
 
@@ -53,7 +53,7 @@ export class AppComponent {
   ) {
     console.log('entra constructor');
     this.currentUser = this.authenticationService.currentUserValue;
-    console.log(this.currentUser);
+    console.log(this.currentUser); 
   }
   /**
    * Valida campos input
@@ -112,15 +112,15 @@ export class AppComponent {
 
       break
       case "tokensiN":
-        this.currentUser = cookie;
-        console.log(this.currentUser);
+        this.currentUserName = cookie;
+        console.log(this.currentUserName);
       break
       case "tokensiR":
         this.rol = cookie;
         console.log(this.rol);
 
         if(this.rol == "admin") {
-          this.CukiExits = true;
+          this.CukiExits = true; // este valor deberia cambiar cuando expira la cookie o el token para que se vea solo login
           this.adminExits = true;
           this.userService.currentUserType = this.rol;
           this.adminExits = this.userService.userAdmin();
