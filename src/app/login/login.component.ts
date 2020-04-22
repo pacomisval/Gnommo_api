@@ -36,12 +36,29 @@ export class LoginComponent implements OnInit {
   registerModal: NgbModalRef;
   registerForm: FormGroup;
 
+  recoveryPassword1Modal: NgbModalRef;
+  recoveryPassword1Form: FormGroup;
+  recoveryPassword1 = false;
+
+  recoveryPassword2Modal: NgbModalRef;
+  recoveryPassword2Form: FormGroup;
+  recoveryPassword2 = false;
+
+  recoveryPassword3Modal: NgbModalRef;
+  recoveryPassword3Form: FormGroup;
+  recoveryPassword3 = false;
+
   loading = false;
   loginOpen = true;
   submittedLogin = false;
   submittedRegister = false;
+  submittedRecoveryPassword1 = false;
+  submittedRecoveryPassword2 = false;
+  submittedRecoveryPassword3 = false;
   Administrador = false;
   error: string;
+
+  codigo: string = '';
 
   user = {
     userName: '',
@@ -98,6 +115,24 @@ export class LoginComponent implements OnInit {
     );
     // get return url from route parameters or default to '/'
     //  this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+    this.recoveryPassword1Form = this.formBuilder.group({
+      userName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      
+    });
+    this.recoveryPassword2Form = this.formBuilder.group({
+      codigo: ['', Validators.required],
+    });
+    this.recoveryPassword3Form = this.formBuilder.group(
+      {
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      passwordRepeat: ['', Validators.required],
+      },
+      {
+        validators: MustMatch('password', 'passwordRepeat'),
+      }
+    );
   }
 
   /** Abreviatura de loginForm.controls
@@ -118,6 +153,36 @@ export class LoginComponent implements OnInit {
    */
   get rfc() {
     return this.registerForm.controls;
+  }
+
+  /** Abreviatura de recoveryPassword1Form.controls
+   *
+   *
+   * @readonly
+   * @memberof LoginComponent
+   */
+  get rpc1() {
+    return this.recoveryPassword1Form.controls;
+  }
+
+  /** Abreviatura de recoveryPassword2Form.controls
+   *
+   *
+   * @readonly
+   * @memberof LoginComponent
+   */
+  get rpc2() {
+    return this.recoveryPassword2Form.controls;
+  }
+
+  /** Abreviatura de recoveryPassword3Form.controls
+   *
+   *
+   * @readonly
+   * @memberof LoginComponent
+   */
+  get rpc3() {
+    return this.recoveryPassword3Form.controls;
   }
 
   /**
@@ -178,6 +243,21 @@ export class LoginComponent implements OnInit {
       ariaLabelledBy: 'modal-basic-title',
     });
   }
+
+  /**
+   * Cierra ventanas modales
+   *
+   * Muestra pagina Login
+   *
+   * @memberof LoginComponent
+   */
+  closeRegister() {
+    // Cerrar modal Register
+    this.modalService.dismissAll();
+    // Abrir login
+    this.loginOpen = true;
+  }
+  
   /**
    * Añade usuario a la BD
    *
@@ -205,9 +285,9 @@ export class LoginComponent implements OnInit {
       (results) => {
         alert('usuario Agregado');
         console.log(results);
-        const cukiUser = JSON.stringify(results);
-        console.log(cukiUser);
-        this.cookieService.set('cuki', cukiUser, 1);
+        // const cukiUser = JSON.stringify(results);
+        // console.log(cukiUser);
+        // this.cookieService.set('cuki', cukiUser, 1);
         this.userService.currentUserType = data.rol;
         this.registerModal.dismiss();
         this.router.navigate(['home']).then(() => window.location.reload());
@@ -218,10 +298,6 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
-  // get myForm() {
-  //   return this.registerForm.get('rol');
-  // }
 
   onFileChange(event) {
     const reader = new FileReader();
@@ -238,18 +314,169 @@ export class LoginComponent implements OnInit {
       };
     }
   }
-  /**
-   * Cierra ventanas modales
-   *
-   * Muestra pagina Login
-   *
-   * @memberof LoginComponent
+
+  /** 
+   *  Recuperación de contraseña: PASO 1
+   *  Envio de credenciales(nombre, email) para recuperar contraseña.
    */
-  closeRegister() {
-    // Cerrar modal Register
+  sendCredentialsDB() {
+    this.submittedRecoveryPassword1 = true;
+    console.log("Dentro de sendCredentials");
+    if(this.recoveryPassword1Form.invalid) {
+      return
+    }
+
+    this.authenticationService
+    .recoveryPassword1(this.rpc1.userName.value, this.rpc1.email.value)
+    .subscribe((results) => {
+      console.log(results.body);
+      if(results.body) {   
+        this.recoveryPassword2 = true;            
+        //this.abrirModalPass2(this.recoveryPassword2Modal);  
+      }
+      else {
+        this.closeRecoveryPassword1();
+        
+        this.loginOpen = true;
+      }
+    },
+    (error) => {
+      console.log(error);
+    });
+  }
+  /**
+   *  Recuperación de contraseña: PASO 2
+   *  Envio de clave(código) para recuperar contraseña.
+   */
+  sendCodigo() {
+    console.log("Dentro de sendCodigo");
+    this.submittedRecoveryPassword2 = true;
+    if(this.recoveryPassword2Form.invalid) {
+      return
+    }
+
+    this.authenticationService
+    .recoveryPassword2(this.rpc2.codigo.value)
+    .subscribe((results) => {
+      console.log(results);
+      if(results.body) {
+        this.recoveryPassword3 = true;
+      }
+      else {
+        this.closeRecoveryPassword2();
+        this.loginOpen = true;
+      }
+    },
+    (error) => {
+      console.log(error);
+    })
+  }
+
+  /**
+   *  Recuperación de contraseña: PASO 3
+   *  Envio de nueva contraseña(email, password). 
+   */
+  sendNewPassword() {
+    console.log("Dentro de sendNewPassword");
+    this.submittedRecoveryPassword3 = true;
+    if(this.recoveryPassword3Form.invalid) {
+      return 
+    }
+
+    this.authenticationService
+    .recoveryPassword3(this.rpc3.email.value, this.rpc3.password.value)
+    .subscribe((results) => {
+      console.log(results.body);
+      if(results.body) {
+        console.log("dentro de recoveryPassword3")
+        this.recoveryPassword3 = false;
+        
+      }
+      else {
+        this.closeRecoveryPassword3();
+        this.loginOpen = true;
+      }
+    },
+    (error) => {
+      console.log(error);
+    });
+
+  }
+
+  /**
+   * Muestra modal Recuperación de contraseña PASO 1(credenciales)
+   * 
+   * @param recoveryPassword1Modal 
+   */
+  abrirModalPass1(recoveryPassword1Modal: any) {
+    // cierra ventana login
+    this.loginOpen = false;
+    // abre recoveryPassword1Modal
+    this.recoveryPassword1Modal = this.modalService.open(recoveryPassword1Modal, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
+  }
+
+  /**
+   *  Muestra modal Recuperación de contraseña PASO 2(codigo)
+   * 
+   * @param recoveryPassword2Modal 
+   */
+  abrirModalPass2(recoveryPassword2Modal: any) {
+    console.log("Dentro de abrirModalPass2");
+    // cierra ventana login
+    this.loginOpen = false;
+    // cierra el modas recoveryPassword1 teoricamente
+    this.closeRecoveryPassword1();
+    // abre recoveryPassword2Modal
+    this.recoveryPassword2Modal = this.modalService.open(recoveryPassword2Modal, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
+  }
+
+  /**
+   *  Muestra modal Recuperación de contraseña PASO 3(nueva contraseña)
+   * 
+   * @param recoveryPassword3Modal 
+   */
+  abrirModalPass3(recoveryPassword3Modal: any) {
+    console.log("Dentro de abrirModalPass3");
+
+    this.loginOpen = false;
+
+    this.closeRecoveryPassword2();
+
+    this.recoveryPassword3Modal = this.modalService.open(recoveryPassword3Modal, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
+  }
+
+
+  
+  
+  /**
+   *  Cierra la ventana modal(credenciales)
+   */
+  closeRecoveryPassword1() {
+    console.log("Dentro de close recoveryPassword1");
     this.modalService.dismissAll();
-    // Abrir login
-    this.loginOpen = true;
+  }
+
+  /**
+   *  Cierra la ventana modal(código)
+   */
+  closeRecoveryPassword2() {
+    console.log("Dentro de close recoveryPassword2");
+    this.modalService.dismissAll();
+  }
+
+  /**
+   *  Cierra la ventana modal(nueva contraseña)
+   */
+  closeRecoveryPassword3() {
+    console.log("Dentro de close recoveryPassword2");
+    this.modalService.dismissAll();
+    this.router.navigate(['home']).then(() => window.location.reload());
   }
 
   /**
@@ -262,4 +489,4 @@ export class LoginComponent implements OnInit {
   }
 }
 
-// }
+

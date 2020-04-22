@@ -14,11 +14,12 @@
             </thead>
             <tbody class="tbody">
                 <tr class="tr" *ngFor="let autor of authors" id="tr">
+                    
                     <td *ngIf="autor.id!=1 ">{{autor.first_name}}</td>
                     <td *ngIf="autor.id!=1 ">{{autor.last_name}}</td>
                     <ng-container *ngIf="admin">
                         <td *ngIf="autor.id!=1 && autor.id!=2 ">
-                            <button (click)="deleteAuthor(autor)" class="btn btn-danger">Delete</button>
+                            <button (click)="openDeleteAutor(modalDeleteAutor); setId(autor.id)" class="btn btn-danger">Delete</button>
                         </td>
                     </ng-container>
                 </tr>
@@ -26,7 +27,7 @@
         </table>
     </div>
 </div>
-<!-- VENTANA MODAL INFORMATIVA -->
+<!--////////////////  VENTANA MODAL INFORMATIVA  ////////////////////////-->
 <ng-template #modalInformation let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Gnomo Librery</h4>
@@ -38,8 +39,32 @@
         <p>{{message}}</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
-       Cerrar
-    </button>
+       
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>
     </div>
 </ng-template>
+
+<!--///////////////  VENTANA MODAL ELIMINAR AUTOR  ///////////////////-->
+<ng-template #modalDeleteAutor let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Gnomo Librery</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+<span aria-hidden="true">&times;</span>
+</button>
+    </div>
+    <div class="modal-body">
+        <h3><b>Estas seguro !!</b></h3><h5>Se eliminará el autor definitivamente</h5>
+    </div>
+    <div class="modal-footer">
+         <button type="button" class="btn btn-outline-success" (click)="deleteAuthor()" >Eliminar</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>
+    </div>
+</ng-template>
+
+
+
+
+
+
+
+
