@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthorService } from 'src/app/services/author.service';
 import { BookService } from 'src/app/services/book.service';
 import { UserService } from 'src/app/services/user.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Author } from 'src/app/models/author';
 /**
  * Componente Lista de autores READ & DELETE
@@ -23,6 +23,11 @@ export class ListarautoresComponent implements OnInit {
    */
   @ViewChild('modalInformation', { static: false })
   modalInformation: TemplateRef<any>;
+
+  modalDeleteAutor: NgbModalRef;
+
+  id: number;
+
   /**
    * Boolean para describir rol del usuario
    *
@@ -32,7 +37,7 @@ export class ListarautoresComponent implements OnInit {
    *
    * @memberof ListarComponent
    */
-  admin = false;
+  admin: boolean = false;
   /**
    * Lista de autores
    *
@@ -125,22 +130,25 @@ export class ListarautoresComponent implements OnInit {
 
   /**
    * Borra un Autor
-   *
+   * Si el autor tiene libros en la DB, no será null, por consiguiente no se podrá eliminar el auto.
+   * Si el autor no tiene libros en la DB, será null. Entonces si se puede eliminar.
    * @param {*} author objeto a borrar
    * @memberof ListarautoresComponent
    */
-  deleteAuthor(author: Author ) {
-     // console.log(author.id);
-    this.bookService.getBookFromAutor(author.id).subscribe(
+  deleteAuthor(/* author: Author */) {
+    var idd = this.getId()
+    console.log("Dentro de delete author");
+    this.bookService.getBookFromAutor(/* author.id */idd).subscribe(
       (result) => {
-       // console.log(result);
+        console.log(result);
         if (result != null) {
           this.message = 'No se puede eliminar un autor que tiene libros en la biblioteca';
           this.openInformationWindows();
         } else {
-        //  console.log('estoy en el else');
-          this.authorService.deleteAutor(author.id).subscribe((result) => {
-            this.message = 'El autor se ha eliminado correctamente';
+          this.authorService.deleteAutor(/* author.id */idd).subscribe((result) => {
+            console.log(result);
+            this.closeDeleteAutor();
+            this.message = 'El autor se ha eliminado correctamente !!';
             this.openInformationWindows();
             this.getAll();
           });
@@ -161,4 +169,26 @@ export class ListarautoresComponent implements OnInit {
   openInformationWindows() {
     this.modalService.open(this.modalInformation);
   }
+
+  setId(id) {
+    this.id = parseInt(id);
+  }
+
+  getId() {
+    return this.id;
+  }
+
+  openDeleteAutor(modalDeleteAutor) {
+    
+    this.modalDeleteAutor = this.modalService.open(modalDeleteAutor, {
+      ariaLabelledBy: 'modal-basic-title',  
+    });
+
+  }
+
+  closeDeleteAutor() {
+    console.log("Dentro de close Delete autor");
+    this.modalService.dismissAll();
+  }
+
 }
