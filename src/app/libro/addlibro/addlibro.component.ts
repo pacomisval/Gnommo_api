@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { AuthorService } from 'src/app/services/author.service';
 import { Author } from 'src/app/models/author';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UploadService } from '../../services/upload.service';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+
 /**
  * Componente para añadir libro
  *
@@ -17,6 +20,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./addlibro.component.css'],
 })
 export class AddlibroComponent implements OnInit {
+  
+  form: FormGroup;
+  error: string;
+
+  uploadResponse = { status: '', message: '', filePath: ''};
+  
+  
   /**
    * View child Ventana Modal con un mensaje
    */
@@ -63,7 +73,9 @@ export class AddlibroComponent implements OnInit {
     private router: Router,
     private bookService: BookService,
     private authorService: AuthorService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private formBuilder: FormBuilder, 
+    private uploadService: UploadService
   ) {}
 
   /**
@@ -79,6 +91,10 @@ export class AddlibroComponent implements OnInit {
     console.log(this.book.title);
     console.log(this.book.isbn);
     this.getAuthors();
+
+    this.form = new FormGroup({
+      avatar: new FormControl()
+   });
   }
 
   /**
@@ -170,5 +186,38 @@ export class AddlibroComponent implements OnInit {
    */
   openInformationWindows() {
     this.modalService.open(this.modalInformation);
+  }
+
+  /**
+   *  Upload files
+   */
+  onSubmit() {
+    const formData = new FormData();
+    formData.append('uploadFile', this.form.get('avatar').value);
+    console.log(formData);
+
+    this.uploadService.upload(formData).subscribe(res => {
+      this.uploadResponse = res;
+      console.log("valor de res: " + res);
+    },
+    err => {
+      this.error = err;
+      console.log("valor de error: " + err);
+    });
+     
+  }
+
+  /**
+   * 
+   * @param event 
+   *  Selección el archivo 
+   */
+  onFileChange(event) {  
+    if(event.target.files.length > 0) {
+      const file = event.target.files[0];
+      
+      this.form.get('avatar').setValue(file);
+      console.log("valor de form: " + this.form.get);
+    }
   }
 }

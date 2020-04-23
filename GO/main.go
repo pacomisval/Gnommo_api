@@ -6,8 +6,10 @@ import (
 	// "Gnommo_api7/Gnommo_api/GO/libro"
 	// "Gnommo_api7/Gnommo_api/GO/user"
 
+	
 	"crypto/hmac"
 	"crypto/md5"
+	"crypto/rand"
 	"crypto/sha256"
 	"database/sql"
 	"encoding/hex"
@@ -16,8 +18,12 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"mime"
 	"net/http"
 	"net/smtp"
+	"os"
+	"path/filepath"
+	"html/template"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -67,6 +73,9 @@ type Value struct {
 var db *sql.DB
 var err error
 
+const maxUploadSize = 100 * 1024 // 100 KB 
+const uploadPath = "./src/assets/images/book"
+
 func main() {
 	db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
@@ -74,8 +83,6 @@ func main() {
 	}
 
 	defer db.Close()
-
-	fmt.Println("Funcionando.......")
 
 	router := mux.NewRouter()
 
@@ -106,12 +113,16 @@ func main() {
 	router.HandleFunc("/api/recoveryPass2", verificarCodigo).Methods("POST")
 	router.HandleFunc("/api/recoveryPass3", nuevoPassword).Methods("POST")
 
+	router.HandleFunc("/api/upload", uploadFileHandler).Methods("POST")
+
+	log.Print("Server started on localhost:8000 ..........")
+
 	log.Fatal(http.ListenAndServe(":8000", handlers.CORS(
 		handlers.AllowCredentials(),
 		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization", "Accept", "Accept-Language"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"}),
 		handlers.AllowedOrigins([]string{"http://localhost:4200"}))(router)))
-
+	
 }
 
 ////////////////////////////////////// INICIO ENCRIPTACION /////////////////////////////////////
@@ -827,6 +838,99 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 }
 
 ///////////////////////////////// FIN ENCRIPTACION ////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////  UPLOAD FILES ///////////////////////////////////////
+
+func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("upload.gtpl")
+		t.Execute(w, nil)
+		fmt.Println("valor de t: ", t);
+		return
+	}
+	if err := r.ParseMultipartForm(maxUploadSize); err != nil {
+		fmt.Printf("Could not parse multipart form: %v\n", err)
+		renderError(w, "CANT_PARSE_FORM", http.StatusInternalServerError)
+		return
+	}
+
+	// parse and validate file and post parameters
+	file, fileHeader, err := r.FormFile("uploadFile")
+	if err != nil {
+		renderError(w, "INVALID_FILE", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	// Get and print out file size
+	fileSize := fileHeader.Size
+	fmt.Printf("File size (bytes): %v\n", fileSize)
+	// validate file size
+	if fileSize > maxUploadSize {
+		renderError(w, "FILE_TOO_BIG", http.StatusBadRequest)
+		return
+	}
+
+	fileBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		renderError(w, "INVALID_FILE", http.StatusBadRequest)
+		return
+	}
+	
+	// check file type, detectcontenttype only needs the first 512 bytes
+	detectedFileType := http.DetectContentType(fileBytes)
+	switch detectedFileType {
+	case "image/jpeg", "image/jpg":
+	case "image/gif", "image/png":
+	case "application/pdf":
+		break
+	default:
+		renderError(w, "INVALID_FILE_TYPE", http.StatusBadRequest)
+		return
+	}
+	fileName := randToken(12) 
+	fileEndings, err := mime.ExtensionsByType(detectedFileType)
+	if err != nil {
+		renderError(w, "CANT_READ_FILE_TYPE", http.StatusInternalServerError)
+		return
+	}
+	newPath := filepath.Join(uploadPath, fileName+fileEndings[0])
+	fmt.Printf("FileType: %s, File: %s\n", detectedFileType, newPath)
+
+	// write file
+	newFile, err := os.Create(newPath)
+	if err != nil {
+		renderError(w, "CANT_WRITE_FILE", http.StatusInternalServerError)
+		fmt.Println("valor de w1: ", w)
+		return
+	}
+	defer newFile.Close()
+
+	if _, err := newFile.Write(fileBytes); err != nil || newFile.Close() != nil {
+		renderError(w, "CANT_WRITE_FILE", http.StatusInternalServerError)
+		fmt.Println("valor de w2: ", w)
+		return
+	}
+	fmt.Println("Todo ha ido bien. Has llegado al final !!")
+	w.Write([]byte("SUCCESS"))
+	
+}                                          
+
+func renderError(w http.ResponseWriter, message string, statusCode int) {
+
+	w.WriteHeader(http.StatusBadRequest)
+	w.Write([]byte(message))
+}
+
+func randToken(len int) string {
+
+	b := make([]byte, len)
+	rand.Read(b)
+	return fmt.Sprintf("%x", b)
+}
+
+//////////////////////////////  FIN UPLOAD FILES  /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// INICIO API LIBROS ////////////////////////////
 

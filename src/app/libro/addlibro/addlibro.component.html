@@ -24,6 +24,27 @@
             </div>
             <!-- <p>Id seleccionado: {{ autorSeleccionado.id }}</p> -->
         </form>
+        <!--////////////////  UPLOAD //////////////////-->
+        <br>
+        <div>
+            <div *ngIf="error">
+               <!-- error: {{ error }} -->
+            </div>
+            <div *ngIf="uploadResponse.status === 'error'">
+                response.status: {{ uploadResponse.message }}
+            </div>
+            <div *ngIf="uploadResponse.status === 'progress'">
+                <div role="progressbar" [style.width.%]="uploadResponse.message" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                    response.status: {{ uploadResponse.message }}%
+                </div>
+            </div>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <input type="file" name="avatar" (change)="onFileChange($event)"/>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+        <br><br>
+        <!--//////////////////  FIN UPLOAD ////////////////-->
         <button type="button" (click)="addBook()" class="btn btn-danger">
       Guardar
     </button>

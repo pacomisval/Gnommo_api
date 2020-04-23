@@ -25,8 +25,7 @@ import { HomeComponent } from './home/home.component';
 import { UserService } from './services/user.service';
 import { HeaderInterceptor } from './header.interceptor';
 import { CookieService } from 'ngx-cookie-service';
-
-
+import { UploadService } from './services/upload.service';
 
 @NgModule({
   declarations: [
@@ -57,6 +56,7 @@ import { CookieService } from 'ngx-cookie-service';
     NgForm,
     AuthInterceptorService,
     AuthenticationService,
+    UploadService,
     {
     provide: HTTP_INTERCEPTORS,
     useClass: HeaderInterceptor,
