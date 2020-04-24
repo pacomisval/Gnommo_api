@@ -6,7 +6,7 @@ import { Author } from 'src/app/models/author';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UploadService } from '../../services/upload.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-
+import { HashLocationStrategy } from '@angular/common';
 /**
  * Componente para añadir libro
  *
@@ -20,13 +20,13 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
   styleUrls: ['./addlibro.component.css'],
 })
 export class AddlibroComponent implements OnInit {
-  
+
   form: FormGroup;
   error: string;
 
   uploadResponse = { status: '', message: '', filePath: ''};
-  
-  
+
+
   /**
    * View child Ventana Modal con un mensaje
    */
@@ -74,7 +74,7 @@ export class AddlibroComponent implements OnInit {
     private bookService: BookService,
     private authorService: AuthorService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder, 
+    private formBuilder: FormBuilder,
     private uploadService: UploadService
   ) {}
 
@@ -104,18 +104,71 @@ export class AddlibroComponent implements OnInit {
    *
    * @memberof AddlibroComponent
    */
-  addBook() {
-    console.log(this.selectedAuthor.id);
 
-    if (this.selectedAuthor.id == 1) {
-      localStorage.setItem('nombre', this.book.title);
-      localStorage.setItem('isbn', this.book.isbn);
-      this.optionNewAuthor();
-    } else {
-      localStorage.setItem('nombre', '');
-      localStorage.setItem('isbn', '');
-      this.saveBookDB();
+ comprobacionFinal(resultados){
+  var mtitulo=true;
+  var misbn=true;
+  var reg : RegExp = /^[0-9-a-zA-Z]+$/;
+
+  if(this.book.title.length>50){
+    this.message = "Has superado el límite de carácteres máximos en el campo titulo \n";
+    mtitulo=false;
+  }
+
+  if (this.book.isbn.length>15){
+    this.message = "Has superado el límite de carácteres máximos en el campo isbn \n";
+    misbn=false;
+  }else if(reg.test(this.book.isbn)==false){
+    this.message = "Asegurese de estar introduciendo un ISBN correcto \n";
+    misbn=false;
+  }
+
+  var res=true;
+  for (var i=0;i<resultados.length;i++){
+
+    if(resultados[i].isbn == this.book.isbn){
+      this.message = "El libro que intenta introducir ya existe \n";
+     res=false;
     }
+  }
+
+  if(res && misbn && mtitulo){
+    localStorage.setItem('comprobar','bien')
+  }else{
+    this.openInformationWindows();
+    localStorage.setItem('comprobar','mal')
+  }
+
+ }
+
+  addBook() {
+    // console.log(this.selectedAuthor);
+    this.bookService.getAll().subscribe(
+      (results) => {
+        console.log(results[1].isbn+"  holaRafa");
+
+        this.comprobacionFinal(results);
+        if(localStorage.getItem('comprobar')=='bien'){
+          console.log("addbook")
+          console.log(this.book.title)
+          if (this.selectedAuthor.id == 1){
+
+            localStorage.setItem('nombre', this.book.title);
+            localStorage.setItem('isbn', this.book.isbn);
+            this.optionNewAuthor();
+          }else {
+            localStorage.setItem('nombre', '');
+            localStorage.setItem('isbn', '');
+            this.saveBookDB();
+          }
+        }
+      },
+      (err) => {
+       console.log("nada")
+      }
+    );
+
+
   }
 
   /**
@@ -204,18 +257,18 @@ export class AddlibroComponent implements OnInit {
       this.error = err;
       console.log("valor de error: " + err);
     });
-     
+
   }
 
   /**
-   * 
-   * @param event 
-   *  Selección el archivo 
+   *
+   * @param event
+   *  Selección el archivo
    */
-  onFileChange(event) {  
+  onFileChange(event) {
     if(event.target.files.length > 0) {
       const file = event.target.files[0];
-      
+
       this.form.get('avatar').setValue(file);
       console.log("valor de form: " + this.form.get);
     }

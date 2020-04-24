@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         passwordRepeat: ['', Validators.required],
-        image: ['', [Validators.required]],
+        //image: ['', [Validators.required]],
         // image: ['', [Validators.required, requiredFileType('png')]],
       },
       {
@@ -118,7 +118,7 @@ export class LoginComponent implements OnInit {
     this.recoveryPassword1Form = this.formBuilder.group({
       userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      
+
     });
     this.recoveryPassword2Form = this.formBuilder.group({
       codigo: ['', Validators.required],
@@ -257,46 +257,87 @@ export class LoginComponent implements OnInit {
     // Abrir login
     this.loginOpen = true;
   }
-  
+
   /**
    * Añade usuario a la BD
    *
    * @returns
    * @memberof LoginComponent
    */
+
+  comprobarRegistro(){
+   var res =true;
+   var reg : RegExp = /^[0-9-a-zA-Z]+$/;
+    var reg2 : RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/;
+    var reg3 : RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+
+   if (this.rfc.userName.value.length>70){
+    this.information = "Has superado el límite de carácteres máximos en el campo usuario \n";
+    res=false;
+  }else if(reg.test(this.rfc.userName.value)==false){
+    this.information = "El campo usuario solo puede contener letras y numeros \n";
+    res=false;
+  }
+
+  if(this.rfc.email.value.length>100){
+    this.information = "Has superado el límite de carácteres máximos en el campo email \n";
+    res=false;
+  }else if(reg2.test(this.rfc.email.value)==false){
+    this.information = "Asegurese de estar introduciendo un email válido \n";
+    res=false;
+  }
+
+  if(reg3.test(this.rfc.password.value)==false){
+    this.information = "La contraseña tiene que tener como mínimo una mayuscula, un número y una mínuscula, ademas tiene que tener como mínimo 6 carácteres \n";
+    res=false;
+  }else if(this.rfc.password.value != this.rfc.passwordRepeat.value){
+    this.information = "Las contraseñas tienen que coincidir \n";
+    res=false;
+  }
+
+  if(!res){
+    this.openInformationWindows();
+  }
+    return res;
+  }
+
   addUserDB() {
-    this.submittedRegister = true;
-    console.log('registrando');
-    if (this.registerForm.invalid) {
-      return;
-    }
-    this.loading = true;
-    const data = {
-      id: '',
-      nombre: this.rfc.userName.value,
-      password: this.rfc.password.value,
-      email: this.rfc.email.value,
-      rol: 'user',
-      tok: '',
-    };
-    console.log('data');
-    console.log(data);
-    this.userService.createUser(data).subscribe(
-      (results) => {
-        alert('usuario Agregado');
-        console.log(results);
-        // const cukiUser = JSON.stringify(results);
-        // console.log(cukiUser);
-        // this.cookieService.set('cuki', cukiUser, 1);
-        this.userService.currentUserType = data.rol;
-        this.registerModal.dismiss();
-        this.router.navigate(['home']).then(() => window.location.reload());
-      },
-      (error) => {
-        alert('usuario NO Agregado');
-        console.log(error);
+    if(this.comprobarRegistro()){
+      this.comprobarRegistro();
+      this.submittedRegister = true;
+      console.log('registrando');
+      if (this.registerForm.invalid) {
+        console.log("formulario invalido")
+        return;
       }
-    );
+      this.loading = true;
+      const data = {
+        id: '',
+        nombre: this.rfc.userName.value,
+        password: this.rfc.password.value,
+        email: this.rfc.email.value,
+        rol: 'user',
+        tok: '',
+      };
+      console.log('data');
+      console.log(data);
+      this.userService.createUser(data).subscribe(
+        (results) => {
+          alert('usuario Agregado');
+          console.log(results);
+          const cukiUser = JSON.stringify(results);
+          console.log(cukiUser);
+          this.cookieService.set('cuki', cukiUser, 1);
+          this.userService.currentUserType = data.rol;
+          this.registerModal.dismiss();
+          this.router.navigate(['home']).then(() => window.location.reload());
+        },
+        (error) => {
+          alert('usuario NO Agregado');
+          console.log(error);
+        }
+      );
+    }
   }
 
   onFileChange(event) {
@@ -315,7 +356,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  /** 
+  /**
    *  Recuperación de contraseña: PASO 1
    *  Envio de credenciales(nombre, email) para recuperar contraseña.
    */
@@ -330,13 +371,13 @@ export class LoginComponent implements OnInit {
     .recoveryPassword1(this.rpc1.userName.value, this.rpc1.email.value)
     .subscribe((results) => {
       console.log(results.body);
-      if(results.body) {   
-        this.recoveryPassword2 = true;            
-        //this.abrirModalPass2(this.recoveryPassword2Modal);  
+      if(results.body) {
+        this.recoveryPassword2 = true;
+        //this.abrirModalPass2(this.recoveryPassword2Modal);
       }
       else {
         this.closeRecoveryPassword1();
-        
+
         this.loginOpen = true;
       }
     },
@@ -374,13 +415,13 @@ export class LoginComponent implements OnInit {
 
   /**
    *  Recuperación de contraseña: PASO 3
-   *  Envio de nueva contraseña(email, password). 
+   *  Envio de nueva contraseña(email, password).
    */
   sendNewPassword() {
     console.log("Dentro de sendNewPassword");
     this.submittedRecoveryPassword3 = true;
     if(this.recoveryPassword3Form.invalid) {
-      return 
+      return
     }
 
     this.authenticationService
@@ -390,7 +431,7 @@ export class LoginComponent implements OnInit {
       if(results.body) {
         console.log("dentro de recoveryPassword3")
         this.recoveryPassword3 = false;
-        
+
       }
       else {
         this.closeRecoveryPassword3();
@@ -405,8 +446,8 @@ export class LoginComponent implements OnInit {
 
   /**
    * Muestra modal Recuperación de contraseña PASO 1(credenciales)
-   * 
-   * @param recoveryPassword1Modal 
+   *
+   * @param recoveryPassword1Modal
    */
   abrirModalPass1(recoveryPassword1Modal: any) {
     // cierra ventana login
@@ -419,8 +460,8 @@ export class LoginComponent implements OnInit {
 
   /**
    *  Muestra modal Recuperación de contraseña PASO 2(codigo)
-   * 
-   * @param recoveryPassword2Modal 
+   *
+   * @param recoveryPassword2Modal
    */
   abrirModalPass2(recoveryPassword2Modal: any) {
     console.log("Dentro de abrirModalPass2");
@@ -436,8 +477,8 @@ export class LoginComponent implements OnInit {
 
   /**
    *  Muestra modal Recuperación de contraseña PASO 3(nueva contraseña)
-   * 
-   * @param recoveryPassword3Modal 
+   *
+   * @param recoveryPassword3Modal
    */
   abrirModalPass3(recoveryPassword3Modal: any) {
     console.log("Dentro de abrirModalPass3");
@@ -452,8 +493,8 @@ export class LoginComponent implements OnInit {
   }
 
 
-  
-  
+
+
   /**
    *  Cierra la ventana modal(credenciales)
    */

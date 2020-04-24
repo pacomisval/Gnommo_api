@@ -67,6 +67,7 @@ export class ListarComponent implements OnInit {
    * @memberof ListarComponent
    */
   editBookForm: FormGroup;
+  isbnRepetido;
   /**
    * Boolean para confirmar la ventana modal de editar
    *
@@ -190,6 +191,8 @@ export class ListarComponent implements OnInit {
     this.modalService.open(editBookModal, {
       ariaLabelledBy: 'modal-basic-title',
     });
+    this.isbnRepetido = this.book.isbn;
+    console.log(this.book.isbn + " Rafitaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1");
   }
 
   /**
@@ -202,8 +205,74 @@ export class ListarComponent implements OnInit {
    * @param {*} book libro a guardar
    * @memberof ListarComponent
    */
+
+  comprobacionFinal(results){
+    console.log("entraaa rafa");
+    var res=true;
+    var sololetras : RegExp = /^[A-Za-z\s]+$/;
+
+
+    if(this.book.first_name.length>50){
+      this.information = "-Has superado el límite de carácteres máximos permitidos en el campo nombre";
+      res=false;
+    }else if(sololetras.test(this.book.first_name)==false){
+      this.information = "-En el campo nombre solo se permiten letras";
+      res=false;
+    }
+
+    if (this.book.last_name.length>50){
+      this.information = "-Has superado el límite de carácteres máximos permitidos en el campo apellido";
+      res=false;
+    }else if(sololetras.test(this.book.last_name)==false){
+      this.information = "-En el campo apellido solo se permiten letras";
+      res=false;
+    }
+
+    var reg : RegExp = /^[0-9-a-zA-Z]+$/;
+
+  if(this.book.nombre.length>50){
+    this.information = "Has superado el límite de carácteres máximos en el campo titulo \n";
+    res=false;
+  }
+
+if(this.isbnRepetido == this.book.isbn){
+  this.information = "Asegurese de estar cambiando el ISBN \n";
+  res=false;
+}else{
+  if (this.book.isbn.length>15){
+    this.information = "Has superado el límite de carácteres máximos en el campo isbn \n";
+    res=false;
+  }else if(reg.test(this.book.isbn)==false){
+    this.information = "Asegurese de estar introduciendo un ISBN correcto \n";
+    res=false;
+  }else{
+    for (var i=0;i<results.length;i++){
+
+      if(results[i].isbn == this.book.isbn){
+        this.information = "El libro que intenta introducir ya existe \n";
+       res=false;
+      }
+    }
+  }
+}
+    if(!res){
+      this.openInformationWindows();
+    }
+    return res;
+   }
+
   editBook(book: Book, modalInformationDelete: any) {
-    console.log(book);
+
+    this.bookService.getAll().subscribe(
+      (results) => {
+        console.log(results[1].isbn+"  holaRafa");
+
+      if(this.comprobacionFinal(results)){
+    //  console.log(book);
+    console.log(this.book.nombre+" aquiiiii23");
+    console.log(this.book.isbn+" aquiiiii23");
+    console.log(this.book.first_name +" aquiiiii23");
+    console.log(this.book.last_name+" aquiiiii23");
     this.submittedEditBook = true;
     const datosAutor = {
       id: this.book.idAutor,
@@ -239,6 +308,11 @@ export class ListarComponent implements OnInit {
           this.openInformationWindows();
         });
     }
+  }(err) => {
+    console.log("nada")
+   }
+  }
+);
   }
 
   /**

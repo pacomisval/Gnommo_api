@@ -6,7 +6,6 @@ import (
 	// "Gnommo_api7/Gnommo_api/GO/libro"
 	// "Gnommo_api7/Gnommo_api/GO/user"
 
-	
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/rand"
@@ -15,6 +14,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io"
 	"io/ioutil"
 	"log"
@@ -23,7 +23,6 @@ import (
 	"net/smtp"
 	"os"
 	"path/filepath"
-	"html/template"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -73,11 +72,11 @@ type Value struct {
 var db *sql.DB
 var err error
 
-const maxUploadSize = 100 * 1024 // 100 KB 
+const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/libreria")
+	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -122,7 +121,7 @@ func main() {
 		handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization", "Accept", "Accept-Language"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"}),
 		handlers.AllowedOrigins([]string{"http://localhost:4200"}))(router)))
-	
+
 }
 
 ////////////////////////////////////// INICIO ENCRIPTACION /////////////////////////////////////
@@ -846,7 +845,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		t, _ := template.ParseFiles("upload.gtpl")
 		t.Execute(w, nil)
-		fmt.Println("valor de t: ", t);
+		fmt.Println("valor de t: ", t)
 		return
 	}
 	if err := r.ParseMultipartForm(maxUploadSize); err != nil {
@@ -877,7 +876,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		renderError(w, "INVALID_FILE", http.StatusBadRequest)
 		return
 	}
-	
+
 	// check file type, detectcontenttype only needs the first 512 bytes
 	detectedFileType := http.DetectContentType(fileBytes)
 	switch detectedFileType {
@@ -889,7 +888,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		renderError(w, "INVALID_FILE_TYPE", http.StatusBadRequest)
 		return
 	}
-	fileName := randToken(12) 
+	fileName := randToken(12)
 	fileEndings, err := mime.ExtensionsByType(detectedFileType)
 	if err != nil {
 		renderError(w, "CANT_READ_FILE_TYPE", http.StatusInternalServerError)
@@ -914,8 +913,8 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("Todo ha ido bien. Has llegado al final !!")
 	w.Write([]byte("SUCCESS"))
-	
-}                                          
+
+}
 
 func renderError(w http.ResponseWriter, message string, statusCode int) {
 

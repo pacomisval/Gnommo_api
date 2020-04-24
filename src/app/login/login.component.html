@@ -91,14 +91,15 @@
                                     <input type="password" formControlName="passwordRepeat" class="form-control" [ngClass]="{ 'is-invalid': submittedRegister && rfc.passwordRepeat.errors }" />
                                     <div *ngIf="submittedRegister && rfc.passwordRepeat.errors" class="invalid-feedback">
                                         <div *ngIf="rfc.passwordRepeat.errors.required">PasswordRepeat is required</div>
-                                        <div *ngIf="rfc.passwordRepeat.errors.mustMatch">PasswordRepeat must be at least 6 characters</div>
+                                        <div *ngIf="rfc.passwordRepeat.errors.mustMatch">
+                                            Passwords have to match</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <!-- <label for="file1">Imagen de Perfil</label> -->
-                            <input type="file" (change)="onFileChange($event)" />
+                            <!--<input type="file" (change)="onFileChange($event)" />-->
                             <!-- <input type="file" class="form-control-file" id="file1"> -->
                         </div>
 

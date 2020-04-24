@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label for="first_name">Nombre:</label>
                 <!-- <input type="text" class="form-control" formControlName="first_name" [(ngModel)]="autor.first_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.first_name.errors }" /> -->
-                <input type="text" class="form-control" formControlName="first_name"  [ngClass]="{ 'is-invalid': submittedAuthor && afc.first_name.errors }" />
+                <input type="text" class="form-control" [(ngModel)]="mautor" formControlName="first_name"  [ngClass]="{ 'is-invalid': submittedAuthor && afc.first_name.errors }" />
                 
             
               
@@ -21,7 +21,7 @@
             <div class="form-group">
                 <label for="">Apellido:</label>
                 <!-- <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.last_name.errors }" /> -->
-                <input class="form-control" formControlName="last_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.last_name.errors }" />
+                <input class="form-control" [(ngModel)]="mapellido" formControlName="last_name" [ngClass]="{ 'is-invalid': submittedAuthor && afc.last_name.errors }" />
                
               
                 <div *ngIf="submittedAuthor && afc.last_name.errors" class="invalid-feedback">
@@ -41,7 +41,7 @@
 </button>
     </div>
     <div class="modal-body">
-        <p>{{information}}</p>
+        <p id="error">{{information}}</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
