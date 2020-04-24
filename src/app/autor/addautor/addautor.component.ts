@@ -57,6 +57,8 @@ export class AddautorComponent implements OnInit {
    * @memberof AddautorComponent
    */
   invalidated: boolean;
+  mautor;
+  mapellido;
 
   /**
    * Creates an instance of AddautorComponent.
@@ -91,39 +93,71 @@ export class AddautorComponent implements OnInit {
    *
    * @memberof AddautorComponent
    */
-  Guardar() {
-    console.log(this.authorForm.controls);
-    this.submittedAuthor = true;
-    if (this.authorForm.invalid) {
-      return;
+
+  comprobacionFinal(){
+    console.log("entraaa rafa");
+    console.log(this.autor)
+    var res=true;
+    var letras : RegExp = /^[A-Za-z\s]+$/g;
+    
+    
+    if(this.mautor.length>50){
+      this.information = "-Has superado el límite de carácteres máximos en el campo nombre";
+      res=false;
+    }else if(letras.test(this.mautor)==false){
+      this.information = "-En el campo nombre solo se permiten letras";
+      res=false;
     }
-    //  console.log(this.authorService.comesAddLibro);
-   
-    const data = {
-      first_name: this.afc.first_name.value,
-      last_name: this.afc.last_name.value,
-    };
+    console.log(letras.test(this.mautor));
+    if (this.mapellido.length>50){
+      this.information = "-Has superado el límite de carácteres máximos en el campo apellido";
+      res=false;
+    }else if(letras.test(this.mapellido)==false){
+      this.information = "-En el campo apellido solo se permiten letras";
+      res=false;
+    }
 
-    // controlamos que no este repetido.
-    // repetido=> Damos como agregado
+    if(!res){
+      this.openInformationWindows();
+    }
+    return res;
+   }
 
-    // no repetido =>agregamos
-    this.authorService.postAutor(data).subscribe(
-      (results) => {
-        this.information = 'Autor añadido';
-        this.openInformationWindows();
-        this.backRoute();
-        //      console.log(this.autor.first_name);
-        //      console.log(this.autor.last_name);
-        //      console.log(this.authorService. comesAddLibro);
-      },
-      (error) => {
-        this.information = 'Autor no añadido';
-        this.openInformationWindows();
-        //          alert('NO Agregado');
-        this.router.navigate(['/']);
+  Guardar() {
+    if(this.comprobacionFinal()){
+      console.log(this.authorForm.controls);
+      this.submittedAuthor = true;
+      if (this.authorForm.invalid) {
+        return;
       }
-    );
+      //  console.log(this.authorService.comesAddLibro);
+    
+      const data = {
+        first_name: this.afc.first_name.value,
+        last_name: this.afc.last_name.value,
+      };
+
+      // controlamos que no este repetido.
+      // repetido=> Damos como agregado
+
+      // no repetido =>agregamos
+      this.authorService.postAutor(data).subscribe(
+        (results) => {
+          this.information = 'Autor añadido';
+          this.openInformationWindows();
+          this.backRoute();
+          //      console.log(this.autor.first_name);
+          //      console.log(this.autor.last_name);
+          //      console.log(this.authorService. comesAddLibro);
+        },
+        (error) => {
+          this.information = 'Autor no añadido';
+          this.openInformationWindows();
+          //          alert('NO Agregado');
+          this.router.navigate(['/']);
+        }
+      );
+      }
   }
 
   /**

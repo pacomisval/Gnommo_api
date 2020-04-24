@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthorService } from 'src/app/services/author.service';
 import { Author } from 'src/app/models/author';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HashLocationStrategy } from '@angular/common';
 /**
  * Componente para añadir libro
  *
@@ -86,17 +87,71 @@ export class AddlibroComponent implements OnInit {
    *
    * @memberof AddlibroComponent
    */
+
+ comprobacionFinal(resultados){
+  var mtitulo=true;
+  var misbn=true;
+  var reg : RegExp = /^[0-9-a-zA-Z]+$/;
+
+  if(this.book.title.length>50){
+    this.message = "Has superado el límite de carácteres máximos en el campo titulo \n";
+    mtitulo=false;
+  }
+  
+  if (this.book.isbn.length>15){
+    this.message = "Has superado el límite de carácteres máximos en el campo isbn \n";
+    misbn=false;
+  }else if(reg.test(this.book.isbn)==false){
+    this.message = "Asegurese de estar introduciendo un ISBN correcto \n";
+    misbn=false;
+  }
+
+  var res=true;
+  for (var i=0;i<resultados.length;i++){
+
+    if(resultados[i].isbn == this.book.isbn){
+      this.message = "El libro que intenta introducir ya existe \n";
+     res=false;
+    }
+  }
+
+  if(res && misbn && mtitulo){
+    localStorage.setItem('comprobar','bien')
+  }else{
+    this.openInformationWindows();
+    localStorage.setItem('comprobar','mal')
+  }
+
+ }
+
   addBook() {
     // console.log(this.selectedAuthor);
-    if (this.selectedAuthor.id == 1) {
-      localStorage.setItem('nombre', this.book.title);
-      localStorage.setItem('isbn', this.book.isbn);
-      this.optionNewAuthor();
-    } else {
-      localStorage.setItem('nombre', '');
-      localStorage.setItem('isbn', '');
-      this.saveBookDB();
-    }
+    this.bookService.getAll().subscribe(
+      (results) => {
+        console.log(results[1].isbn+"  holaRafa");
+      
+        this.comprobacionFinal(results);
+        if(localStorage.getItem('comprobar')=='bien'){
+          console.log("addbook")
+          console.log(this.book.title)
+          if (this.selectedAuthor.id == 1){
+            
+            localStorage.setItem('nombre', this.book.title);
+            localStorage.setItem('isbn', this.book.isbn);
+            this.optionNewAuthor();
+          }else {
+            localStorage.setItem('nombre', '');
+            localStorage.setItem('isbn', '');
+            this.saveBookDB();
+          }
+        }
+      },
+      (err) => {
+       console.log("nada")
+      }
+    );
+
+  
   }
 
   /**
