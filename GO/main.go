@@ -1,11 +1,6 @@
 package main
 
 import (
-	// "Gnommo_api7/Gnommo_api/GO/autor"
-	// "Gnommo_api7/Gnommo_api/GO/encript"
-	// "Gnommo_api7/Gnommo_api/GO/libro"
-	// "Gnommo_api7/Gnommo_api/GO/user"
-
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/rand"
@@ -23,6 +18,7 @@ import (
 	"net/smtp"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -31,12 +27,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type Libro struct {
-	Id      string `json:"id"`
-	Nombre  string `json:"nombre"`
-	Isbn    string `json:"isbn"`
-	IdAutor string `json:"idAutor"`
+var nombreImagenBook string
 
+type Libro struct {
+	Id        string `json:"id"`
+	Nombre    string `json:"nombre"`
+	Isbn      string `json:"isbn"`
+	IdAutor   string `json:"idAutor"`
+	Portada   string `json:"portada"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 }
@@ -73,10 +71,10 @@ var db *sql.DB
 var err error
 
 const maxUploadSize = 100 * 1024 // 100 KB
-const uploadPath = "./src/assets/images/book"
+const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libreria")
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -856,6 +854,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	// parse and validate file and post parameters
 	file, fileHeader, err := r.FormFile("uploadFile")
+	fmt.Println("------------------------------", fileHeader.Filename)
 	if err != nil {
 		renderError(w, "INVALID_FILE", http.StatusBadRequest)
 		return
@@ -863,19 +862,23 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	// Get and print out file size
+	fmt.Println("1-----------------------------", fileHeader.Filename)
 	fileSize := fileHeader.Size
 	fmt.Printf("File size (bytes): %v\n", fileSize)
 	// validate file size
 	if fileSize > maxUploadSize {
 		renderError(w, "FILE_TOO_BIG", http.StatusBadRequest)
+		fmt.Printf("Error3")
 		return
 	}
-
+	fmt.Println("2-----------------------------", fileHeader.Filename)
 	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
 		renderError(w, "INVALID_FILE", http.StatusBadRequest)
+		fmt.Printf("Error2")
 		return
 	}
+	fmt.Println("3-----------------------------", fileHeader.Filename)
 
 	// check file type, detectcontenttype only needs the first 512 bytes
 	detectedFileType := http.DetectContentType(fileBytes)
@@ -886,16 +889,25 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		break
 	default:
 		renderError(w, "INVALID_FILE_TYPE", http.StatusBadRequest)
+		fmt.Printf("Error1")
 		return
 	}
-	fileName := randToken(12)
+	// fileName := randToken(12)
+	fileName := nombreImagenBook
+	fmt.Println("6-----------------------------", fileHeader.Filename)
 	fileEndings, err := mime.ExtensionsByType(detectedFileType)
 	if err != nil {
 		renderError(w, "CANT_READ_FILE_TYPE", http.StatusInternalServerError)
+		fmt.Printf("Error")
+
 		return
 	}
+	fmt.Println("7-----------------------------", fileHeader.Filename)
+
 	newPath := filepath.Join(uploadPath, fileName+fileEndings[0])
 	fmt.Printf("FileType: %s, File: %s\n", detectedFileType, newPath)
+
+	fmt.Println("8-----------------------------", newPath)
 
 	// write file
 	newFile, err := os.Create(newPath)
@@ -904,6 +916,8 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("valor de w1: ", w)
 		return
 	}
+	fmt.Println("9-----------------------------", fileHeader.Filename)
+
 	defer newFile.Close()
 
 	if _, err := newFile.Write(fileBytes); err != nil || newFile.Close() != nil {
@@ -923,7 +937,6 @@ func renderError(w http.ResponseWriter, message string, statusCode int) {
 }
 
 func randToken(len int) string {
-
 	b := make([]byte, len)
 	rand.Read(b)
 	return fmt.Sprintf("%x", b)
@@ -992,7 +1005,7 @@ func getAll(w http.ResponseWriter, r *http.Request) {
 
 	var libros []Libro
 
-	result, err := db.Query("SELECT b.id, b.nombre, b.isbn, b.idAutor, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
+	result, err := db.Query("SELECT b.id, b.nombre, b.isbn, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1002,7 +1015,7 @@ func getAll(w http.ResponseWriter, r *http.Request) {
 	for result.Next() {
 		var libro Libro
 
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.FirstName, &libro.LastName)
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -1041,6 +1054,7 @@ func getLibro(w http.ResponseWriter, r *http.Request) {
 
 //////////////////// POST LIBRO ///////////////////////
 func postLibro(w http.ResponseWriter, r *http.Request) {
+
 	w.Header().Set("Content-Type", "application/json")
 
 	///////////////////////////////////////////////
@@ -1052,7 +1066,7 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	///////////////////////////////////////////////
 
 	//stmt, err := db.Prepare("INSERT INTO books(id, nombre, isbn, idAutor) VALUES(?,?,?,?)")
-	stmt, err := db.Prepare("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)")
+	// stmt, err := db.Prepare("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)")
 
 	if err != nil {
 		panic(err.Error())
@@ -1065,19 +1079,38 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(body, &keyVal)
 
 	//id := keyVal["id"]
-	nombre := keyVal["nombre"]
+	nombre := keyVal["titulo"]
 	isbn := keyVal["isbn"]
 	idAutor := keyVal["id_author"] //mirar si falla FK es idAutor
-	//fmt.Println("inserta LIBRO:", id, nombre, isbn, idAutor)
+	extension := keyVal["extension"]
+	// _, err = stmt.Exec(&nombre, &isbn, &idAutor)
+	res, err := db.Exec("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)", &nombre, &isbn, &idAutor)
+	if err != nil {
+		panic(err.Error())
+	}
+	id, err := res.LastInsertId()
+	if err != nil { //no encuentra ultima id
+		println("Error:", err.Error())
+	}
+	// si no hay error guarda el fichero y su nombre
+	println("LastInsertId:", id)
+	nombreImagenBook = strconv.FormatInt(id, 10)
+	println(" nombreImagenBook:::::::::", nombreImagenBook)
 
-	_, err = stmt.Exec(&nombre, &isbn, &idAutor)
-
+	portada := strconv.FormatInt(id, 10) + "." + extension
+	println("portada:", portada)
+	stmt, err := db.Prepare("UPDATE books SET portada = ? WHERE id = ?")
+	if err != nil {
+		panic(err.Error())
+	}
+	_, err = stmt.Exec(&portada, &id)
 	if err != nil {
 		panic(err.Error())
 	}
 	//	fmt.Fprintf(w, "Se a añadido un nuevo libro")
 
 	fmt.Println("ESTO ES POST LIBRO")
+
 }
 
 ///////////////////// PUT LIBRO /////////////////////
@@ -1518,3 +1551,7 @@ func deleteUsuario(w http.ResponseWriter, r *http.Request) {
 }
 
 ////////////////////////////////// FIN API USUARIOS //////////////////////////////
+func nombreArchivo(nombre int64) int64 {
+	println("nombreArchivo::::::::::::::", nombre)
+	return nombre
+}

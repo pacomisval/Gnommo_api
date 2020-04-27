@@ -1,4 +1,4 @@
-c<div class="container">
+<div class="container">
     <div class="card">
         <div class="card-header">
             <h3>LIBROS</h3>
@@ -55,6 +55,7 @@ c<div class="container">
             Apellido:&nbsp;<span>{{ book.last_name }}</span>
         </p>
     </div>
+    <img [(attr.src)]="imgBook" alt={{imgBook}} width="150" height="200" class="ml-8">
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
       cerrar
@@ -87,19 +88,31 @@ c<div class="container">
                 </div>
             </div>
             <hr />
-            <p>
-                Autor&nbsp;
-            </p>
-            <div class="form-group">
-                <label for="first_name">Nombre:&nbsp;</label>
-                <div class="input-group">
-                    <input id="first_name" class="form-control" formControlName="first_name" [(ngModel)]="book.first_name" />
+            <div class="row">
+                <div class="col">
+                    <p>Autor&nbsp;</p>
+                    <div class="form-group ">
+                        <label for="first_name">Nombre:&nbsp;</label>
+                        <div class="input-group">
+                            <input id="first_name" class="form-control" formControlName="first_name" [(ngModel)]="book.first_name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Apellido:&nbsp;</label>
+                        <div class="input-group">
+                            <input id="last_name" class="form-control" [(ngModel)]="book.last_name" formControlName="last_name" />
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="last_name">Apellido:&nbsp;</label>
-                <div class="input-group">
-                    <input id="last_name" class="form-control" [(ngModel)]="book.last_name" formControlName="last_name" />
+                <div class="col">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <label class="inputfile--label" for="inputfile">
+                       <img id="uploadPreview" style="width: 100px; height: 100px;" [src]="imgBook" alt="Image preview" >
+                    </label>
+                            <input id="inputfile" type="file" accept="image/*" (change)="onFileChange($event)" formControlName="imgBook" name="imgBook" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
