@@ -1,5 +1,6 @@
 export interface Book {
   nombre: string;
-  isbn: number;
+  isbn: string;
   id_author: number;
+  portada: string;
 }

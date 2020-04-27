@@ -16,6 +16,7 @@ export class BookService {
     console.log(Globals.apiUrl);
     return this.http.get<any>(Globals.apiUrl + '/libros/all');
   }
+
   getBookId(id: number) {
     console.log(`id ${id}`);
     return this.http.get<any>(Globals.apiUrl + '/libros/' + id);
@@ -39,4 +40,5 @@ export class BookService {
   deleteBook(id) {
     return this.http.delete<any>(Globals.apiUrl + '/libros/' + id);
   }
+
 }
