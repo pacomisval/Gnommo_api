@@ -87,14 +87,6 @@ export class AddlibroComponent implements OnInit {
   message = '';
   books: any;
 
-  getNombreArchivo() {
-    return this.nombreArchivo;
-  }
-
-  setNombreArchivo(nombreArchivo) {
-    this.nombreArchivo = nombreArchivo;
-  }
-
   /**
    * Obtiene datos del libro del localStorage
    *
@@ -346,20 +338,6 @@ saveBookDB() {
   }
 
   /**
-   *
-   * @param nomFile
-   * @param isbn
-   *  Crea un nombre de archivo que utilizaremos para guardarlo en la DB.
-   */
-  crearNombreArchivo(nomFile, isbn) {
-    let nombreAux = nomFile.split(".");
-    let exten = nombreAux[1];
-    let nombre = isbn + "." + exten;
-
-    return nombre
-  }
-
-  /**
    * Abre Ventana Modal informativa
    *
    * @memberof ListarComponent
@@ -370,12 +348,6 @@ openInformationWindows() {
 
   /**
    *  Upload files
-   *  formData.append(), recibe:
-   *  Param1: uploadFile = es un nombre que le pongo al archivo que envio, podria ser cualquiera.
-   *  En el servidor el método r.FormFile('uploadFile') que recibe el archivo, tiene que tener el mismo
-   *  nombre como parámetro para que pueda leer el archivo.
-   *  Param2: this.form.get('avatar').value = el archivo físico en si y todo lo que contiene.
-   *  Param3: this.book.isbn = es el nombre que tiene el archivo y se guardará con este nombre.
    */
 uploadFile() {
   console.log('entra en uploadFile');
