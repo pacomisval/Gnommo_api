@@ -1,10 +1,6 @@
 package main
 
 import (
-<<<<<<< HEAD
-=======
-
->>>>>>> 5436597124525b574ccd063a1d0d780263077bdf
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/rand"
@@ -29,14 +25,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-
-	"github.com/pacomisval/Gnommo_api/GO/encriptacion/cookie"
-	"github.com/pacomisval/Gnommo_api/GO/encriptacion/token"
-	"github.com/pacomisval/Gnommo_api/GO/encriptacion/uploadFile"
-	"github.com/pacomisval/Gnommo_api/GO/encriptacion/recoveryPass"
-	"github.com/pacomisval/Gnommo_api/GO/libreria/autor"
-	"github.com/pacomisval/Gnommo_api/GO/libreria/libro"
-	"github.com/pacomisval/Gnommo_api/GO/libreria/usuario"
 )
 
 var nombreImagenBook string
@@ -135,7 +123,7 @@ func main() {
 }
 
 ////////////////////////////////////// INICIO ENCRIPTACION /////////////////////////////////////
-/*
+
 func encriptarPass(pass string, clave string) string {
 	hashMD5 := MD5Hash(pass)
 	hashHMAC := HMACHash(hashMD5, clave)
@@ -850,7 +838,7 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 ////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////  UPLOAD FILES ///////////////////////////////////////
 
-func uploadFileHandler(w http.ResponseWriter, r *http.Request ) {
+func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
 		t, _ := template.ParseFiles("upload.gtpl")
@@ -917,7 +905,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request ) {
 	fmt.Println("7-----------------------------", fileHeader.Filename)
 
 	newPath := filepath.Join(uploadPath, fileName+fileEndings[0])
-	fmt.Printf("FileType: %s, FilePath: %s, FileName: %s\n", detectedFileType, newPath, fileName)
+	fmt.Printf("FileType: %s, File: %s\n", detectedFileType, newPath)
 
 	fmt.Println("8-----------------------------", newPath)
 
@@ -938,9 +926,8 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request ) {
 		return
 	}
 	fmt.Println("Todo ha ido bien. Has llegado al final !!")
-	//w.Write([]byte("SUCCESS"))
+	w.Write([]byte("SUCCESS"))
 
-	json.NewEncoder(w).Encode(fileName)
 }
 
 func renderError(w http.ResponseWriter, message string, statusCode int) {
@@ -953,14 +940,14 @@ func randToken(len int) string {
 	b := make([]byte, len)
 	rand.Read(b)
 	return fmt.Sprintf("%x", b)
-} */
+}
 
 //////////////////////////////  FIN UPLOAD FILES  /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// INICIO API LIBROS ////////////////////////////
 
 //////////////////// GET LIBROS ////////////////////////
-/* func getLibros(w http.ResponseWriter, r *http.Request) {
+func getLibros(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var libros []Libro
 
@@ -973,7 +960,7 @@ func randToken(len int) string {
 
 	for result.Next() {
 		var libro Libro
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada)
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -1001,7 +988,7 @@ func getLibrosByAutor(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var libro Libro
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada)
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -1055,7 +1042,7 @@ func getLibro(w http.ResponseWriter, r *http.Request) {
 	var libro Libro
 
 	for result.Next() {
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada)
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -1078,9 +1065,6 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	}
 	///////////////////////////////////////////////
 
-	/* uploadFileHandler(w, r)
-	fmt.Println("EL VALOR DEL FICHERO EN POST LIBRO: " , fichero ) */
-
 	//stmt, err := db.Prepare("INSERT INTO books(id, nombre, isbn, idAutor) VALUES(?,?,?,?)")
 	// stmt, err := db.Prepare("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)")
 
@@ -1091,10 +1075,6 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-
-	// archivoaux := body.isbn
-	// archivo := archivoaux + "."
-
 	keyVal := make(map[string]string)
 	json.Unmarshal(body, &keyVal)
 
@@ -1149,7 +1129,7 @@ func putLibro(w http.ResponseWriter, r *http.Request) {
 	///////////////////////////////////////////////
 	params := mux.Vars(r)
 
-	stmt, err := db.Prepare("UPDATE books SET id = ?, nombre = ?, isbn = ?, idAutor = ?, portada = ? WHERE id = ?")
+	stmt, err := db.Prepare("UPDATE books SET id = ?, nombre = ?, isbn = ?, idAutor = ? WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1166,9 +1146,8 @@ func putLibro(w http.ResponseWriter, r *http.Request) {
 	newNombre := claveValor["nombre"]
 	newIsbn := claveValor["isbn"]
 	newIdAutor := claveValor["idAutor"]
-	newPortada := claveValor["portada"]
 
-	_, err = stmt.Exec(&newId, &newNombre, &newIsbn, &newIdAutor, &newPortada, params["id"])
+	_, err = stmt.Exec(&newId, &newNombre, &newIsbn, &newIdAutor, params["id"])
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1570,7 +1549,7 @@ func deleteUsuario(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Se ha eliminado el usuario %s correctamente ", params["id"])
 	fmt.Println("ESTO ES DELETE USUARIO")
 }
- */
+
 ////////////////////////////////// FIN API USUARIOS //////////////////////////////
 func nombreArchivo(nombre int64) int64 {
 	println("nombreArchivo::::::::::::::", nombre)
