@@ -23,6 +23,7 @@ export class AddlibroComponent implements OnInit {
 
   form: FormGroup;
   error: string;
+  nombreArchivo: string;
 
   uploadResponse = { status: '', message: '', filePath: ''};
 
@@ -77,6 +78,14 @@ export class AddlibroComponent implements OnInit {
     private formBuilder: FormBuilder,
     private uploadService: UploadService
   ) {}
+
+  getNombreArchivo() {
+    return this.nombreArchivo;
+  }
+
+  setNombreArchivo(nombreArchivo) {
+    this.nombreArchivo = nombreArchivo;
+  }
 
   /**
    * Obtiene datos del libro del localStorage
@@ -211,12 +220,16 @@ export class AddlibroComponent implements OnInit {
    * @memberof AddlibroComponent
    */
   saveBookDB() {
+    let nomFile = this.getNombreArchivo();
+    this.nombreArchivo = this.crearNombreArchivo(nomFile,this.book.isbn);
+
     const data = {
       id: '',
       nombre: this.book.title,
       isbn: this.book.isbn,
       // idAuthor: this.selectedAuthor.id,
       id_author: this.selectedAuthor.id,
+      portada: this.nombreArchivo,
     };
     this.bookService.createBook(data).subscribe(
       (results) => {
@@ -233,6 +246,20 @@ export class AddlibroComponent implements OnInit {
   }
 
   /**
+   * 
+   * @param nomFile 
+   * @param isbn 
+   *  Crea un nombre de archivo que utilizaremos para guardarlo en la DB.
+   */
+  crearNombreArchivo(nomFile, isbn) {
+    let nombreAux = nomFile.split(".");
+    let exten = nombreAux[1];
+    let nombre = isbn + "." + exten;
+
+    return nombre
+  }
+
+  /**
    * Abre Ventana Modal informativa
    *
    * @memberof ListarComponent
@@ -243,15 +270,24 @@ export class AddlibroComponent implements OnInit {
 
   /**
    *  Upload files
+   *  formData.append(), recibe:
+   *  Param1: uploadFile = es un nombre que le pongo al archivo que envio, podria ser cualquiera. 
+   *  En el servidor el método r.FormFile('uploadFile') que recibe el archivo, tiene que tener el mismo 
+   *  nombre como parámetro para que pueda leer el archivo.
+   *  Param2: this.form.get('avatar').value = el archivo físico en si y todo lo que contiene.
+   *  Param3: this.book.isbn = es el nombre que tiene el archivo y se guardará con este nombre.
    */
   onSubmit() {
     const formData = new FormData();
-    formData.append('uploadFile', this.form.get('avatar').value);
-    console.log(formData);
+    formData.append('uploadFile', this.form.get('avatar').value, this.book.isbn);
+
+    // En este bloque conseguimos el nombre original del archivo con su extensión.
+    console.log("Nombre del archivo: " + this.form.get('avatar').value.name);
+    let nombrefile = this.form.get('avatar').value.name;
+    this.setNombreArchivo(nombrefile); 
 
     this.uploadService.upload(formData).subscribe(res => {
       this.uploadResponse = res;
-      console.log("valor de res: " + res);
     },
     err => {
       this.error = err;
@@ -269,7 +305,19 @@ export class AddlibroComponent implements OnInit {
     if(event.target.files.length > 0) {
       const file = event.target.files[0];
 
+      let n = "nombre archivo: " + file.name;
+      let s = "tamaño archivo: " + file.size;
+      let t = "tipo archivo: " + file.type;
+      console.log("valor de n: " + n);
+      console.log("valor de s: " + s);
+      console.log("valor de t: " + t);
+
+      //file.name = this.book.isbn;     no puede ser porque file es solo tiene permiso de lectura
+      
       this.form.get('avatar').setValue(file);
+
+      let archivo = event.target.files[0].name;
+      console.log("Esto es el valor de archivo: " + archivo)
       console.log("valor de form: " + this.form.get);
     }
   }
