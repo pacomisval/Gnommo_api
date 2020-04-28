@@ -3,7 +3,8 @@ package main
 import (
 	"crypto/hmac"
 	"crypto/md5"
-	"crypto/rand"
+
+	//	"crypto/rand"
 	"crypto/sha256"
 	"database/sql"
 	"encoding/hex"
@@ -895,6 +896,9 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// fileName := randToken(12)
+
+	//	nombreImagenBook := keyVal["fileName"]
+
 	fileName := nombreImagenBook
 	fmt.Println("6-----------------------------", fileHeader.Filename)
 	fileEndings, err := mime.ExtensionsByType(detectedFileType)
@@ -939,11 +943,11 @@ func renderError(w http.ResponseWriter, message string, statusCode int) {
 	w.Write([]byte(message))
 }
 
-func randToken(len int) string {
-	b := make([]byte, len)
-	rand.Read(b)
-	return fmt.Sprintf("%x", b)
-}
+// func randToken(len int) string {
+// 	b := make([]byte, len)
+// 	rand.Read(b)
+// 	return fmt.Sprintf("%x", b)
+// }
 
 //////////////////////////////  FIN UPLOAD FILES  /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
@@ -1179,7 +1183,8 @@ func putLibro(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-
+	nombreImagenBook = params["id"]
+	println(" nombreImagenBook:::::::::", nombreImagenBook)
 	// fmt.Fprintf(w, "El registro con Id %s se ha actualizado correctamente", params["id"])
 	fmt.Println("ESTO ES PUT LIBRO")
 }

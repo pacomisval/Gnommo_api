@@ -15,10 +15,15 @@ import { Author } from 'src/app/models/author';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { Globals } from './../../Global';
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser'; // para imagen libro en local
+import {
+  DomSanitizer,
+  SafeResourceUrl,
+  SafeUrl,
+} from '@angular/platform-browser'; // para imagen libro en local
 import { SecurityContext } from '@angular/compiler/src/core';
-// import { FileService } from './../../services/file.service';
-/**
+import { UploadService } from 'src/app/services/upload.service';
+/**import { UploadService } from './../../services/upload.service';
+
  * Componente actua sobre los libros haciendo
  * READ UPDATE y DELETE
  * @export
@@ -95,8 +100,10 @@ export class ListarComponent implements OnInit {
   imgBook;
   oldIsbn: string;
   filechange = false;
+  // Cambiarfile = false;
   oldFile: any;
   oldNombre: any;
+
   /**
    * Creando una instancia de ListarComponent.
    * @param {FormBuilder} formBuilder Necesario para formularios
@@ -116,7 +123,7 @@ export class ListarComponent implements OnInit {
     private bookService: BookService,
     private authorService: AuthorService,
     private userService: UserService,
-
+    private uploadService: UploadService
   ) {}
 
   /**
@@ -200,7 +207,7 @@ export class ListarComponent implements OnInit {
       first_name: this.book.first_name,
       last_name: this.book.last_name,
     };
-    this.oldFile = this.imgBook;
+    this.oldFile = this.book.portada;
     this.oldIsbn = this.book.isbn;
     this.oldNombre = this.book.nombre;
     console.log('isbn: ', this.oldIsbn);
@@ -208,63 +215,6 @@ export class ListarComponent implements OnInit {
       ariaLabelledBy: 'modal-basic-title',
     });
   }
-
-
-
-//   comprobacionFinal(results) {
-//     console.log('entraaa rafa');
-//     let res = true;
-//     const sololetras: RegExp = /^[A-Za-z\s]+$/;
-
-
-//     if (this.book.first_name.length > 50) {
-//       this.information = '-Has superado el límite de carácteres máximos permitidos en el campo nombre';
-//       res = false;
-//     } else if (sololetras.test(this.book.first_name) == false) {
-//       this.information = '-En el campo nombre solo se permiten letras';
-//       res = false;
-//     }
-
-//     if (this.book.last_name.length > 50) {
-//       this.information = '-Has superado el límite de carácteres máximos permitidos en el campo apellido';
-//       res = false;
-//     } else if (sololetras.test(this.book.last_name) == false) {
-//       this.information = '-En el campo apellido solo se permiten letras';
-//       res = false;
-//     }
-
-//     const reg: RegExp = /^[0-9-a-zA-Z]+$/;
-
-//     if (this.book.nombre.length > 50) {
-//     this.information = 'Has superado el límite de carácteres máximos en el campo titulo \n';
-//     res = false;
-//   }
-
-//     if (this.oldIsbn == this.book.isbn) {
-//   this.information = 'Asegurese de estar cambiando el ISBN \n';
-//   res = false;
-// } else {
-//   if (this.book.isbn.length > 15) {
-//     this.information = 'Has superado el límite de carácteres máximos en el campo isbn \n';
-//     res = false;
-//   } else if (reg.test(this.book.isbn) == false) {
-//     this.information = 'Asegurese de estar introduciendo un ISBN correcto \n';
-//     res = false;
-//   } else {
-//     for (let i = 0; i < results.length; i++) {
-
-//       if (results[i].isbn == this.book.isbn) {
-//         this.information = 'El libro que intenta introducir ya existe \n';
-//         res = false;
-//       }
-//     }
-//   }
-// }
-//     if (!res) {
-//       this.openInformationWindows();
-//     }
-//     return res;
-//    }
 
   editBook(book: Book, modalInformationDelete: any) {
     this.submittedEditBook = true;
@@ -278,7 +228,8 @@ export class ListarComponent implements OnInit {
       if (JSON.stringify(this.oldAuthor) === JSON.stringify(datosAutor)) {
         this.updateBookDB();
       } else {
-        this.authorService.modificarAuthor(datosAutor)
+        this.authorService
+          .modificarAuthor(datosAutor)
           .toPromise()
           .then((result) => {
             //      console.log('autor modificado');
@@ -295,9 +246,11 @@ export class ListarComponent implements OnInit {
             this.openInformationWindows();
           });
       }
+    } else {
+      this.information = 'Error indocumentado en algun campo';
+      this.openInformationWindows();
     }
   }
-
 
   /**
    * Guarda las modificaciones del libro en BD
@@ -310,14 +263,18 @@ export class ListarComponent implements OnInit {
       nombre: this.ebfc.nombre.value,
       isbn: this.ebfc.isbn.value,
       idAutor: this.book.idAutor,
-
     };
     this.bookService
       .updateBook(datosLibro)
       .toPromise()
       .then((value) => {
         //    console.log('respuesta updateBook correcto');
+        if (this.filechange) {  // si hay cambio de fichero
+          this.uploadFile();
+        }
+
         this.modalService.dismissAll();
+        this.uploadFile();
         this.information = 'Se han guardado las modificaciones';
         this.openInformationWindows();
       })
@@ -327,6 +284,27 @@ export class ListarComponent implements OnInit {
         this.information = 'No se han podido efectuar las modificaciones';
         this.openInformationWindows();
       });
+  }
+  uploadFile() {
+    console.log('entra en uploadFile');
+    console.log('entra en uploadFile');
+    const formData = new FormData();
+
+    formData.append('uploadFile', this.uploadService.file);
+    formData.append('fileName', '33');
+
+    console.log('valor formData upload:', formData);
+
+    this.uploadService.upload(formData).subscribe(
+      (res) => {
+        //  this.uploadResponse = res;
+        console.log('valor de res: ' + res);
+      },
+      (err) => {
+        // this.error = err;
+        console.log('valor de error: ' + err[0]);
+      }
+    );
   }
 
   /**
@@ -338,7 +316,9 @@ export class ListarComponent implements OnInit {
    */
   confirmDeleteBook(confirmDeleteBookModal: any, book: Book) {
     this.book = book;
-    this.modalService.open(confirmDeleteBookModal, {ariaLabelledBy: 'modal-basic-title', });
+    this.modalService.open(confirmDeleteBookModal, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
   }
 
   /**
@@ -378,17 +358,34 @@ export class ListarComponent implements OnInit {
   onFileChange(event) {
     this.filechange = true;
 
-//     this.fileService.onFileChange(event);
-//     this.preview(this.fileService.file);
-//   //  console.log("oldFile ", this.oldFile);
-//     console.log('this.oldFile________', this.oldFile);
-//     console.log('newFile_____________ ', this.imgBook);
+    this.uploadService.onFileChange(event);
+    this.preview(this.uploadService.file);
+    console.log('this.oldFile________', this.oldFile);
+    console.log('newFile_____________ ', this.uploadService.archivo.fileName);
 
-//     if (this.oldFile.nombreArchivo != this.fileService.archivo.nombreArchivo) {
-//   console.log('son distintos ');
-//     } else {
-//       console.log('son iguales ');
-// }
+    if (this.oldFile != this.uploadService.archivo.fileName) {
+      console.log('son distintos ');
+      this.filechange = true;
+    } else {
+      console.log('son iguales ');
+      this.filechange = false;
+    }
+  }
+  preview(file) {
+    console.log('Entra en preview');
+
+    if (file.type.match(/image\/*/) == null) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.imgBook = reader.result;
+      console.log(
+        'newFile____result_________ ',
+        this.uploadService.archivo.fileName
+      );
+    };
   }
 
   checkFields() {
@@ -399,7 +396,8 @@ export class ListarComponent implements OnInit {
     console.log('titulo:', this.book.nombre);
 
     if (this.book.first_name.length > 50) {
-      this.information = '-Has superado el límite de carácteres máximos permitidos en el campo nombre';
+      this.information =
+        '-Has superado el límite de carácteres máximos permitidos en el campo nombre';
       res = false;
     } else if (sololetras.test(this.book.first_name) == false) {
       this.information = '-En el campo nombre solo se permiten letras';
@@ -407,7 +405,8 @@ export class ListarComponent implements OnInit {
     }
 
     if (this.book.last_name.length > 50) {
-      this.information = '-Has superado el límite de carácteres máximos permitidos en el campo apellido';
+      this.information =
+        '-Has superado el límite de carácteres máximos permitidos en el campo apellido';
       res = false;
     } else if (sololetras.test(this.book.last_name) == false) {
       this.information = '-En el campo apellido solo se permiten letras';
@@ -415,37 +414,38 @@ export class ListarComponent implements OnInit {
     }
 
     if (this.book.nombre.length > 50) {
-      this.information = 'Has superado el límite de carácteres máximos en el campo titulo \n';
+      this.information =
+        'Has superado el límite de carácteres máximos en el campo titulo \n';
       res = false;
     }
 
     // comprobar isbn cuando cambia
     if (this.oldIsbn != this.book.isbn) {
       if (this.book.isbn.length > 15) {
-        this.information = 'Has superado el límite de carácteres máximos en el campo isbn \n';
+        this.information =
+          'Has superado el límite de carácteres máximos en el campo isbn \n';
         res = false;
       } else if (reg.test(this.book.isbn) == false) {
-        this.information = 'Asegurese de estar introduciendo un ISBN correcto \n';
+        this.information =
+          'Asegurese de estar introduciendo un ISBN correcto \n';
         res = false;
       } else {
-        this.bookService.getAll().subscribe(
-          (results) => {
-            console.log(results[1].isbn + '  holaRafa');
-            console.log(results[1] + '  results');
-            for (let i = 0; i < results.length; i++) {
-              if (results[i].isbn == this.book.isbn) {
-                this.information = 'El libro que intenta introducir ya existe \n';
-                res = false;
-              }
+        this.bookService.getAll().subscribe((results) => {
+          console.log(results[1].isbn + '  holaRafa');
+          console.log(results[1] + '  results');
+          for (let i = 0; i < results.length; i++) {
+            if (results[i].isbn == this.book.isbn) {
+              this.information = 'El libro que intenta introducir ya existe \n';
+              res = false;
             }
-          });
+          }
+        });
       }
     }
 
     if (!res) {
-        this.openInformationWindows();
+      this.openInformationWindows();
     }
-      return res;
-     }
+    return res;
   }
-
+}

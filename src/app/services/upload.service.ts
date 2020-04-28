@@ -8,7 +8,6 @@ import { map } from 'rxjs/operators';
 export class UploadService {
   archivo = {
     fileName: null,
-    base64textString: null,
     fileExtension: null,
   };
   file = null;
@@ -55,21 +54,6 @@ return this.http.post<any>(this.urlServidor, data, {
       this.file = event.target.files[0];
       this.archivo.fileName = this.file.name;
       this.archivo.fileExtension = this.file.name.substr(this.file.name.lastIndexOf('.') + 1);
-
-      // const reader = new FileReader();
-      // reader.readAsBinaryString(this.file);
-      // reader.onload = () => {
-      //   this._handleReaderLoaded.bind(this);
-      //   this.archivo.fileExtension = this.file.name.substr(this.file.name.lastIndexOf('.') + 1);
-      //   console.log('fileExtension', this.archivo.fileExtension);
-      //   return 'ok'+ this.archivo.fileName;;
-  //     };
-  //   }
-  //  // let respuesta='NO OK' + this.archivo;
-  //   return 'NO OK' + this.archivo.fileName;
   }
-  // _handleReaderLoaded(readerEvent) {
-  //   const binaryString = readerEvent.target.result;
-  //   this.archivo.base64textString = btoa(binaryString);
    }
 }
