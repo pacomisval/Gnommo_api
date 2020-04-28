@@ -28,6 +28,8 @@ import (
 )
 
 var nombreImagenBook string
+var extension string
+var lastId int64
 
 type Libro struct {
 	Id        string `json:"id"`
@@ -74,7 +76,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libreria")
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -903,7 +905,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println("7-----------------------------", fileHeader.Filename)
-
+	extension = fileEndings[0]
 	newPath := filepath.Join(uploadPath, fileName+fileEndings[0])
 	fmt.Printf("FileType: %s, File: %s\n", detectedFileType, newPath)
 
@@ -927,6 +929,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("Todo ha ido bien. Has llegado al final !!")
 	w.Write([]byte("SUCCESS"))
+	putImgBook()
 
 }
 
@@ -1082,23 +1085,52 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	nombre := keyVal["titulo"]
 	isbn := keyVal["isbn"]
 	idAutor := keyVal["id_author"] //mirar si falla FK es idAutor
-	extension := keyVal["extension"]
+	//	extension := keyVal["extension"]
 	// _, err = stmt.Exec(&nombre, &isbn, &idAutor)
 	res, err := db.Exec("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)", &nombre, &isbn, &idAutor)
 	if err != nil {
 		panic(err.Error())
 	}
-	id, err := res.LastInsertId()
+	lastId, err := res.LastInsertId()
 	if err != nil { //no encuentra ultima id
 		println("Error:", err.Error())
 	}
-	// si no hay error guarda el fichero y su nombre
-	println("LastInsertId:", id)
-	nombreImagenBook = strconv.FormatInt(id, 10)
-	println(" nombreImagenBook:::::::::", nombreImagenBook)
 
-	portada := strconv.FormatInt(id, 10) + "." + extension
+	// si no hay error guarda el fichero y su nombre
+	println("LastInsertId:", lastId)
+	nombreImagenBook = strconv.FormatInt(lastId, 10)
+	println(" nombreImagenBook:::::::::", nombreImagenBook)
+	// nombreImagenBook = strconv.FormatInt(id, 10)
+	// println(" nombreImagenBook:::::::::", nombreImagenBook)
+
+	// portada := strconv.FormatInt(id, 10) + "." + extension
+	// println("portada:", portada)
+	// stmt, err := db.Prepare("UPDATE books SET portada = ? WHERE id = ?")
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
+	// _, err = stmt.Exec(&portada, &id)
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
+	//	fmt.Fprintf(w, "Se a añadido un nuevo libro")
+
+	fmt.Println("ESTO ES POST LIBRO")
+
+}
+
+///// insertar nombre imagen libro //////
+func putImgBook() {
+
+	portada := nombreImagenBook + extension
+	println("nombre:", nombreImagenBook)
+	println("ext:", extension)
 	println("portada:", portada)
+	id, err := strconv.ParseInt(nombreImagenBook, 10, 64)
+	if err != nil {
+		panic(err.Error())
+	}
+	println("Id:", id)
 	stmt, err := db.Prepare("UPDATE books SET portada = ? WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
@@ -1107,10 +1139,6 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-	//	fmt.Fprintf(w, "Se a añadido un nuevo libro")
-
-	fmt.Println("ESTO ES POST LIBRO")
-
 }
 
 ///////////////////// PUT LIBRO /////////////////////
