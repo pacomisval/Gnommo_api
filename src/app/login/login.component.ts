@@ -214,9 +214,6 @@ export class LoginComponent implements OnInit {
           } else {
             // no error
             console.log('id distinto 0');
-            localStorage.setItem('Nombre', results.body.Nombre)
-            localStorage.setItem('token', results.body.token)
-
             this.router.navigate(['home'])
                .then(() => {
                  window.location.reload();
@@ -268,8 +265,8 @@ export class LoginComponent implements OnInit {
   comprobarRegistro(){
    var res =true;
    var reg : RegExp = /^[0-9-a-zA-Z]+$/;
-    var reg2 : RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/;
-    var reg3 : RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+   var reg2 : RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/;
+   var reg3 : RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
 
    if (this.rfc.userName.value.length>70){
     this.information = "Has superado el límite de carácteres máximos en el campo usuario \n";
@@ -279,7 +276,7 @@ export class LoginComponent implements OnInit {
     res=false;
   }
 
-  if(this.rfc.email.value.length>100){
+   if(this.rfc.email.value.length>100){
     this.information = "Has superado el límite de carácteres máximos en el campo email \n";
     res=false;
   }else if(reg2.test(this.rfc.email.value)==false){
@@ -287,7 +284,7 @@ export class LoginComponent implements OnInit {
     res=false;
   }
 
-  if(reg3.test(this.rfc.password.value)==false){
+   if(reg3.test(this.rfc.password.value)==false){
     this.information = "La contraseña tiene que tener como mínimo una mayuscula, un número y una mínuscula, ademas tiene que tener como mínimo 6 carácteres \n";
     res=false;
   }else if(this.rfc.password.value != this.rfc.passwordRepeat.value){
@@ -295,10 +292,10 @@ export class LoginComponent implements OnInit {
     res=false;
   }
 
-  if(!res){
+   if(!res){
     this.openInformationWindows();
   }
-    return res;
+   return res;
   }
 
   addUserDB() {

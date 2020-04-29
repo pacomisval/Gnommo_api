@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.cookieService.get('tokensiR')) {
-      this.cuki = this.cookieService.get('tokensiR');
+      this.cuki = atob(this.cookieService.get('tokensiR'));
       if (this.cuki == 'admin') {
         console.log('existe tokensiR == admin');
         return true;

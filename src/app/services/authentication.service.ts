@@ -26,10 +26,10 @@ export class AuthenticationService {
   }
 
   /**
-   * 
-   * @param email 
+   *
+   * @param email
    * @param password
-   * Envio de credenciales para autenticación de usuario registrado. 
+   * Envio de credenciales para autenticación de usuario registrado.
    */
   login(email, password) {
 
@@ -42,13 +42,17 @@ export class AuthenticationService {
    * Elimina la sesión existente del usuario(admin) logueado.
    */
   logout() {
-     this.cookieService.delete('tokensiR');
+    this.cookieService.delete('tokensiI');
+    this.cookieService.delete('tokensiN');
+    this.cookieService.delete('tokensiR');
+    this.cookieService.delete('tokensiT');
+
   }
 
   /**
-   * 
-   * @param nombre 
-   * @param email 
+   *
+   * @param nombre
+   * @param email
    * Envio de credenciales al servidor para su verificación.
    * Si es true, se inicia el proceso de recuperación de contraseña.
    */
@@ -59,7 +63,7 @@ export class AuthenticationService {
     return this.http.post<any>(Globals.apiUrl + '/recoveryPass1', { nombre, email },{ observe: "response",  withCredentials: true,});
   }
   /**
-   * 
+   *
    * @param codigo
    * Envio del codigo recibido por email al servidor para su verificación.
    * Si es true, continuamos el proceso de recuperación de contraseña.
@@ -71,8 +75,8 @@ export class AuthenticationService {
     return this.http.post<any>(Globals.apiUrl + '/recoveryPass2', { codigo },{ observe: "response", withCredentials: true,});
   }
   /**
-   * 
-   * @param password 
+   *
+   * @param password
    * Se establece nueva contraseña.
    * Finaliza el proceso de recuperación de contraseña.
    */

@@ -7,6 +7,7 @@ import (
 	//	"crypto/rand"
 	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -675,10 +676,10 @@ func verificarToken(tknStr, SecretKey string) int {
 
 func crearCookie(w http.ResponseWriter, r *http.Request, value Value) {
 
-	I := value.Id
-	N := value.Nombre
-	R := value.Rol
-	T := value.Token
+	I := base64.StdEncoding.EncodeToString([]byte(value.Id))
+	N := base64.StdEncoding.EncodeToString([]byte(value.Nombre))
+	R := base64.StdEncoding.EncodeToString([]byte(value.Rol))
+	T := base64.StdEncoding.EncodeToString([]byte(value.Token))
 
 	expiration := time.Now().Add(time.Minute * 5)
 
@@ -832,7 +833,7 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 		crearCookie(w, r, value)
 	}
 
-	fmt.Println("Esto es la respuesta de resp en PutLibro: ", resp)
+	fmt.Println("Esto es verificar cuki ", resp)
 
 	return resp
 }
