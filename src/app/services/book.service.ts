@@ -25,6 +25,12 @@ export class BookService {
     return this.http.get<any>(Globals.apiUrl + '/libros/autor/' + id);
   }
 
+  obtenerLibrosPorAutor(data) {
+    console.log("LLEGA RAFA222");
+    return this.http.get<any>(Globals.apiUrl + '/libros/autores/filtrar',data);
+
+  }
+
   createBook(data) {
     console.log(data);
     return this.http.post<any>(Globals.apiUrl + '/libros', data);

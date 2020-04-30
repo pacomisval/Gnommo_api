@@ -98,7 +98,9 @@ func main() {
 	router.HandleFunc("/api/autores", postAutor).Methods("POST")
 	router.HandleFunc("/api/autores/{id}", putAutor).Methods("PUT")
 	router.HandleFunc("/api/autores/{id}", deleteAutor).Methods("DELETE")
-
+    router.HandleFunc("/api/email/{email}", encontrarEmail).Methods("GET")
+    router.HandleFunc("/api/libros/autores/filtrar", obtenerLibrosPorAutor).Methods("GET")
+    
 	router.HandleFunc("/api/usuarios", getUsuarios).Methods("GET")
 	router.HandleFunc("/api/usuarios/{id}", getUsuario).Methods("GET")
 	router.HandleFunc("/api/usuarios", postUsuario).Methods("POST")
@@ -195,6 +197,76 @@ func recuperarPass(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(value)
 
+}
+
+func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+    fmt.Println("LLEga rafa")
+    
+    body, err3 := ioutil.ReadAll(r.Body)
+    if err3 != nil {
+        panic(err.Error())
+    }
+    clave := make(map[string]string)
+    json.Unmarshal(body, &clave)
+
+    fmt.Println(body)
+    firstName := clave["nombre"]
+    lastName := clave["apellido"]
+
+    fmt.Println("nomrbe"+firstName) 
+    fmt.Println(lastName)
+    
+    var libros []Libro
+
+    result2, err2 := db.Query("SELECT id FROM autor WHERE first_name=? AND last_name=?", &firstName, &lastName)
+
+    result2.Next()
+    var autor Autor
+    err2 = result2.Scan(&autor.Id)
+    fmt.Println(result2)
+    if err2 != nil {
+        panic(err2.Error())
+    }
+
+    result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", autor)
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer result.Close()
+
+    for result.Next() {
+        var libro Libro
+        err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor)
+        if err != nil {
+            panic(err.Error())
+        }
+        libros = append(libros, libro)
+    }
+    json.NewEncoder(w).Encode(libros)
+
+    fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
+}
+
+func encontrarEmail(w http.ResponseWriter, r* http.Request) {
+    fmt.Println("Entra a encontrarEmail rafa ")
+    params := mux.Vars(r)
+    email := params["email"]
+    fmt.Println(email)
+    rows, err2 := db.Query("Select count(*) FROM usuarios where email like ?", &email)
+    var count int
+    if err2 != nil {
+        count=1;
+    }
+    defer rows.Close()
+    for rows.Next() {
+        if err := rows.Scan(&count); err != nil {
+            fmt.Println(err)
+        }
+    }
+
+    json.NewEncoder(w).Encode(count)
 }
 
 func findUsuarioByEmail(user, mail string) (bool, string) {

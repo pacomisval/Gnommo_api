@@ -108,7 +108,7 @@ export class AddlibroComponent implements OnInit {
  comprobacionFinal(resultados){
   var mtitulo=true;
   var misbn=true;
-  var reg : RegExp = /^[0-9-a-zA-Z]+$/;
+  var reg : RegExp = /^[0-9-]+$/;
 
   if(this.book.title.length>50){
     this.message = "Has superado el límite de carácteres máximos en el campo titulo \n";

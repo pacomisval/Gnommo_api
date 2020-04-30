@@ -24,4 +24,8 @@ export class UserService {
     console.log(this.currentUserType);
     return this.currentUserType == 'admin' ? true : false;
   }
+
+  devolverEmail(data) {
+    return this.http.get<any>(Globals.apiUrl + '/email/'+data);
+  }
 }
