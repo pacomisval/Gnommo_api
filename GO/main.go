@@ -41,6 +41,15 @@ type Libro struct {
 	LastName  string `json:"last_name"`
 }
 
+type Libro2 struct {
+	Id      string `json:"id"`
+	Nombre  string `json:"nombre"`
+	Isbn    string `json:"isbn"`
+	IdAutor string `json:"idAutor"`
+
+	Portada string `json:"first_name"`
+}
+
 type Autor struct {
 	Id        string `json:"id"`
 	FirstName string `json:"first_name"`
@@ -99,7 +108,7 @@ func main() {
 	router.HandleFunc("/api/autores/{id}", putAutor).Methods("PUT")
 	router.HandleFunc("/api/autores/{id}", deleteAutor).Methods("DELETE")
     router.HandleFunc("/api/email/{email}", encontrarEmail).Methods("GET")
-    router.HandleFunc("/api/libros/autores/filtrar", obtenerLibrosPorAutor).Methods("GET")
+    router.HandleFunc("/api/filtrar", obtenerLibrosPorAutor).Methods("GET")
     
 	router.HandleFunc("/api/usuarios", getUsuarios).Methods("GET")
 	router.HandleFunc("/api/usuarios/{id}", getUsuario).Methods("GET")
@@ -200,47 +209,72 @@ func recuperarPass(w http.ResponseWriter, r *http.Request) {
 }
 
 func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
-    w.Header().Set("Content-Type", "application/json")
-    fmt.Println("LLEga rafa")
+    fmt.Println("LLEga rafa:-----------------------")
+    params := r.URL.Query()
+
+    fmt.Println("params ", params)
+
+    nombre1, ok := params["firstParameter"]
+    apellido1, ok := params["secondParameter"] 
+    nombre := nombre1[0]
+    apellido := apellido1[0]
+    //nombre := strings.Join(nombre1, " ")
+    //apellido := strings.Join(apellido1, " ")
+
     
-    body, err3 := ioutil.ReadAll(r.Body)
-    if err3 != nil {
-        panic(err.Error())
-    }
-    clave := make(map[string]string)
-    json.Unmarshal(body, &clave)
-
-    fmt.Println(body)
-    firstName := clave["nombre"]
-    lastName := clave["apellido"]
-
-    fmt.Println("nomrbe"+firstName) 
-    fmt.Println(lastName)
+    fmt.Println("nombre: ", nombre)
+    fmt.Println("Apellido:" + apellido)
     
-    var libros []Libro
-
-    result2, err2 := db.Query("SELECT id FROM autor WHERE first_name=? AND last_name=?", &firstName, &lastName)
-
-    result2.Next()
-    var autor Autor
-    err2 = result2.Scan(&autor.Id)
-    fmt.Println(result2)
-    if err2 != nil {
-        panic(err2.Error())
-    }
-
-    result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", autor)
     if err != nil {
+        panic(err)
+    }
+    fmt.Println("nombre1 ", nombre1)
+
+    fmt.Println("apellido1 ", apellido1)
+    //fmt.Println(strings.Join(nombre1, " "))
+    //fmt.Println(strings.Join(apellido1, " "))
+    fmt.Println("el ok ", ok)
+
+    fmt.Println("-----------------------1")
+    var libros []Libro2
+    var autor Autor
+    rows, err2 := db.Query("SELECT id FROM autor WHERE first_name=? AND last_name=?", &nombre, &apellido)
+
+    if (err) != nil {
         panic(err.Error())
+    }
+    if err2 != nil {
+        fmt.Println("error2 rows ", err2)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+
+        err := rows.Scan(&autor.Id)
+        if err != nil {
+            fmt.Println("error:::: ", err)
+        }
+        fmt.Println("autor Id:::::: ", autor.Id)
+        fmt.Println("rows:::::", rows)
+    }
+    fmt.Println("autor Id:::::: ", autor.Id)
+    if err2 != nil {
+        fmt.Println("error2 ", err2)
+
+    }
+
+    result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", &autor.Id) //BUG
+    if err != nil {
+        fmt.Println("error3 ", err)
     }
 
     defer result.Close()
 
     for result.Next() {
-        var libro Libro
-        err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor)
+        var libro Libro2
+        err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor,&libro.Portada) //BUG
         if err != nil {
-            panic(err.Error())
+            fmt.Println("error4 ", err)
         }
         libros = append(libros, libro)
     }

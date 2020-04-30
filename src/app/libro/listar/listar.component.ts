@@ -140,8 +140,8 @@ export class ListarComponent implements OnInit {
       this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
       this.openInformationWindows();
     }else{
-      var data = {nombre:texto[0],apellido:texto[1]}
-      console.log(data);
+      var data = {nombre:texto[0],apellido:texto[1]} 
+      console.log(data.nombre);
       this.bookService.obtenerLibrosPorAutor(data).subscribe(
         (result) => {
           this.books = result;
