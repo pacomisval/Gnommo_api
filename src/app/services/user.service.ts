@@ -15,7 +15,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  createUser(data) {
+  createUser(data) { 
     return this.http.post<any>(Globals.apiUrl + '/usuarios', data);
   }
 

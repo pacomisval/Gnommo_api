@@ -130,7 +130,7 @@ export class ListarComponent implements OnInit {
 
   }
 
-  buscar(){
+  buscar(){  
     alert(document.getElementById('filtro').value)
     if(document.getElementById('filtro').value=="autor"){
       console.log("eeeee231")
