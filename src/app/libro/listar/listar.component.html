@@ -3,14 +3,14 @@
         <div class="card-header d-flex">
             <h3>LIBROS</h3>
             <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
-            <select name="filtro" id="filtro" class="ml-2">
+            <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2">
                 <option value="autor">Autor</option>
                 <option value="libro" selected>Libro</option>
             </select>
-            <form action="" class="ml-5">
-                <label for="" class="ml-5">Buscar libro</label>
+            <form action="" class="ml-5 pt-1">
+                <label for="" id="textoBusqueda" class="ml-5">Buscar libro</label>
                 <input type="text" id="contenido" class="ml-2">
-                <input type="button" id="bttBuscar" (click)="buscar()" value="Buscar">
+                <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
             </form>
         </div>
         
@@ -20,7 +20,7 @@
                     <tr>
                         <th>LIBRO</th>
                         <th *ngIf="admin">ACCIONES</th>
-                    </tr>
+                    </tr> 
                 </thead>
                 <tbody>
                     <tr *ngFor="let book of books">

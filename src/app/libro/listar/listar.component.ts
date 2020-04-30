@@ -147,6 +147,15 @@ export class ListarComponent implements OnInit {
 
   }
 
+  cambiarBusqueda(){
+    if(document.getElementById('filtro').value=="autor"){
+      document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
+    }
+    else if(document.getElementById('filtro').value=="libro"){
+      document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
+    }
+  }
+
   buscar(){  
     alert(document.getElementById('filtro').value)
     if(document.getElementById('filtro').value=="autor"){
@@ -157,7 +166,7 @@ export class ListarComponent implements OnInit {
       this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
       this.openInformationWindows();
     }else{
-      var data = {nombre:texto[0],apellido:texto[1]} 
+      var data = {nombre:texto[0],apellido:texto[1]}  
       console.log(data.nombre);
       this.bookService.obtenerLibrosPorAutor(data).subscribe(
         (result) => {
