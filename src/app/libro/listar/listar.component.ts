@@ -139,12 +139,41 @@ export class ListarComponent implements OnInit {
     this.editBookForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       isbn: ['', Validators.required],
-      first_name: ['', [Validators.required]],
+      first_name: ['', [Validators.required]], 
       last_name: ['', Validators.required],
       imgBook: [''],
     });
+
+
   }
 
+  buscar(){  
+    alert(document.getElementById('filtro').value)
+    if(document.getElementById('filtro').value=="autor"){
+      console.log("eeeee231")
+    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ').split(" ",(document.getElementById('contenido').value.length));
+    
+    if(texto.length>2){
+      this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
+      this.openInformationWindows();
+    }else{
+      var data = {nombre:texto[0],apellido:texto[1]} 
+      console.log(data.nombre);
+      this.bookService.obtenerLibrosPorAutor(data).subscribe(
+        (result) => {
+          this.books = result;
+            console.log(result);
+        },
+        (error) => { 
+          this.information = 'No se ha cargado la lista de libros';
+          this.openInformationWindows();
+          console.log(error);
+        }
+      ); 
+    }
+  }
+  }
+  
   /**
    * abreviatura de this.editBookForm.controls
    * @readonly

@@ -15,7 +15,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  createUser(data) {
+  createUser(data) { 
     return this.http.post<any>(Globals.apiUrl + '/usuarios', data);
   }
 
@@ -23,5 +23,9 @@ export class UserService {
     console.log('userAdmin');
     console.log(this.currentUserType);
     return this.currentUserType == 'admin' ? true : false;
+  }
+
+  devolverEmail(data) {
+    return this.http.get<any>(Globals.apiUrl + '/email/'+data);
   }
 }

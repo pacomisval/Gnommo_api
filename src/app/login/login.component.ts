@@ -263,6 +263,7 @@ export class LoginComponent implements OnInit {
    */
 
   comprobarRegistro(){
+ 
    var res =true;
    var reg : RegExp = /^[0-9-a-zA-Z]+$/;
    var reg2 : RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/;
@@ -299,42 +300,55 @@ export class LoginComponent implements OnInit {
   }
 
   addUserDB() {
-    if(this.comprobarRegistro()){
-      this.comprobarRegistro();
-      this.submittedRegister = true;
-      console.log('registrando');
-      if (this.registerForm.invalid) {
-        console.log("formulario invalido")
-        return;
-      }
-      this.loading = true;
-      const data = {
-        id: '',
-        nombre: this.rfc.userName.value,
-        password: this.rfc.password.value,
-        email: this.rfc.email.value,
-        rol: 'user',
-        tok: '',
-      };
-      console.log('data');
-      console.log(data);
-      this.userService.createUser(data).subscribe(
-        (results) => {
-          alert('usuario Agregado');
-          console.log(results);
-          const cukiUser = JSON.stringify(results);
-          console.log(cukiUser);
-          this.cookieService.set('cuki', cukiUser, 1);
-          this.userService.currentUserType = data.rol;
-          this.registerModal.dismiss();
-          this.router.navigate(['home']).then(() => window.location.reload());
-        },
-        (error) => {
-          alert('usuario NO Agregado');
-          console.log(error);
+    this.userService.devolverEmail(this.rfc.email.value).subscribe(
+      (data) => {
+        if(data==1){
+          this.information = "El email ya existe \n";
+          this.openInformationWindows();
         }
-      );
-    }
+        else{
+          if(this.comprobarRegistro()){
+            this.submittedRegister = true;
+            console.log('registrando');
+            if (this.registerForm.invalid) {
+              console.log("formulario invalido")
+              return;
+            }
+            this.loading = true;
+            const data = {
+              id: '',
+              nombre: this.rfc.userName.value,
+              password: this.rfc.password.value,
+              email: this.rfc.email.value,
+              rol: 'user',
+              tok: '',
+            };
+            console.log('data');
+            console.log(data);
+            this.userService.createUser(data).subscribe(
+              (results) => {
+                this.information = 'usuario Agregado';
+                console.log(results);
+                const cukiUser = JSON.stringify(results);
+                console.log(cukiUser);
+                this.cookieService.set('cuki', cukiUser, 1);
+                this.userService.currentUserType = data.rol;
+                this.registerModal.dismiss();
+                this.router.navigate(['home']).then(() => window.location.reload());
+                this.openInformationWindows();
+              },
+              (error) => {
+                alert('usuario NO Agregado');
+                console.log(error);
+              }
+            );
+          }
+      }},
+  (error2) => {
+    alert('usuario NO Agregado');
+    console.log(error2);
+  }
+);
   }
 
   onFileChange(event) {

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Globals } from '../Global';
 
 
@@ -24,6 +23,19 @@ export class BookService {
 
   getBookFromAutor(id: number) {
     return this.http.get<any>(Globals.apiUrl + '/libros/autor/' + id);
+  }
+
+  obtenerLibrosPorAutor(data) {
+    // Initialize Params Object
+    let Params = new HttpParams();
+
+    console.log(data.nombre);
+    console.log(data.apellido);
+    // Begin assigning parameters
+    Params = Params.append('firstParameter', data.nombre);
+    Params = Params.append('secondParameter', data.apellido);
+    return this.http.get<any>(Globals.apiUrl + '/filtrar', { params: Params }); // BUG .....
+
   }
 
   createBook(data) {

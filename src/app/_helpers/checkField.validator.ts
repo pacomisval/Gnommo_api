@@ -15,7 +15,7 @@ export function checkFile(file: File) {
 }
 export function checkIsbnFormat(texto: string) {
   let message = '';
-  const reg: RegExp = /^[0-9-a-zA-Z]+$/;
+  const reg: RegExp = /^[0-9-]+$/;
   if (reg.test(texto) == false) {
     message = 'Asegurese de estar introduciendo un ISBN correcto ';
   }

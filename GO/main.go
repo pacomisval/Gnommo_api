@@ -43,6 +43,15 @@ type Libro struct {
 	LastName  string `json:"last_name"`
 }
 
+type Libro2 struct {
+	Id      string `json:"id"`
+	Nombre  string `json:"nombre"`
+	Isbn    string `json:"isbn"`
+	IdAutor string `json:"idAutor"`
+
+	Portada string `json:"first_name"`
+}
+
 type Autor struct {
 	Id        string `json:"id"`
 	FirstName string `json:"first_name"`
@@ -100,7 +109,9 @@ func main() {
 	router.HandleFunc("/api/autores", postAutor).Methods("POST")
 	router.HandleFunc("/api/autores/{id}", putAutor).Methods("PUT")
 	router.HandleFunc("/api/autores/{id}", deleteAutor).Methods("DELETE")
-
+    router.HandleFunc("/api/email/{email}", encontrarEmail).Methods("GET")
+    router.HandleFunc("/api/filtrar", obtenerLibrosPorAutor).Methods("GET")
+    
 	router.HandleFunc("/api/usuarios", getUsuarios).Methods("GET")
 	router.HandleFunc("/api/usuarios/{id}", getUsuario).Methods("GET")
 	router.HandleFunc("/api/usuarios", postUsuario).Methods("POST")
@@ -197,6 +208,101 @@ func recuperarPass(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(value)
 
+}
+
+func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("LLEga rafa:-----------------------")
+    params := r.URL.Query()
+
+    fmt.Println("params ", params)
+
+    nombre1, ok := params["firstParameter"]
+    apellido1, ok := params["secondParameter"] 
+    nombre := nombre1[0]
+    apellido := apellido1[0]
+    //nombre := strings.Join(nombre1, " ")
+    //apellido := strings.Join(apellido1, " ")
+
+    
+    fmt.Println("nombre: ", nombre)
+    fmt.Println("Apellido:" + apellido)
+    
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println("nombre1 ", nombre1)
+
+    fmt.Println("apellido1 ", apellido1)
+    //fmt.Println(strings.Join(nombre1, " "))
+    //fmt.Println(strings.Join(apellido1, " "))
+    fmt.Println("el ok ", ok)
+
+    fmt.Println("-----------------------1")
+    var libros []Libro2
+    var autor Autor
+    rows, err2 := db.Query("SELECT id FROM autor WHERE first_name=? AND last_name=?", &nombre, &apellido)
+
+    if (err) != nil {
+        panic(err.Error())
+    }
+    if err2 != nil {
+        fmt.Println("error2 rows ", err2)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+
+        err := rows.Scan(&autor.Id)
+        if err != nil {
+            fmt.Println("error:::: ", err)
+        }
+        fmt.Println("autor Id:::::: ", autor.Id)
+        fmt.Println("rows:::::", rows)
+    }
+    fmt.Println("autor Id:::::: ", autor.Id)
+    if err2 != nil {
+        fmt.Println("error2 ", err2)
+
+    }
+
+    result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", &autor.Id) //BUG
+    if err != nil {
+        fmt.Println("error3 ", err)
+    }
+
+    defer result.Close()
+
+    for result.Next() {
+        var libro Libro2
+        err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor,&libro.Portada) //BUG
+        if err != nil {
+            fmt.Println("error4 ", err)
+        }
+        libros = append(libros, libro)
+    }
+    json.NewEncoder(w).Encode(libros)
+
+    fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
+}
+
+func encontrarEmail(w http.ResponseWriter, r* http.Request) {
+    fmt.Println("Entra a encontrarEmail rafa ")
+    params := mux.Vars(r)
+    email := params["email"]
+    fmt.Println(email)
+    rows, err2 := db.Query("Select count(*) FROM usuarios where email like ?", &email)
+    var count int
+    if err2 != nil {
+        count=1;
+    }
+    defer rows.Close()
+    for rows.Next() {
+        if err := rows.Scan(&count); err != nil {
+            fmt.Println(err)
+        }
+    }
+
+    json.NewEncoder(w).Encode(count)
 }
 
 func findUsuarioByEmail(user, mail string) (bool, string) {
