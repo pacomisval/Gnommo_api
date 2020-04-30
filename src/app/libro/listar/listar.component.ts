@@ -123,7 +123,7 @@ export class ListarComponent implements OnInit {
     this.editBookForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       isbn: ['', Validators.required],
-      first_name: ['', [Validators.required]],
+      first_name: ['', [Validators.required]], 
       last_name: ['', Validators.required],
     });
 
@@ -133,6 +133,7 @@ export class ListarComponent implements OnInit {
   buscar(){
     alert(document.getElementById('filtro').value)
     if(document.getElementById('filtro').value=="autor"){
+      console.log("eeeee231")
     var texto = document.getElementById('contenido').value.replace(/\s+/g,' ').split(" ",(document.getElementById('contenido').value.length));
     
     if(texto.length>2){
