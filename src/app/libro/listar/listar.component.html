@@ -1,6 +1,6 @@
 <div class="container">
     <div class="card">
-        <div class="card-header d-flex">
+        <!-- <div class="card-header d-flex">
             <h3>LIBROS</h3>
             <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
             <form [formGroup]="findForm">
@@ -14,8 +14,20 @@
                 <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
             </span>
             </form>
+        </div> -->
+        <div class="card-header d-flex">
+            <h3>LIBROS</h3>
+            <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
+            <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2">
+              <option value="autor">Autor</option>
+              <option value="libro" selected>Libro</option>
+          </select>
+            <form action="" class="ml-5 pt-1">
+                <label for="" id="textoBusqueda" class="ml-5">Buscar libro</label>
+                <input type="text" id="contenido" (keyup)="buscar()" class="ml-2">
+                <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
+            </form>
         </div>
-
 
         <div class="card-body">
             <table class="table table-hover">

@@ -153,30 +153,32 @@ export class ListarComponent implements OnInit {
   cambiarBusqueda() {
     const opcion = this.findForm.value.filtro;
     if (opcion == 'autor') {
-    //   document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
+       document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
      }
-   //  else if(document.getElementById('filtro').value=="libro"){
-    //   document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
-   //  }
+     else if(document.getElementById('filtro').value=="libro"){
+       document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
+     }
   }
 
-  buscar() {
-    const opcion = this.findForm.value.filtro;
-    console.log(opcion);
-    if (opcion == 'autor') {
-     const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
+  buscar(){
 
-     if (texto.length > 2) {
-       this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
-       this.openInformationWindows();
-     } else {
-    const data = { nombre: texto[0], apellido: texto[1] };
+    if(document.getElementById('filtro').value=="autor"){
 
-    console.log(data.nombre);
-    this.bookService.obtenerLibrosPorAutor(data).subscribe(
+      if(document.getElementById('contenido').value==""){
+        this.getLibros();
+      }else{
+    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ').split(" ",(document.getElementById('contenido').value.length));
+
+    if(texto.length>2){
+      this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
+      this.openInformationWindows();
+    }else{
+      var data = {nombre:texto[0],apellido:texto[1]}
+      console.log(data.nombre);
+      this.bookService.obtenerLibrosPorAutor(data).subscribe(
         (result) => {
           this.books = result;
-          console.log(result);
+            console.log(result);
         },
         (error) => {
           this.information = 'No se ha cargado la lista de libros';
@@ -185,6 +187,25 @@ export class ListarComponent implements OnInit {
         }
       );
     }
+  }}else if(document.getElementById('filtro').value=="libro"){
+
+    console.log("ESTAS EN LIBRO")
+    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ');
+
+      var data = {nombre:texto}
+      console.log(texto);
+      this.bookService.obtenerLibro(data).subscribe(
+        (result) => {
+          this.books = result;
+            console.log(result);
+        },
+        (error) => {
+          this.information = 'No se ha cargado la lista de libros';
+          this.openInformationWindows();
+          console.log(error);
+        }
+      );
+
   }
   }
 

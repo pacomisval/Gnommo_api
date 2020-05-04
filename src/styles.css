@@ -2,6 +2,9 @@
 
 body {
     padding-top: 10px;
+    background-color: crimson;
+    background-image: url("/assets/images/book/1.jpg");
+    background-repeat: no-repeat;
 }
 
 .container {
