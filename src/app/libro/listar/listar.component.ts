@@ -168,6 +168,7 @@ export class ListarComponent implements OnInit {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   buscar() {
     const opcion = this.findForm.value.filtro;
     console.log(opcion);
@@ -202,6 +203,8 @@ export class ListarComponent implements OnInit {
       console.log(texto);
       this.bookService.obtenerLibro(data).subscribe(
 =======
+=======
+>>>>>>> parent of 4b88d58... Cambiar texto de busqueda
   buscar(){  
     alert(document.getElementById('filtro').value)
     if(document.getElementById('filtro').value=="autor"){
