@@ -167,6 +167,7 @@ export class ListarComponent implements OnInit {
    //  }
   }
 
+<<<<<<< HEAD
   buscar() {
     const opcion = this.findForm.value.filtro;
     console.log(opcion);
@@ -200,6 +201,21 @@ export class ListarComponent implements OnInit {
       var data = {nombre:texto}  
       console.log(texto);
       this.bookService.obtenerLibro(data).subscribe(
+=======
+  buscar(){  
+    alert(document.getElementById('filtro').value)
+    if(document.getElementById('filtro').value=="autor"){
+      console.log("eeeee231")
+    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ').split(" ",(document.getElementById('contenido').value.length));
+    
+    if(texto.length>2){
+      this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
+      this.openInformationWindows();
+    }else{
+      var data = {nombre:texto[0],apellido:texto[1]} 
+      console.log(data.nombre);
+      this.bookService.obtenerLibrosPorAutor(data).subscribe(
+>>>>>>> parent of 4b88d58... Cambiar texto de busqueda
         (result) => {
           this.books = result;
             console.log(result);
