@@ -140,7 +140,7 @@ export class ListarComponent implements OnInit {
     this.editBookForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       isbn: ['', Validators.required],
-      first_name: ['', [Validators.required]], 
+      first_name: ['', [Validators.required]],
       last_name: ['', Validators.required],
       imgBook: [''],
     });
@@ -148,86 +148,66 @@ export class ListarComponent implements OnInit {
 
   }
 
-  cambiarBusqueda(){
-    if(document.getElementById('filtro').value=="autor"){
-      document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
-    }
-    else if(document.getElementById('filtro').value=="libro"){
-      document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
-    }
+  cambiarBusqueda() {
+    const opcion = this.findForm.value.filtro;
+    if (opcion == 'autor') {
+       document.getElementById('textoBusqueda').innerHTML = 'Buscar autor'
+     }
+     else if(document.getElementById('filtro').value=='libro'){
+       document.getElementById('textoBusqueda').innerHTML = 'Buscar libro'
+     }
   }
 
+  buscar(){
 
+    if (document.getElementById('filtro').value == 'autor') {
 
-  // buscar() {
-  //   const opcion = this.findForm.value.filtro;
-  //   console.log(opcion);
-  //   if (opcion == 'autor') {
-  //    const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
+      if (document.getElementById('contenido').value == '') {
+        this.getLibros();
+      } else {
+        var texto = document.getElementById('contenido').value.replace(/\s+/g, ' ').split(' ', (document.getElementById('contenido').value.length));
 
-  //   if(document.getElementById('filtro').value=="autor"){
+        if (texto.length > 2) {
+          this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
+          this.openInformationWindows();
+        } else {
+          var data = { nombre: texto[0], apellido: texto[1] }
+          console.log(data.nombre);
+          this.bookService.obtenerLibrosPorAutor(data).subscribe(
+            (result) => {
+              this.books = result;
+              console.log(result);
+            },
+            (error) => {
+              this.information = 'No se ha cargado la lista de libros';
+              this.openInformationWindows();
+              console.log(error);
+            }
+          );
+        }
+      }
+    }else if(document.getElementById('filtro').value=='libro'){
 
-  //     if(document.getElementById('contenido').value==""){
-  //       this.getLibros();
-  //     }else{
-  //   var texto = document.getElementById('contenido').value.replace(/\s+/g,' ').split(" ",(document.getElementById('contenido').value.length));
-    
-  //   if(texto.length>2){
-  //     this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
-  //     this.openInformationWindows();
-  //   }else{
-  //     var data = {nombre:texto[0],apellido:texto[1]}  
-  //     console.log(data.nombre);
-  //     this.bookService.obtenerLibrosPorAutor(data).subscribe(
-  //       (result) => {
-  //         this.books = result;
-  //           console.log(result);
-  //       },
-  //       (error) => {   
-  //         this.information = 'No se ha cargado la lista de libros';
-  //         this.openInformationWindows();
-  //         console.log(error);
-  //       }
-  //     ); 
-  //   }
-  // }}else if(document.getElementById('filtro').value=="libro"){
+    console.log('ESTAS EN LIBRO')
+    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ');
 
-  //   console.log("ESTAS EN LIBRO")
-  //   var texto = document.getElementById('contenido').value.replace(/\s+/g,' ');
-
-  //     var data = {nombre:texto}  
-  //     console.log(texto);
-  //     this.bookService.obtenerLibro(data).subscribe(
-
-
-
-  buscar(){  
-    alert(document.getElementById('filtro').value)
-    if(document.getElementById('filtro').value=="autor"){
-      console.log("eeeee231")
-    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ').split(" ",(document.getElementById('contenido').value.length));
-    
-    if(texto.length>2){
-      this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
-      this.openInformationWindows();
-    }else{
-      var data = {nombre:texto[0],apellido:texto[1]} 
-      console.log(data.nombre);
-      this.bookService.obtenerLibrosPorAutor(data).subscribe(
+      var data = {nombre:texto}
+      console.log(texto);
+      this.bookService.obtenerLibro(data).subscribe(
         (result) => {
           this.books = result;
             console.log(result);
         },
-        (error) => { 
+        (error) => {
           this.information = 'No se ha cargado la lista de libros';
           this.openInformationWindows();
           console.log(error);
         }
-      ); 
-    
+      );
+
   }
-  }}
-  
+  }
+
   /**
    * abreviatura de this.editBookForm.controls
    * @readonly

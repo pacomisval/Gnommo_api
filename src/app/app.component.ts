@@ -17,6 +17,9 @@ import { UserService } from './services/user.service';
 import { AuthenticationService } from './services/authentication.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ok } from 'assert';
+import { AuthorService } from './services/author.service';
+import { Author } from './models/author';
+import { BookService } from './services/book.service';
 
 @Component({
   selector: 'app-root',
@@ -39,10 +42,12 @@ export class AppComponent {
   adminExits: boolean;
   currentUser: string;
   currentUserName: string;
+  buscarXautor = true;
   rol;
   token;
+  books;
   findForm: FormGroup;
-
+  authors: Author[];
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -50,7 +55,9 @@ export class AppComponent {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private authenticationService: AuthenticationService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private autorService: AuthorService,
+    private bookService: BookService,
   ) {
     console.log('entra constructor');
     this.currentUser = this.authenticationService.currentUserValue;
@@ -68,6 +75,7 @@ export class AppComponent {
     this.getCookie('tokensiN');
     this.getCookie('tokensiR');
     this.getCookie('tokensiT');
+    this.getAllAutor();
 
     this.registerForm = this.formBuilder.group(
       {
@@ -188,13 +196,59 @@ cambiarBusqueda() {
   const opcion = this.findForm.value.filtro;
   if (opcion == 'autor') {
     this.textoBusqueda = 'Nombre del Autor';
-  //   document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
+    this.buscarXautor = true;
   }else{
   this.textoBusqueda = 'Titulo del libro';
-
- //  else if(document.getElementById('filtro').value=="libro"){
-  //   document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
+  this.buscarXautor = false;
    }
 }
 
+  buscar() {
+    const opcion = this.findForm.value.filtro;
+    console.log("Opcion:", opcion);
+    if (opcion == 'autor') {
+      const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
+      if (texto.length > 2) {
+        //  this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
+        //  this.openInformationWindows();
+      } else {
+        const data = { nombre: texto[0], apellido: texto[1] };
+
+        console.log(data.nombre);
+        this.bookService.obtenerLibrosPorAutor(data).subscribe(
+          (result) => {
+            this.books = result;
+            console.log("libros de un autor", result);
+          },
+          (error) => {
+            //   this.information = 'No se ha cargado la lista de libros';
+            //   this.openInformationWindows();
+            console.log(error);
+          }
+        );
+      }
+    }
+  }
+  /**
+   * Da valor a la lista de Autores
+   *
+   * @returns
+   * @memberof ListarautoresComponent
+   */
+  getAllAutor() {
+    this.autorService.getAll().subscribe(
+      (result) => {
+        this.authors = result;
+        // console.log('respuesta authors');
+        // console.log(result);
+         console.log('authors',this.authors);
+      },
+      (error) => {
+    //    this.message = 'No se ha cargado la lista de authors';
+    //    this.openInformationWindows();
+        // console.log('respuesta error authors');
+        // console.log(error);
+      }
+    );
+  }
 }

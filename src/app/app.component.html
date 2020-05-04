@@ -8,7 +8,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 
       <span class="navbar-toggler-icon"></span>
-  </button>
+    </button>
     </div>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav flex-row w-100">
@@ -27,22 +27,31 @@
             <li *ngIf="adminExits" class="nav-item">
                 <a class="nav-link" routerLink="addAutor">Nuevo Autor</a>
             </li>
-            <form [formGroup]="findForm">
+            <!-- <form [formGroup]="findForm">
 
                 <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
-                <!-- <select name="filtro" id="filtro" class="ml-2"> -->
+                <!-- <select name="filtro" id="filtro" class="ml-2">
                 <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
-
-            <option value="autor">Autor</option>
-            <option value="libro">Libro</option>
-            </select>
+          <option value="autor">Autor</option>
+          <option value="libro">Libro</option>
+        </select>
                 <span action="" class="ml-5 pt-1">
-      <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
-      <input type="text" id="contenido" class="ml-2" >
-      <!-- <input type="button" class="ml-2" id="bttBuscar" value="Buscar"> -->
-      <!-- <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar"> -->
-  </span>
-            </form>
+          <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
+          <ng-container *ngIf="buscarXautor; then autorTemplate; else tituloTemplate"></ng-container>
+          <ng-template #autorTemplate>
+            <input type="text" list="autores" (click)="buscar()" class="ml-2" />
+            <datalist id="autores">
+              <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
+            </datalist>
+          </ng-template>
+          <ng-template #tituloTemplate>
+            <input type="text" list="autores" class="ml-2" />
+            <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
+          </ng-template>
+          <!-- <input type="button" class="ml-2" id="bttBuscar" value="Buscar">
+          <!-- <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
+        </span>
+            </form> -->
 
             <ng-container *ngIf="CukiExits; then thenTemplate; else elseTemplate"></ng-container>
             <ng-template #thenTemplate>
