@@ -24,15 +24,15 @@ import { ok } from 'assert';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  isCollapsed = true;
   cookieMessage = 'Estamos obligados a darte el coñazo con esto de las cukis';
   cookieDismiss = 'Cerrar';
   cookieLinkText = 'Vea que las cukis solo guardan informacion util para ti';
 
-  title = 'Biblioteca de Gnomo';
-  // titulo = 'Biblioteca';
+  title = 'Gnomo Librery';
   registerForm: FormGroup;
   registerModal: NgbModalRef;
-
+  textoBusqueda = 'Nombre del Autor';
   loading = false;
   submitted = false;
   CukiExits: boolean;
@@ -41,6 +41,7 @@ export class AppComponent {
   currentUserName: string;
   rol;
   token;
+  findForm: FormGroup;
 
   constructor(
     private router: Router,
@@ -55,6 +56,7 @@ export class AppComponent {
     this.currentUser = this.authenticationService.currentUserValue;
     console.log(this.currentUser);
   }
+
   /**
    * Valida campos input
    *
@@ -80,6 +82,11 @@ export class AppComponent {
     );
     this.currentUser = this.authenticationService.currentUserValue;
   //  console.log(this.currentUser);
+    this.findForm = new FormGroup({
+    filtro: new FormControl(),
+    texto: new FormControl()
+    });
+    this.findForm.patchValue({ filtro: "autor" });
   }
 
   politicaCukis() {
@@ -155,25 +162,39 @@ export class AppComponent {
     return valor;
   }
 
-
-  listar() {
-    this.router.navigate(['listar']);
-  }
-  listarAutores() {
-    this.router.navigate(['listarAutores']);
-  }
-  newAuthor() {
-    this.router.navigate(['agregarAutores']);
-  }
-  newBook() {
-    this.router.navigate(['agregarLibro']);
-  }
-  login() {
-    this.router.navigate(['login']);
-  }
+// TODO Borrar Comentarios
+  // listar() {
+  //   this.router.navigate(['libros']);
+  // }
+  // listarAutores() {
+  //   this.router.navigate(['autores']);
+  // }
+  // newAuthor() {
+  //   this.router.navigate(['agregarAutores']);
+  // }
+  // newBook() {
+  //   this.router.navigate(['agregarLibro']);
+  // }
+  // login() {
+  //   this.router.navigate(['login']);
+  // }
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['home']).then(() => window.location.reload());
   }
+/////////////////////////////
+// TODO
+cambiarBusqueda() {
+  const opcion = this.findForm.value.filtro;
+  if (opcion == 'autor') {
+    this.textoBusqueda = 'Nombre del Autor';
+  //   document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
+  }else{
+  this.textoBusqueda = 'Titulo del libro';
+
+ //  else if(document.getElementById('filtro').value=="libro"){
+  //   document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
+   }
+}
 
 }

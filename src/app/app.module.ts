@@ -26,7 +26,10 @@ import { UserService } from './services/user.service';
 import { HeaderInterceptor } from './header.interceptor';
 import { CookieService } from 'ngx-cookie-service';
 import { UploadService } from './services/upload.service';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +49,9 @@ import { UploadService } from './services/upload.service';
     CommonModule,
     NgbModule,
     ReactiveFormsModule,
+    CollapseModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     BookService,

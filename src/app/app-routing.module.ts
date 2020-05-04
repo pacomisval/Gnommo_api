@@ -13,13 +13,13 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent},
-  { path: 'listar', component: ListarComponent },
+  { path: 'libros', component: ListarComponent },
 
-  { path: 'listarAutores', component: ListarautoresComponent },
+  { path: 'autores', component: ListarautoresComponent },
   { path: 'listarAutores/:id', component: ListarautoresComponent },
 
-  { path: 'agregarAutores', component: AddautorComponent , canActivate: [AuthGuard]},
-  { path: 'agregarLibro', component: AddlibroComponent, canActivate: [AuthGuard] },
+  { path: 'addAutor', component: AddautorComponent , canActivate: [AuthGuard]},
+  { path: 'addLibro', component: AddlibroComponent, canActivate: [AuthGuard] },
 
   { path: 'login', component: LoginComponent },
 

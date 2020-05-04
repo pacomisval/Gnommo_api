@@ -12,7 +12,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthorService } from 'src/app/services/author.service';
 import { Author } from 'src/app/models/author';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { Globals } from './../../Global';
 import {
@@ -22,10 +22,15 @@ import {
 } from '@angular/platform-browser'; // para imagen libro en local
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
+<<<<<<< HEAD
 import { isUndefined } from 'util';
 /**import { UploadService } from './../../services/upload.service';
 
  * Componente actua sobre los libros haciendo
+=======
+// import { UploadService } from './../../services/upload.service';
+/** Componente actua sobre los libros haciendo
+>>>>>>> bdc6c48fbd50e2d94a802d76af322565ada535e5
  * READ UPDATE y DELETE
  * @export
  * @class ListarComponent
@@ -104,6 +109,7 @@ export class ListarComponent implements OnInit {
   // Cambiarfile = false;
   oldFile: any;
   oldNombre: any;
+  findForm: FormGroup;
 
   /**
    * Creando una instancia de ListarComponent.
@@ -140,51 +146,53 @@ export class ListarComponent implements OnInit {
     this.editBookForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       isbn: ['', Validators.required],
-      first_name: ['', [Validators.required]], 
+      first_name: ['', [Validators.required]],
       last_name: ['', Validators.required],
       imgBook: [''],
     });
-
+    this.findForm = new FormGroup({
+      filtro: new FormControl(),
+      texto: new FormControl()
+   });
 
   }
 
-  cambiarBusqueda(){
-    if(document.getElementById('filtro').value=="autor"){
-      document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
-    }
-    else if(document.getElementById('filtro').value=="libro"){
-      document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
-    }
+  cambiarBusqueda() {
+    const opcion = this.findForm.value.filtro;
+    if (opcion == 'autor') {
+    //   document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
+     }
+   //  else if(document.getElementById('filtro').value=="libro"){
+    //   document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
+   //  }
   }
 
-  buscar(){  
+  buscar() {
+    const opcion = this.findForm.value.filtro;
+    console.log(opcion);
+    if (opcion == 'autor') {
+     const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
 
-    if(document.getElementById('filtro').value=="autor"){
+     if (texto.length > 2) {
+       this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
+       this.openInformationWindows();
+     } else {
+    const data = { nombre: texto[0], apellido: texto[1] };
 
-      if(document.getElementById('contenido').value==""){
-        this.getLibros();
-      }else{
-    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ').split(" ",(document.getElementById('contenido').value.length));
-    
-    if(texto.length>2){
-      this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
-      this.openInformationWindows();
-    }else{
-      var data = {nombre:texto[0],apellido:texto[1]}  
-      console.log(data.nombre);
-      this.bookService.obtenerLibrosPorAutor(data).subscribe(
+    console.log(data.nombre);
+    this.bookService.obtenerLibrosPorAutor(data).subscribe(
         (result) => {
           this.books = result;
-            console.log(result);
+          console.log(result);
         },
-        (error) => { 
+        (error) => {
           this.information = 'No se ha cargado la lista de libros';
           this.openInformationWindows();
           console.log(error);
         }
-      ); 
+      );
     }
-  }}else if(document.getElementById('filtro').value=="libro"){
+  }else if(document.getElementById('filtro').value=="libro"){
 
     console.log("ESTAS EN LIBRO")
     var texto = document.getElementById('contenido').value.replace(/\s+/g,' ');
@@ -205,7 +213,7 @@ export class ListarComponent implements OnInit {
     
   }
   }
-  
+
   /**
    * abreviatura de this.editBookForm.controls
    * @readonly

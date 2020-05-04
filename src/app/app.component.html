@@ -1,73 +1,71 @@
-<div class="container mt-2 mb-4">
-    <button routerLink="/" class="btn btn-info">inicio </button>
-    <button (click)="listar()" class="btn btn-info" style="margin-left:10px">Lista Libros</button>
-    <button (click)="listarAutores()" class="btn btn-info" style="margin-left:10px">Lista Autores</button>
-    <ng-container *ngIf="adminExits; then thenTemplateAdminExits"></ng-container>
-    <ng-template #thenTemplateAdminExits>
-        <button (click)="newBook()" class="btn btn-info" style="margin-left:10px">Nuevo Libro</button>
-        <button (click)="newAuthor()" class="btn btn-info" style="margin-left:10px">Nuevo Autor</button>
-    </ng-template>
-    <ng-container *ngIf="CukiExits; then thenTemplate; else elseTemplate"></ng-container>
-    <ng-template #thenTemplate>
-        <button (click)="logout()" class="btn btn-info" style="margin-left:10px">Logout</button>
-        <div class="perfil">{{currentUserName}}</div>
-        <!-- /////////////////////////////// -->
-    </ng-template>
-    <ng-template #elseTemplate>
-        <button (click)="login()" class="btn btn-info" style="margin-left:10px">Login</button>
-    </ng-template>
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            <img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+        </a>
+        <br>
+        <a class="navbar-brand logo" href="#">{{title}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 
+      <span class="navbar-toggler-icon"></span>
+  </button>
+    </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav flex-row w-100">
+            <li class="nav-item ">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="libros">Libros</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="autores">Autores</a>
+            </li>
+            <li *ngIf="adminExits" class="nav-item">
+                <a class="nav-link" routerLink="addLibro">Nuevo Libro</a>
+            </li>
+            <li *ngIf="adminExits" class="nav-item">
+                <a class="nav-link" routerLink="addAutor">Nuevo Autor</a>
+            </li>
+            <form [formGroup]="findForm">
 
+                <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
+                <!-- <select name="filtro" id="filtro" class="ml-2"> -->
+                <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
 
+            <option value="autor">Autor</option>
+            <option value="libro">Libro</option>
+            </select>
+                <span action="" class="ml-5 pt-1">
+      <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
+      <input type="text" id="contenido" class="ml-2" >
+      <!-- <input type="button" class="ml-2" id="bttBuscar" value="Buscar"> -->
+      <!-- <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar"> -->
+  </span>
+            </form>
 
+            <ng-container *ngIf="CukiExits; then thenTemplate; else elseTemplate"></ng-container>
+            <ng-template #thenTemplate>
+                <li class="nav-item  ml-auto px-2">
+                    <a class="nav-link" href="" (click)="logout()">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link ">{{currentUserName}}</span>
+                </li>
+            </ng-template>
 
-<!--
-<ng-template #registerModal let-modal>
-    <h2>Register</h2>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="userName">Nombre</label>
-            <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.userName.errors }" />
-            <div *ngIf="submitted && rfc.userName.errors" class="invalid-feedback">
-                <div *ngIf="rfc.userName.errors.required">UserName is required</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.email.errors }" />
-            <div *ngIf="submitted && rfc.email.errors" class="invalid-feedback">
-                <div *ngIf="rfc.email.errors.required">Email is required</div>
-                <div *ngIf="rfc.email.errors.email">Email must be a valid email address</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.password.errors }" />
-            <div *ngIf="submitted && rfc.password.errors" class="invalid-feedback">
-                <div *ngIf="rfc.password.errors.required">Password is required</div>
-                <div *ngIf="rfc.password.errors.minlength">Password must be at least 6 characters</div>
-                <div *ngIf="rfc.confirmPassword.errors.mustMatch">Passwords must match</div>
+            <ng-template #elseTemplate>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link  " routerLink="login">Login</a>
+                </li>
+            </ng-template>
 
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="passwordRepeat">passwordRepeat</label>
-            <input type="password" formControlName="passwordRepeat" class="form-control" [ngClass]="{ 'is-invalid': submitted && rfc.passwordRepeat.errors }" />
-            <div *ngIf="submitted && rfc.passwordRepeat.errors" class="invalid-feedback">
-                <div *ngIf="rfc.passwordRepeat.errors.required">PasswordRepeat is required</div>
-                <div *ngIf="rfc.passwordRepeat.errors.mustMatch">PasswordRepeat must be at least 6 characters</div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <button [disabled]="loading" class="btn btn-primary">Register</button>
-            <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-            />
-            <a (click)="modal.close()" class="btn btn-link">Cancel</a>
-        </div>
-    </form>
-</ng-template> -->
+        </ul>
+        <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+    </div>
+</nav>
 
 <router-outlet></router-outlet>
