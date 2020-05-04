@@ -32,7 +32,7 @@ export class AppComponent {
   title = 'Gnomo Librery';
   registerForm: FormGroup;
   registerModal: NgbModalRef;
-
+  textoBusqueda = 'Nombre del Autor';
   loading = false;
   submitted = false;
   CukiExits: boolean;
@@ -41,6 +41,7 @@ export class AppComponent {
   currentUserName: string;
   rol;
   token;
+  findForm: FormGroup;
 
   constructor(
     private router: Router,
@@ -81,8 +82,11 @@ export class AppComponent {
     );
     this.currentUser = this.authenticationService.currentUserValue;
   //  console.log(this.currentUser);
-
-
+    this.findForm = new FormGroup({
+    filtro: new FormControl(),
+    texto: new FormControl()
+    });
+    this.findForm.patchValue({ filtro: "autor" });
   }
 
   politicaCukis() {
@@ -179,6 +183,18 @@ export class AppComponent {
     this.router.navigate(['home']).then(() => window.location.reload());
   }
 /////////////////////////////
+// TODO
+cambiarBusqueda() {
+  const opcion = this.findForm.value.filtro;
+  if (opcion == 'autor') {
+    this.textoBusqueda = 'Nombre del Autor';
+  //   document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
+  }else{
+  this.textoBusqueda = 'Titulo del libro';
 
+ //  else if(document.getElementById('filtro').value=="libro"){
+  //   document.getElementById('textoBusqueda').innerHTML = "Buscar libro"
+   }
+}
 
 }

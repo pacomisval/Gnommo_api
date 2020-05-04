@@ -22,9 +22,8 @@ import {
 } from '@angular/platform-browser'; // para imagen libro en local
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
-/**import { UploadService } from './../../services/upload.service';
-
- * Componente actua sobre los libros haciendo
+// import { UploadService } from './../../services/upload.service';
+/** Componente actua sobre los libros haciendo
  * READ UPDATE y DELETE
  * @export
  * @class ListarComponent
@@ -153,7 +152,7 @@ export class ListarComponent implements OnInit {
 
   cambiarBusqueda() {
     const opcion = this.findForm.value.filtro;
-    if (opcion == "autor") {
+    if (opcion == 'autor') {
     //   document.getElementById('textoBusqueda').innerHTML = "Buscar autor"
      }
    //  else if(document.getElementById('filtro').value=="libro"){
@@ -164,14 +163,14 @@ export class ListarComponent implements OnInit {
   buscar() {
     const opcion = this.findForm.value.filtro;
     console.log(opcion);
-    if (opcion =='autor') {
-     let texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
+    if (opcion == 'autor') {
+     const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
 
      if (texto.length > 2) {
        this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
        this.openInformationWindows();
      } else {
-    let data = { nombre: texto[0], apellido: texto[1] };
+    const data = { nombre: texto[0], apellido: texto[1] };
 
     console.log(data.nombre);
     this.bookService.obtenerLibrosPorAutor(data).subscribe(

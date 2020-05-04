@@ -27,18 +27,17 @@
             <li *ngIf="adminExits" class="nav-item">
                 <a class="nav-link" routerLink="addAutor">Nuevo Autor</a>
             </li>
-            <!-- <form [formGroup]="findForm"> -->
-            <form>
+            <form [formGroup]="findForm">
 
                 <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
-                <select name="filtro" id="filtro" class="ml-2">
-        <!-- <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro"> -->
+                <!-- <select name="filtro" id="filtro" class="ml-2"> -->
+                <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
 
             <option value="autor">Autor</option>
-            <option value="libro" selected>Libro</option>
+            <option value="libro">Libro</option>
             </select>
                 <span action="" class="ml-5 pt-1">
-      <label for="contenido" id="textoBusqueda" class="ml-5">Buscar libro</label>
+      <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
       <input type="text" id="contenido" class="ml-2" >
       <!-- <input type="button" class="ml-2" id="bttBuscar" value="Buscar"> -->
       <!-- <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar"> -->
