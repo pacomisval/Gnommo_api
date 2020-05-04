@@ -24,12 +24,12 @@ import { ok } from 'assert';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  isCollapsed = true;
   cookieMessage = 'Estamos obligados a darte el coñazo con esto de las cukis';
   cookieDismiss = 'Cerrar';
   cookieLinkText = 'Vea que las cukis solo guardan informacion util para ti';
 
-  title = 'Biblioteca de Gnomo';
-  // titulo = 'Biblioteca';
+  title = 'Gnomo Librery';
   registerForm: FormGroup;
   registerModal: NgbModalRef;
 
@@ -55,6 +55,7 @@ export class AppComponent {
     this.currentUser = this.authenticationService.currentUserValue;
     console.log(this.currentUser);
   }
+
   /**
    * Valida campos input
    *
@@ -80,6 +81,8 @@ export class AppComponent {
     );
     this.currentUser = this.authenticationService.currentUserValue;
   //  console.log(this.currentUser);
+
+
   }
 
   politicaCukis() {
@@ -155,25 +158,27 @@ export class AppComponent {
     return valor;
   }
 
-
-  listar() {
-    this.router.navigate(['listar']);
-  }
-  listarAutores() {
-    this.router.navigate(['listarAutores']);
-  }
-  newAuthor() {
-    this.router.navigate(['agregarAutores']);
-  }
-  newBook() {
-    this.router.navigate(['agregarLibro']);
-  }
-  login() {
-    this.router.navigate(['login']);
-  }
+// TODO Borrar Comentarios
+  // listar() {
+  //   this.router.navigate(['libros']);
+  // }
+  // listarAutores() {
+  //   this.router.navigate(['autores']);
+  // }
+  // newAuthor() {
+  //   this.router.navigate(['agregarAutores']);
+  // }
+  // newBook() {
+  //   this.router.navigate(['agregarLibro']);
+  // }
+  // login() {
+  //   this.router.navigate(['login']);
+  // }
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['home']).then(() => window.location.reload());
   }
+/////////////////////////////
+
 
 }

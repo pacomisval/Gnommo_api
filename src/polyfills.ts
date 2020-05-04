@@ -55,7 +55,16 @@ import '@angular/localize/init';
  *  (window as any).__Zone_enable_cross_context_check = true;
  *
  */
+/** Evergreen browsers require these. **/
 
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import 'core-js/proposals/reflect-metadata';
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */

@@ -3,24 +3,27 @@
         <div class="card-header d-flex">
             <h3>LIBROS</h3>
             <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
-            <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2">
-                <option value="autor">Autor</option>
-                <option value="libro" selected>Libro</option>
-            </select>
-            <form action="" class="ml-5 pt-1">
-                <label for="" id="textoBusqueda" class="ml-5">Buscar libro</label>
-                <input type="text" id="contenido" class="ml-2">
+            <form [formGroup]="findForm">
+                <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
+            <option value="autor">Autor</option>
+            <option value="libro" selected>Libro</option>
+        </select>
+                <span action="" class="ml-5 pt-1">
+                <label for="contenido" id="textoBusqueda" class="ml-5">Buscar libro</label>
+                <input type="text" id="contenido" class="ml-2" formControlName="texto">
                 <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
+            </span>
             </form>
         </div>
-        
+
+
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>LIBRO</th>
                         <th *ngIf="admin">ACCIONES</th>
-                    </tr> 
+                    </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let book of books">
