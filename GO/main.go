@@ -87,7 +87,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/libreria")
+	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -111,6 +111,7 @@ func main() {
 	router.HandleFunc("/api/autores/{id}", deleteAutor).Methods("DELETE")
     router.HandleFunc("/api/email/{email}", encontrarEmail).Methods("GET")
     router.HandleFunc("/api/filtrar", obtenerLibrosPorAutor).Methods("GET")
+    router.HandleFunc("/api/buscarLibro", obtenerLibro).Methods("GET")
     
 	router.HandleFunc("/api/usuarios", getUsuarios).Methods("GET")
 	router.HandleFunc("/api/usuarios/{id}", getUsuario).Methods("GET")
@@ -266,6 +267,46 @@ func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
     }
 
     result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", &autor.Id) //BUG
+    if err != nil {
+        fmt.Println("error3 ", err)
+    }
+
+    defer result.Close()
+
+    for result.Next() {
+        var libro Libro2
+        err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor,&libro.Portada) //BUG
+        if err != nil {
+            fmt.Println("error4 ", err)
+        }
+        libros = append(libros, libro)
+    }
+    json.NewEncoder(w).Encode(libros)
+
+    fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
+}
+
+func obtenerLibro(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("LLEga rafa:-----------------------")
+    params := r.URL.Query()
+
+    fmt.Println("params ", params)
+
+    nombre1, ok := params["firstParameter"]
+    nombre := "%"+nombre1[0]+"%"
+    
+    
+    fmt.Println("nombre: ", nombre)
+    fmt.Println("nombre1 ", nombre1)
+    fmt.Println("el ok", ok)
+    
+    if err != nil {
+        panic(err)
+    }
+    
+    var libros []Libro2
+    
+    result, err := db.Query("SELECT * FROM books WHERE nombre LIKE ?", &nombre) //BUG
     if err != nil {
         fmt.Println("error3 ", err)
     }

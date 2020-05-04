@@ -38,6 +38,18 @@ export class BookService {
 
   }
 
+  obtenerLibro(data) {
+    // Initialize Params Object
+    let Params = new HttpParams();
+
+    console.log(data);
+    console.log(data.nombre);
+    // Begin assigning parameters
+    Params = Params.append('firstParameter', data.nombre);
+    return this.http.get<any>(Globals.apiUrl + '/buscarLibro', { params: Params }); // BUG .....
+
+  }
+
   createBook(data) {
     console.log(data);
     return this.http.post<any>(Globals.apiUrl + '/libros', data);

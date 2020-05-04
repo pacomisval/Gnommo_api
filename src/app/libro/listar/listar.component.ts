@@ -22,6 +22,7 @@ import {
 } from '@angular/platform-browser'; // para imagen libro en local
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
+import { isUndefined } from 'util';
 /**import { UploadService } from './../../services/upload.service';
 
  * Componente actua sobre los libros haciendo
@@ -157,9 +158,12 @@ export class ListarComponent implements OnInit {
   }
 
   buscar(){  
-    alert(document.getElementById('filtro').value)
+
     if(document.getElementById('filtro').value=="autor"){
-      console.log("eeeee231")
+
+      if(document.getElementById('contenido').value==""){
+        this.getLibros();
+      }else{
     var texto = document.getElementById('contenido').value.replace(/\s+/g,' ').split(" ",(document.getElementById('contenido').value.length));
     
     if(texto.length>2){
@@ -180,6 +184,25 @@ export class ListarComponent implements OnInit {
         }
       ); 
     }
+  }}else if(document.getElementById('filtro').value=="libro"){
+
+    console.log("ESTAS EN LIBRO")
+    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ');
+
+      var data = {nombre:texto}  
+      console.log(texto);
+      this.bookService.obtenerLibro(data).subscribe(
+        (result) => {
+          this.books = result;
+            console.log(result);
+        },
+        (error) => { 
+          this.information = 'No se ha cargado la lista de libros';
+          this.openInformationWindows();
+          console.log(error);
+        }
+      ); 
+    
   }
   }
   
@@ -466,7 +489,7 @@ export class ListarComponent implements OnInit {
       } else if (reg.test(this.book.isbn) == false) {
         this.information =
           'Asegurese de estar introduciendo un ISBN correcto \n';
-        res = false;
+        res = false; 
       } else {
         this.bookService.getAll().subscribe((results) => {
           console.log(results[1].isbn + '  holaRafa');

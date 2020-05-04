@@ -9,7 +9,7 @@
             </select>
             <form action="" class="ml-5 pt-1">
                 <label for="" id="textoBusqueda" class="ml-5">Buscar libro</label>
-                <input type="text" id="contenido" class="ml-2">
+                <input type="text" id="contenido" (keyup)="buscar()" class="ml-2">
                 <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
             </form>
         </div>
