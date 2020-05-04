@@ -191,7 +191,7 @@ export class ListarComponent implements OnInit {
     console.log('ESTAS EN LIBRO')
     var texto = document.getElementById('contenido').value.replace(/\s+/g,' ');
 
-      var data = {nombre:texto}
+      data = {nombre:texto}
       console.log(texto);
       this.bookService.obtenerLibro(data).subscribe(
         (result) => {

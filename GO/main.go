@@ -87,7 +87,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libreria")
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -109,10 +109,10 @@ func main() {
 	router.HandleFunc("/api/autores", postAutor).Methods("POST")
 	router.HandleFunc("/api/autores/{id}", putAutor).Methods("PUT")
 	router.HandleFunc("/api/autores/{id}", deleteAutor).Methods("DELETE")
-    router.HandleFunc("/api/email/{email}", encontrarEmail).Methods("GET")
-    router.HandleFunc("/api/filtrar", obtenerLibrosPorAutor).Methods("GET")
-    router.HandleFunc("/api/buscarLibro", obtenerLibro).Methods("GET")
-    
+	router.HandleFunc("/api/email/{email}", encontrarEmail).Methods("GET")
+	router.HandleFunc("/api/filtrar", obtenerLibrosPorAutor).Methods("GET")
+	router.HandleFunc("/api/buscarLibro", obtenerLibro).Methods("GET")
+
 	router.HandleFunc("/api/usuarios", getUsuarios).Methods("GET")
 	router.HandleFunc("/api/usuarios/{id}", getUsuario).Methods("GET")
 	router.HandleFunc("/api/usuarios", postUsuario).Methods("POST")
@@ -212,138 +212,136 @@ func recuperarPass(w http.ResponseWriter, r *http.Request) {
 }
 
 func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("LLEga rafa:-----------------------")
-    params := r.URL.Query()
+	fmt.Println("LLEga rafa:-----------------------")
+	params := r.URL.Query()
 
-    fmt.Println("params ", params)
+	fmt.Println("params ", params)
 
-    nombre1, ok := params["firstParameter"]
-    apellido1, ok := params["secondParameter"] 
-    nombre := nombre1[0]
-    apellido := apellido1[0]
-    //nombre := strings.Join(nombre1, " ")
-    //apellido := strings.Join(apellido1, " ")
+	nombre1, ok := params["firstParameter"]
+	apellido1, ok := params["secondParameter"]
+	nombre := nombre1[0]
+	apellido := apellido1[0]
+	//nombre := strings.Join(nombre1, " ")
+	//apellido := strings.Join(apellido1, " ")
 
-    
-    fmt.Println("nombre: ", nombre)
-    fmt.Println("Apellido:" + apellido)
-    
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println("nombre1 ", nombre1)
+	fmt.Println("nombre: ", nombre)
+	fmt.Println("Apellido:" + apellido)
 
-    fmt.Println("apellido1 ", apellido1)
-    //fmt.Println(strings.Join(nombre1, " "))
-    //fmt.Println(strings.Join(apellido1, " "))
-    fmt.Println("el ok ", ok)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("nombre1 ", nombre1)
 
-    fmt.Println("-----------------------1")
-    var libros []Libro2
-    var autor Autor
-    rows, err2 := db.Query("SELECT id FROM autor WHERE first_name=? AND last_name=?", &nombre, &apellido)
+	fmt.Println("apellido1 ", apellido1)
+	//fmt.Println(strings.Join(nombre1, " "))
+	//fmt.Println(strings.Join(apellido1, " "))
+	fmt.Println("el ok ", ok)
 
-    if (err) != nil {
-        panic(err.Error())
-    }
-    if err2 != nil {
-        fmt.Println("error2 rows ", err2)
-    }
-    defer rows.Close()
+	fmt.Println("-----------------------1")
+	var libros []Libro2
+	var autor Autor
+	rows, err2 := db.Query("SELECT id FROM autor WHERE first_name=? AND last_name=?", &nombre, &apellido)
 
-    for rows.Next() {
+	if (err) != nil {
+		panic(err.Error())
+	}
+	if err2 != nil {
+		fmt.Println("error2 rows ", err2)
+	}
+	defer rows.Close()
 
-        err := rows.Scan(&autor.Id)
-        if err != nil {
-            fmt.Println("error:::: ", err)
-        }
-        fmt.Println("autor Id:::::: ", autor.Id)
-        fmt.Println("rows:::::", rows)
-    }
-    fmt.Println("autor Id:::::: ", autor.Id)
-    if err2 != nil {
-        fmt.Println("error2 ", err2)
+	for rows.Next() {
 
-    }
+		err := rows.Scan(&autor.Id)
+		if err != nil {
+			fmt.Println("error:::: ", err)
+		}
+		fmt.Println("autor Id:::::: ", autor.Id)
+		fmt.Println("rows:::::", rows)
+	}
+	fmt.Println("autor Id:::::: ", autor.Id)
+	if err2 != nil {
+		fmt.Println("error2 ", err2)
 
-    result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", &autor.Id) //BUG
-    if err != nil {
-        fmt.Println("error3 ", err)
-    }
+	}
 
-    defer result.Close()
+	result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", &autor.Id) //BUG
+	if err != nil {
+		fmt.Println("error3 ", err)
+	}
 
-    for result.Next() {
-        var libro Libro2
-        err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor,&libro.Portada) //BUG
-        if err != nil {
-            fmt.Println("error4 ", err)
-        }
-        libros = append(libros, libro)
-    }
-    json.NewEncoder(w).Encode(libros)
+	defer result.Close()
 
-    fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
+	for result.Next() {
+		var libro Libro2
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada) //BUG
+		if err != nil {
+			fmt.Println("error4 ", err)
+		}
+		libros = append(libros, libro)
+	}
+	json.NewEncoder(w).Encode(libros)
+
+	fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
 }
 
 func obtenerLibro(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("LLEga rafa:-----------------------")
-    params := r.URL.Query()
+	fmt.Println("LLEga rafa:-----------------------")
+	params := r.URL.Query()
 
-    fmt.Println("params ", params)
+	fmt.Println("params ", params)
 
-    nombre1, ok := params["firstParameter"]
-    nombre := "%"+nombre1[0]+"%"
-    
-    
-    fmt.Println("nombre: ", nombre)
-    fmt.Println("nombre1 ", nombre1)
-    fmt.Println("el ok", ok)
-    
-    if err != nil {
-        panic(err)
-    }
-    
-    var libros []Libro2
-    
-    result, err := db.Query("SELECT * FROM books WHERE nombre LIKE ?", &nombre) //BUG
-    if err != nil {
-        fmt.Println("error3 ", err)
-    }
+	nombre1, ok := params["firstParameter"]
+	nombre := "%" + nombre1[0] + "%"
 
-    defer result.Close()
+	fmt.Println("nombre: ", nombre)
+	fmt.Println("nombre1 ", nombre1)
+	fmt.Println("el ok", ok)
 
-    for result.Next() {
-        var libro Libro2
-        err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor,&libro.Portada) //BUG
-        if err != nil {
-            fmt.Println("error4 ", err)
-        }
-        libros = append(libros, libro)
-    }
-    json.NewEncoder(w).Encode(libros)
+	if err != nil {
+		panic(err)
+	}
 
-    fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
+	var libros []Libro2
+
+	result, err := db.Query("SELECT * FROM books WHERE nombre LIKE ?", &nombre) //BUG
+	if err != nil {
+		fmt.Println("error3 ", err)
+	}
+
+	defer result.Close()
+
+	for result.Next() {
+		var libro Libro2
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada) //BUG
+		if err != nil {
+			fmt.Println("error4 ", err)
+		}
+		libros = append(libros, libro)
+	}
+	json.NewEncoder(w).Encode(libros)
+
+	fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
 }
 
-func encontrarEmail(w http.ResponseWriter, r* http.Request) {
-    fmt.Println("Entra a encontrarEmail rafa ")
-    params := mux.Vars(r)
-    email := params["email"]
-    fmt.Println(email)
-    rows, err2 := db.Query("Select count(*) FROM usuarios where email like ?", &email)
-    var count int
-    if err2 != nil {
-        count=1;
-    }
-    defer rows.Close()
-    for rows.Next() {
-        if err := rows.Scan(&count); err != nil {
-            fmt.Println(err)
-        }
-    }
+func encontrarEmail(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Entra a encontrarEmail rafa ")
+	params := mux.Vars(r)
+	email := params["email"]
+	fmt.Println(email)
+	rows, err2 := db.Query("Select count(*) FROM usuarios where email like ?", &email)
+	var count int
+	if err2 != nil {
+		count = 1
+	}
+	defer rows.Close()
+	for rows.Next() {
+		if err := rows.Scan(&count); err != nil {
+			fmt.Println(err)
+		}
+	}
 
-    json.NewEncoder(w).Encode(count)
+	json.NewEncoder(w).Encode(count)
 }
 
 func findUsuarioByEmail(user, mail string) (bool, string) {
