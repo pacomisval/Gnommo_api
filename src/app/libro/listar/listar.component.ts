@@ -32,7 +32,7 @@ import { UploadService } from 'src/app/services/upload.service';
 @Component({
   selector: 'app-listar',
   templateUrl: './listar.component.html',
-  styleUrls: ['./listar.component.css'],
+  styleUrls: ['./listar.component.scss'],
 })
 export class ListarComponent implements OnInit {
   /**

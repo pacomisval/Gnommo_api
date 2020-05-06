@@ -22,7 +22,7 @@ import {
 @Component({
   selector: 'app-addlibro',
   templateUrl: './addlibro.component.html',
-  styleUrls: ['./addlibro.component.css'],
+  styleUrls: ['./addlibro.component.scss'],
 })
 export class AddlibroComponent implements OnInit {
   id_author: any;

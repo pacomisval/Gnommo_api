@@ -1,0 +1,39 @@
+.selecionable:hover {
+    cursor: pointer;
+}
+
+#inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile--label {}
+
+.inputfile--label:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.grid-container {
+    grid-template-areas: 'imagen autor'
+}
+
+.item1 {
+    grid-area: autor;
+}
+
+.item2 {
+    grid-area: imagen;
+}
+
+.item3 {
+    grid-area: main;
+}
+
+.grid-containerEJEMPLO {
+    grid-template-areas: 'header header header header header header' 'menu main main main right right' 'menu footer footer footer footer footer';
+}

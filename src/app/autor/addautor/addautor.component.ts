@@ -15,7 +15,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-addautor',
   templateUrl: './addautor.component.html',
-  styleUrls: ['./addautor.component.css'],
+  styleUrls: ['./addautor.component.scss'],
 })
 export class AddautorComponent implements OnInit {
   /**
@@ -99,8 +99,8 @@ export class AddautorComponent implements OnInit {
     console.log(this.autor)
     var res=true;
     var letras : RegExp = /^[A-Za-z\s]+$/g;
-    
-    
+
+
     if(this.mautor.length>50){
       this.information = "-Has superado el límite de carácteres máximos en el campo nombre";
       res=false;
@@ -131,7 +131,7 @@ export class AddautorComponent implements OnInit {
         return;
       }
       //  console.log(this.authorService.comesAddLibro);
-    
+
       const data = {
         first_name: this.afc.first_name.value,
         last_name: this.afc.last_name.value,

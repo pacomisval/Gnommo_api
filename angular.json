@@ -26,7 +26,7 @@
                         "styles": [
                             "./node_modules/bootstrap/dist/css/bootstrap.min.css",
                             "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
-                            "src/styles.css"
+                            "src/styles.scss"
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",
@@ -92,11 +92,9 @@
                         "styles": [
                             "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
                             "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-                            "src/styles.css"
+                            "src/styles.sscss"
                         ],
-                        "scripts": [
-
-                        ]
+                        "scripts": []
                     }
                 },
                 "lint": {
@@ -130,5 +128,10 @@
     "defaultProject": "Gnomos_Librery",
     "cli": {
         "analytics": "e6bacd6c-bd46-4025-a502-e6d93d69fba7"
+    },
+    "schematics": {
+        "@schematics/angular:component": {
+            "styleext": "scss"
+        }
     }
 }
