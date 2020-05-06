@@ -35,13 +35,16 @@ var extension string
 var lastId int64
 
 type Libro struct {
-	Id        string `json:"id"`
-	Nombre    string `json:"nombre"`
-	Isbn      string `json:"isbn"`
-	IdAutor   string `json:"idAutor"`
-	Portada   string `json:"portada"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+    Id          string `json:"id"`
+    Nombre      string `json:"nombre"`
+    Isbn        string `json:"isbn"`
+    Genero      string `json:"genero"`
+    Descripcion string `json:"descripcion"`
+    Portada     string `json:"portada"`
+    IdAutor     string `json:"idAutor"`
+
+    FirstName   string `json:"first_name"`
+    LastName    string `json:"last_name"`
 }
 
 type Libro2 struct {
@@ -53,10 +56,12 @@ type Libro2 struct {
 	Portada string `json:"first_name"`
 }
 
-type Autor struct {
-	Id        string `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+type Autor struct { //TODO MODIFICADO
+    Id              string `json:"id"`
+    FirstName       string `json:"first_name"`
+    LastName        string `json:"last_name"`
+    Nacionalidad    string `json:"nacionalidad"`
+    FechaNacimiento string `json:"fechaNacimiento"`
 }
 
 type Usuario struct {
@@ -88,7 +93,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/libreria")
+	db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/newlibrary")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1159,7 +1164,7 @@ func getAll(w http.ResponseWriter, r *http.Request) {
 
 	var libros []Libro
 
-	result, err := db.Query("SELECT b.id, b.nombre, b.isbn, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
+	result, err := db.Query("SELECT b.id, b.nombre, b.isbn,b.genero,b.descripcion, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1169,7 +1174,7 @@ func getAll(w http.ResponseWriter, r *http.Request) {
 	for result.Next() {
 		var libro Libro
 
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName)
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.Genero, &libro.Descripcion, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -1381,7 +1386,7 @@ func getAutores(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var autor Autor
-		err := result.Scan(&autor.Id, &autor.FirstName, &autor.LastName)
+		err := result.Scan(&autor.Id, &autor.FirstName, &autor.LastName, &autor.Nacionalidad, &autor.FechaNacimiento)
 		if err != nil {
 			panic(err.Error())
 		}

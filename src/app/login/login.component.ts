@@ -277,7 +277,7 @@ export class LoginComponent implements OnInit {
     res=false;
   }
 
-   if(this.rfc.email.value.length>100){
+   if(this.rfc.email.value.length>100){ 
     this.information = "Has superado el límite de carácteres máximos en el campo email \n";
     res=false;
   }else if(reg2.test(this.rfc.email.value)==false){
