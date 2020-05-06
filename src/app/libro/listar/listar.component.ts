@@ -103,7 +103,7 @@ export class ListarComponent implements OnInit {
   // Cambiarfile = false;
   oldFile: any;
   oldNombre: any;
-  findForm: FormGroup; 
+  findForm: FormGroup;
   buscarXautor: boolean;
   textoBusqueda = 'Nombre del Autor';
   authors: any;
@@ -204,7 +204,7 @@ export class ListarComponent implements OnInit {
         console.log(texto);
         this.bookService.obtenerLibro(data).subscribe(
           (result) => {
-            this.books = result; 
+            this.books = result;
             console.log(result);
           },
           (error) => {
@@ -287,6 +287,8 @@ export class ListarComponent implements OnInit {
       id: this.book.idAutor,
       first_name: this.book.first_name,
       last_name: this.book.last_name,
+      nacionalidad: "la",
+      fechaNacimiento:"10/02/2001"
     };
     this.oldFile = this.book.portada;
     this.oldIsbn = this.book.isbn;
