@@ -12,7 +12,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthorService } from 'src/app/services/author.service';
 import { Author } from 'src/app/models/author';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { Globals } from './../../Global';
 import {
@@ -22,10 +22,8 @@ import {
 } from '@angular/platform-browser'; // para imagen libro en local
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
-import { isUndefined } from 'util';
-/**import { UploadService } from './../../services/upload.service';
-
- * Componente actua sobre los libros haciendo
+// import { UploadService } from './../../services/upload.service';
+/** Componente actua sobre los libros haciendo
  * READ UPDATE y DELETE
  * @export
  * @class ListarComponent
@@ -104,6 +102,10 @@ export class ListarComponent implements OnInit {
   // Cambiarfile = false;
   oldFile: any;
   oldNombre: any;
+  findForm: FormGroup;
+  buscarXautor: boolean;
+  textoBusqueda = 'Nombre del Autor';
+  authors: any;
 
   /**
    * Creando una instancia de ListarComponent.
@@ -124,8 +126,9 @@ export class ListarComponent implements OnInit {
     private bookService: BookService,
     private authorService: AuthorService,
     private userService: UserService,
-    private uploadService: UploadService
-  ) {}
+    private uploadService: UploadService,
+    private autorService: AuthorService,
+  ) { }
 
   /**
    * Da valor a la variable admin del usuario
@@ -144,34 +147,42 @@ export class ListarComponent implements OnInit {
       last_name: ['', Validators.required],
       imgBook: [''],
     });
-
-
+    this.findForm = new FormGroup({
+      filtro: new FormControl(),
+      texto: new FormControl()
+    });
+    this.getAllAutor();
+    this.findForm.patchValue({ filtro: '' });
   }
 
   cambiarBusqueda() {
     const opcion = this.findForm.value.filtro;
     if (opcion == 'autor') {
-       document.getElementById('textoBusqueda').innerHTML = 'Buscar autor'
-     }
-     else if(document.getElementById('filtro').value=='libro'){
-       document.getElementById('textoBusqueda').innerHTML = 'Buscar libro'
-     }
+      this.textoBusqueda = 'Nombre del Autor';
+      this.buscarXautor = true;
+    } else {
+      this.textoBusqueda = 'Titulo del libro';
+      this.buscarXautor = false;
+    }
   }
 
-  buscar(){
+  buscar() {
+    console.log('busca', this.findForm.value);
 
-    if (document.getElementById('filtro').value == 'autor') {
-
-      if (document.getElementById('contenido').value == '') {
-        this.getLibros();
-      } else {
-        var texto = document.getElementById('contenido').value.replace(/\s+/g, ' ').split(' ', (document.getElementById('contenido').value.length));
-
-        if (texto.length > 2) {
+    if(this.findForm.value.texto=="" || this.findForm.value.texto==null || this.findForm.value.texto==undefined){
+      this.getLibros();
+    }
+    if (this.findForm.value.texto != null) {
+    const opcion = this.findForm.value.filtro;
+    console.log(opcion);
+    if (opcion == 'autor') {
+          const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
+       // const texto = this.findForm.value.texto;
+          if (texto.length > 2) {
           this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
           this.openInformationWindows();
         } else {
-          var data = { nombre: texto[0], apellido: texto[1] }
+          const data = { nombre: texto[0], apellido: texto[1] };
           console.log(data.nombre);
           this.bookService.obtenerLibrosPorAutor(data).subscribe(
             (result) => {
@@ -185,27 +196,24 @@ export class ListarComponent implements OnInit {
             }
           );
         }
-      }
-    }else if(document.getElementById('filtro').value=='libro'){
-
-    console.log('ESTAS EN LIBRO')
-    var texto = document.getElementById('contenido').value.replace(/\s+/g,' ');
-
-      data = {nombre:texto}
-      console.log(texto);
-      this.bookService.obtenerLibro(data).subscribe(
-        (result) => {
-          this.books = result;
+      } else if (opcion == 'libro') {
+        console.log('opcion LIBRO');
+        const texto = this.findForm.value.texto.replace(/\s+/g, ' ');
+        const data = { nombre: texto };
+        console.log(texto);
+        this.bookService.obtenerLibro(data).subscribe(
+          (result) => {
+            this.books = result;
             console.log(result);
-        },
-        (error) => {
-          this.information = 'No se ha cargado la lista de libros';
-          this.openInformationWindows();
-          console.log(error);
-        }
-      );
-
-  }
+          },
+          (error) => {
+            this.information = 'No se ha cargado la lista de libros';
+            this.openInformationWindows();
+            console.log(error);
+          }
+        );
+      }
+    }
   }
 
   /**
@@ -510,5 +518,28 @@ export class ListarComponent implements OnInit {
       this.openInformationWindows();
     }
     return res;
+  }
+
+  /**
+ * Da valor a la lista de Autores
+ *
+ * @returns
+ * @memberof ListarautoresComponent
+ */
+  getAllAutor() {
+    this.autorService.getAll().subscribe(
+      (result) => {
+        this.authors = result;
+        // console.log('respuesta authors');
+        // console.log(result);
+        console.log('authors', this.authors);
+      },
+      (error) => {
+        //    this.message = 'No se ha cargado la lista de authors';
+        //    this.openInformationWindows();
+        // console.log('respuesta error authors');
+        // console.log(error);
+      }
+    );
   }
 }

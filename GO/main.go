@@ -1,24 +1,27 @@
 package main
 
 import (
-	// "Gnommo_api7/Gnommo_api/GO/autor"
-	// "Gnommo_api7/Gnommo_api/GO/encript"
-	// "Gnommo_api7/Gnommo_api/GO/libro"
-	// "Gnommo_api7/Gnommo_api/GO/user"
-
 	"crypto/hmac"
 	"crypto/md5"
+	"regexp"
+
+	//	"crypto/rand"
 	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io"
 	"io/ioutil"
 	"log"
+	"mime"
 	"net/http"
 	"net/smtp"
-	"regexp"
+	"os"
+	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -27,14 +30,27 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var nombreImagenBook string
+var extension string
+var lastId int64
+
 type Libro struct {
+	Id        string `json:"id"`
+	Nombre    string `json:"nombre"`
+	Isbn      string `json:"isbn"`
+	IdAutor   string `json:"idAutor"`
+	Portada   string `json:"portada"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+}
+
+type Libro2 struct {
 	Id      string `json:"id"`
 	Nombre  string `json:"nombre"`
 	Isbn    string `json:"isbn"`
 	IdAutor string `json:"idAutor"`
 
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+	Portada string `json:"first_name"`
 }
 
 type Autor struct {
@@ -68,6 +84,9 @@ type Value struct {
 var db *sql.DB
 var err error
 
+const maxUploadSize = 100 * 1024 // 100 KB
+const uploadPath = "./../src/assets/images/book"
+
 func main() {
 	db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/libreria")
 	if err != nil {
@@ -76,38 +95,41 @@ func main() {
 
 	defer db.Close()
 
-	fmt.Println("Funcionando.......")
-
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/libros", getLibros).Methods("GET")
-
+	router.HandleFunc("/api/libros/autor/{id}", getLibrosByAutor).Methods("GET")
 	router.HandleFunc("/api/libros/all", getAll).Methods("GET")
 	router.HandleFunc("/api/libros/{id}", getLibro).Methods("GET")
-	//filtrar", ge
-	router.HandleFunc("/api/libros/autor/filtrar", getLibrosByAutor).Methods("GET")
-	router.HandleFunc("/api/libros/{nombre}", getLibroByName).Methods("GET")
-	//getAutorByName
-
-	router.HandleFunc("/api/email/{email}", encontrarEmail).Methods("GET")
 	router.HandleFunc("/api/libros", postLibro).Methods("POST")
 	router.HandleFunc("/api/libros/{id}", putLibro).Methods("PUT")
 	router.HandleFunc("/api/libros/{id}", deleteLibro).Methods("DELETE")
+
 	router.HandleFunc("/api/autores", getAutores).Methods("GET")
 	router.HandleFunc("/api/autores/{id}", getAutor).Methods("GET")
 	router.HandleFunc("/api/autores", postAutor).Methods("POST")
 	router.HandleFunc("/api/autores/{id}", putAutor).Methods("PUT")
 	router.HandleFunc("/api/autores/{id}", deleteAutor).Methods("DELETE")
+	router.HandleFunc("/api/email/{email}", encontrarEmail).Methods("GET")
+	router.HandleFunc("/api/filtrar", obtenerLibrosPorAutor).Methods("GET")
+	router.HandleFunc("/api/buscarLibro", obtenerLibro).Methods("GET")
+
 	router.HandleFunc("/api/usuarios", getUsuarios).Methods("GET")
 	router.HandleFunc("/api/usuarios/{id}", getUsuario).Methods("GET")
 	router.HandleFunc("/api/usuarios", postUsuario).Methods("POST")
 	router.HandleFunc("/api/usuarios/{id}", putUsuario).Methods("PUT")
 	router.HandleFunc("/api/usuarios/{id}", deleteUsuario).Methods("DELETE")
+
 	router.HandleFunc("/api/registro", postUsuario).Methods("POST")
 	router.HandleFunc("/api/login", login).Methods("POST")
+
 	router.HandleFunc("/api/recoveryPass1", recuperarPass).Methods("POST")
 	router.HandleFunc("/api/recoveryPass2", verificarCodigo).Methods("POST")
 	router.HandleFunc("/api/recoveryPass3", nuevoPassword).Methods("POST")
+
+	router.HandleFunc("/api/upload", uploadFileHandler).Methods("POST")
+
+	log.Print("Server started on localhost:8000 ..........")
 
 	log.Fatal(http.ListenAndServe(":8000", handlers.CORS(
 		handlers.AllowCredentials(),
@@ -151,75 +173,6 @@ func validarPass(passInput, passwordDB string) bool {
 ////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////  PASO 1  RECUPERAR CONTRASEÑA  //////////////////////////////////////////
 
-func comprobarCampos(campo, nombrecampo string) bool {
-	var estado bool
-	fmt.Println("El valor de campo:", campo)
-	fmt.Println("El valor de nombrecampo:", nombrecampo)
-
-	switch nombrecampo {
-	case "mail":
-		fmt.Println("Has llegado al mail")
-
-		var match3, err = regexp.MatchString(`^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$`, campo)
-		err = err
-		if match3 == false {
-			estado = false
-
-		} else {
-			estado = true
-		}
-
-	case "passDB":
-		var match2, err = regexp.MatchString(`^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,8}$`, campo)
-		err = err
-		if match2 == false {
-			estado = false
-
-		} else {
-			estado = true
-		}
-
-	case "firstname":
-
-		var match4, err = regexp.MatchString(`^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$`, campo)
-		err = err
-
-		if match4 == false {
-			fmt.Println("Entrado a firstname, esta mal ")
-			estado = false
-		} else {
-			estado = true
-		}
-
-	case "lastname":
-		var match5, err = regexp.MatchString(`^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$`, campo)
-		err = err
-		if match5 == false {
-			estado = false
-		} else {
-			estado = true
-		}
-
-	case "isbn":
-		var match1, err = regexp.MatchString(`^(?:ISBN(?:-1[03])?:?●)?(?=[0-9X]{10}$|(?=(?:[0-9]+[-●]){3})↵
-		[-●0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[-●]){4})[-●0-9]{17}$)↵
-		(?:97[89][-●]?)?[0-9]{1,5}[-●]?[0-9]+[-●]?[0-9]+[-●]?[0-9X]$`, campo)
-		err = err
-		if match1 == false {
-			estado = false
-		} else {
-			estado = true
-		}
-
-	default:
-		fmt.Println("Has llegado al default")
-		estado = false
-	}
-
-	return estado
-
-}
-
 func recuperarPass(w http.ResponseWriter, r *http.Request) {
 	var value bool
 	var id string
@@ -234,18 +187,6 @@ func recuperarPass(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var resp = map[string]interface{}{"status": false, "message": "Invalid request"}
 		json.NewEncoder(w).Encode(resp)
-	}
-
-	if comprobarCampos(useru.Nombre, "firstname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "primer nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(useru.Nombre, "mail") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "Mail mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
 	}
 
 	value, id = findUsuarioByEmail(useru.Nombre, useru.Email)
@@ -269,6 +210,139 @@ func recuperarPass(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(value)
 
+}
+
+func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("LLEga rafa:-----------------------")
+	params := r.URL.Query()
+
+	fmt.Println("params ", params)
+
+	nombre1, ok := params["firstParameter"]
+	apellido1, ok := params["secondParameter"]
+	nombre := nombre1[0]
+	apellido := apellido1[0]
+	//nombre := strings.Join(nombre1, " ")
+	//apellido := strings.Join(apellido1, " ")
+
+	fmt.Println("nombre: ", nombre)
+	fmt.Println("Apellido:" + apellido)
+
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("nombre1 ", nombre1)
+
+	fmt.Println("apellido1 ", apellido1)
+	//fmt.Println(strings.Join(nombre1, " "))
+	//fmt.Println(strings.Join(apellido1, " "))
+	fmt.Println("el ok ", ok)
+
+	fmt.Println("-----------------------1")
+	var libros []Libro2
+	var autor Autor
+	rows, err2 := db.Query("SELECT id FROM autor WHERE first_name=? AND last_name=?", &nombre, &apellido)
+
+	if (err) != nil {
+		panic(err.Error())
+	}
+	if err2 != nil {
+		fmt.Println("error2 rows ", err2)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+
+		err := rows.Scan(&autor.Id)
+		if err != nil {
+			fmt.Println("error:::: ", err)
+		}
+		fmt.Println("autor Id:::::: ", autor.Id)
+		fmt.Println("rows:::::", rows)
+	}
+	fmt.Println("autor Id:::::: ", autor.Id)
+	if err2 != nil {
+		fmt.Println("error2 ", err2)
+
+	}
+
+	result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", &autor.Id) //BUG
+	if err != nil {
+		fmt.Println("error3 ", err)
+	}
+
+	defer result.Close()
+
+	for result.Next() {
+		var libro Libro2
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada) //BUG
+		if err != nil {
+			fmt.Println("error4 ", err)
+		}
+		libros = append(libros, libro)
+	}
+	json.NewEncoder(w).Encode(libros)
+
+	fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
+}
+
+func obtenerLibro(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("LLEga rafa:-----------------------")
+	params := r.URL.Query()
+
+	fmt.Println("params ", params)
+
+	nombre1, ok := params["firstParameter"]
+	nombre := "%" + nombre1[0] + "%"
+
+	fmt.Println("nombre: ", nombre)
+	fmt.Println("nombre1 ", nombre1)
+	fmt.Println("el ok", ok)
+
+	if err != nil {
+		panic(err)
+	}
+
+	var libros []Libro2
+
+	result, err := db.Query("SELECT * FROM books WHERE nombre LIKE ?", &nombre) //BUG
+	if err != nil {
+		fmt.Println("error3 ", err)
+	}
+
+	defer result.Close()
+
+	for result.Next() {
+		var libro Libro2
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada) //BUG
+		if err != nil {
+			fmt.Println("error4 ", err)
+		}
+		libros = append(libros, libro)
+	}
+	json.NewEncoder(w).Encode(libros)
+
+	fmt.Println("ESTO ES GET LIBRO POR AUTOR....................sad")
+}
+
+func encontrarEmail(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Entra a encontrarEmail rafa ")
+	params := mux.Vars(r)
+	email := params["email"]
+	fmt.Println(email)
+	rows, err2 := db.Query("Select count(*) FROM usuarios where email like ?", &email)
+	var count int
+	if err2 != nil {
+		count = 1
+	}
+	defer rows.Close()
+	for rows.Next() {
+		if err := rows.Scan(&count); err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	json.NewEncoder(w).Encode(count)
 }
 
 func findUsuarioByEmail(user, mail string) (bool, string) {
@@ -423,25 +497,6 @@ func verificarCodigo(w http.ResponseWriter, r *http.Request) {
 	tok := usuario.Tok
 	codigo := ""
 
-	if comprobarCampos(nombre, "firstname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-
-		return
-	}
-
-	if comprobarCampos(passwd, "passDB") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "password mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(email, "mail") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "email mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
 	stmt, err := db.Prepare("UPDATE usuarios SET id = ?, nombre = ?, password = ?, email = ?, rol = ?, tok = ?, codigo = ? WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
@@ -501,24 +556,6 @@ func nuevoPassword(w http.ResponseWriter, r *http.Request) {
 	tok := usuario.Tok
 	codigo := usuario.Codigo
 
-	if comprobarCampos(nombre, "firstname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(password, "passDB") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "password mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(email, "mail") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "email mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
 	newPassword := encriptarPass(user.Password, user.Email)
 	fmt.Println("nuevoPassword valor de newPassword: ", newPassword)
 	fmt.Println("nuevoPassword valor de password: ", password)
@@ -563,30 +600,14 @@ func login(w http.ResponseWriter, r *http.Request) {
 	value := encontrarUsuario(user.Password, user.Email)
 	fmt.Println("Vuelve encontrar usuario: ")
 
-	fmt.Println("valor de value: ", value)
 	crearCookie(w, r, value)
+
+	fmt.Println("valor de value: ", value)
+
 	json.NewEncoder(w).Encode(value)
 	fmt.Println("El valor de W: ", w)
 
 	return
-}
-
-func encontrarEmail(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	email := params["email"]
-	rows, err2 := db.Query("Select count(*) FROM usuarios where email like ?", &email)
-	var count int
-	if err2 != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-	for rows.Next() {
-		if err := rows.Scan(&count); err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	json.NewEncoder(w).Encode(count)
 }
 
 //////////////////////////////////////////  TOKEN  ////////////////////////////////////////
@@ -601,25 +622,6 @@ func encontrarUsuario(password, email string) Value {
 	var rol string
 	var resultVacio bool
 	resultVacio = true
-	var errores [2]string
-
-	//nombreArray[len(-1)] = loquesea
-	if comprobarCampos(password, "passDB") == false {
-		errores[0] = "El campo contraseña se encuentra mal introducido"
-	}
-
-	if comprobarCampos(email, "mail") == false {
-		errores[1] = "El campo mail se encuentra mal introducido"
-	}
-
-	if len(errores) > 0 {
-		Id := "0"
-		Nombre := "error"
-		Rol := "" + errores[0] + errores[1]
-		Token := "" + errores[0] + errores[1]
-		value := Value{Id, Nombre, Rol, Token}
-		return value
-	}
 
 	expireAt := time.Now().Add(time.Minute * 5).Unix()
 	result, err := db.Query("SELECT * FROM usuarios WHERE email like ?", &email)
@@ -820,10 +822,10 @@ func verificarToken(tknStr, SecretKey string) int {
 
 func crearCookie(w http.ResponseWriter, r *http.Request, value Value) {
 
-	I := value.Id
-	N := value.Nombre
-	R := value.Rol
-	T := value.Token
+	I := base64.StdEncoding.EncodeToString([]byte(value.Id))
+	N := base64.StdEncoding.EncodeToString([]byte(value.Nombre))
+	R := base64.StdEncoding.EncodeToString([]byte(value.Rol))
+	T := base64.StdEncoding.EncodeToString([]byte(value.Token))
 
 	expiration := time.Now().Add(time.Minute * 5)
 
@@ -977,12 +979,124 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 		crearCookie(w, r, value)
 	}
 
-	fmt.Println("Esto es la respuesta de resp en PutLibro: ", resp)
+	fmt.Println("Esto es verificar cuki ", resp)
 
 	return resp
 }
 
 ///////////////////////////////// FIN ENCRIPTACION ////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////  UPLOAD FILES ///////////////////////////////////////
+
+func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("upload.gtpl")
+		t.Execute(w, nil)
+		fmt.Println("valor de t: ", t)
+		return
+	}
+	if err := r.ParseMultipartForm(maxUploadSize); err != nil {
+		fmt.Printf("Could not parse multipart form: %v\n", err)
+		renderError(w, "CANT_PARSE_FORM", http.StatusInternalServerError)
+		return
+	}
+
+	// parse and validate file and post parameters
+	file, fileHeader, err := r.FormFile("uploadFile")
+	fmt.Println("------------------------------", fileHeader.Filename)
+	if err != nil {
+		renderError(w, "INVALID_FILE", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	// Get and print out file size
+	fmt.Println("1-----------------------------", fileHeader.Filename)
+	fileSize := fileHeader.Size
+	fmt.Printf("File size (bytes): %v\n", fileSize)
+	// validate file size
+	if fileSize > maxUploadSize {
+		renderError(w, "FILE_TOO_BIG", http.StatusBadRequest)
+		fmt.Printf("Error3")
+		return
+	}
+	fmt.Println("2-----------------------------", fileHeader.Filename)
+	fileBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		renderError(w, "INVALID_FILE", http.StatusBadRequest)
+		fmt.Printf("Error2")
+		return
+	}
+	fmt.Println("3-----------------------------", fileHeader.Filename)
+
+	// check file type, detectcontenttype only needs the first 512 bytes
+	detectedFileType := http.DetectContentType(fileBytes)
+	switch detectedFileType {
+	case "image/jpeg", "image/jpg":
+	case "image/gif", "image/png":
+	case "application/pdf":
+		break
+	default:
+		renderError(w, "INVALID_FILE_TYPE", http.StatusBadRequest)
+		fmt.Printf("Error1")
+		return
+	}
+	// fileName := randToken(12)
+
+	//	nombreImagenBook := keyVal["fileName"]
+
+	fileName := nombreImagenBook
+	fmt.Println("6-----------------------------", fileHeader.Filename)
+	fileEndings, err := mime.ExtensionsByType(detectedFileType)
+	if err != nil {
+		renderError(w, "CANT_READ_FILE_TYPE", http.StatusInternalServerError)
+		fmt.Printf("Error")
+
+		return
+	}
+	fmt.Println("7-----------------------------", fileHeader.Filename)
+	extension = fileEndings[0]
+	newPath := filepath.Join(uploadPath, fileName+fileEndings[0])
+	fmt.Printf("FileType: %s, File: %s\n", detectedFileType, newPath)
+
+	fmt.Println("8-----------------------------", newPath)
+
+	// write file
+	newFile, err := os.Create(newPath)
+	if err != nil {
+		renderError(w, "CANT_WRITE_FILE", http.StatusInternalServerError)
+		fmt.Println("valor de w1: ", w)
+		return
+	}
+	fmt.Println("9-----------------------------", fileHeader.Filename)
+
+	defer newFile.Close()
+
+	if _, err := newFile.Write(fileBytes); err != nil || newFile.Close() != nil {
+		renderError(w, "CANT_WRITE_FILE", http.StatusInternalServerError)
+		fmt.Println("valor de w2: ", w)
+		return
+	}
+	fmt.Println("Todo ha ido bien. Has llegado al final !!")
+	w.Write([]byte("SUCCESS"))
+	putImgBook()
+
+}
+
+func renderError(w http.ResponseWriter, message string, statusCode int) {
+
+	w.WriteHeader(http.StatusBadRequest)
+	w.Write([]byte(message))
+}
+
+// func randToken(len int) string {
+// 	b := make([]byte, len)
+// 	rand.Read(b)
+// 	return fmt.Sprintf("%x", b)
+// }
+
+//////////////////////////////  FIN UPLOAD FILES  /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// INICIO API LIBROS ////////////////////////////
 
@@ -1014,30 +1128,12 @@ func getLibros(w http.ResponseWriter, r *http.Request) {
 
 /////////////// GET LIBROS POR AUTOR ///////////////////////////
 func getLibrosByAutor(w http.ResponseWriter, r *http.Request) {
-
-	body, err3 := ioutil.ReadAll(r.Body)
-	if err3 != nil {
-		panic(err.Error())
-	}
-	clave := make(map[string]string)
-	json.Unmarshal(body, &clave)
-
-	firstName := clave["firstname"]
-	lastName := clave["lastname"]
-
 	w.Header().Set("Content-Type", "application/json")
 	var libros []Libro
 
-	result2, err2 := db.Query("SELECT id from autor where first_name=? and last_name=?", firstName, lastName)
+	params := mux.Vars(r)
 
-	result2.Next()
-	var autor Autor
-	err2 = result2.Scan(&autor.Id)
-	if err2 != nil {
-		panic(err2.Error())
-	}
-
-	result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", autor)
+	result, err := db.Query("SELECT * FROM books WHERE idAutor = ?", params["id"])
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1057,64 +1153,13 @@ func getLibrosByAutor(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ESTO ES GET LIBRO POR AUTOR")
 }
 
-/////////////////////// GET LIBROS BY NAME ////////////////////
-func getLibroByName(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var libros []Libro
-
-	params := mux.Vars(r)
-
-	stmt, err := db.Prepare("SELECT * FROM books WHERE nombre like ?;")
-	if err != nil {
-		panic(err.Error())
-	}
-	rows, err := stmt.Query("%" + params["nombreLibro"] + "%")
-
-	for rows.Next() {
-		var libro Libro
-		err := rows.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor)
-		if err != nil {
-			panic(err.Error())
-		}
-		libros = append(libros, libro)
-	}
-	json.NewEncoder(w).Encode(libros)
-
-	fmt.Println("ESTO ES GET LIBRO POR NOMBRE")
-}
-
-func getAutorByName(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var libros []Libro
-
-	params := mux.Vars(r)
-
-	stmt, err := db.Prepare("SELECT * FROM books WHERE nombre like ?;")
-	if err != nil {
-		panic(err.Error())
-	}
-	rows, err := stmt.Query("%" + params["nombreLibro"] + "%")
-
-	for rows.Next() {
-		var libro Libro
-		err := rows.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor)
-		if err != nil {
-			panic(err.Error())
-		}
-		libros = append(libros, libro)
-	}
-	json.NewEncoder(w).Encode(libros)
-
-	fmt.Println("ESTO ES GET LIBRO POR NOMBRE")
-}
-
 /////////////////////// GET TODO ////////////////////
 func getAll(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var libros []Libro
 
-	result, err := db.Query("SELECT b.id, b.nombre, b.isbn, b.idAutor, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
+	result, err := db.Query("SELECT b.id, b.nombre, b.isbn, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1124,7 +1169,7 @@ func getAll(w http.ResponseWriter, r *http.Request) {
 	for result.Next() {
 		var libro Libro
 
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.FirstName, &libro.LastName)
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -1163,6 +1208,7 @@ func getLibro(w http.ResponseWriter, r *http.Request) {
 
 //////////////////// POST LIBRO ///////////////////////
 func postLibro(w http.ResponseWriter, r *http.Request) {
+
 	w.Header().Set("Content-Type", "application/json")
 
 	///////////////////////////////////////////////
@@ -1172,7 +1218,9 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	///////////////////////////////////////////////
-	stmt, err := db.Prepare("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)")
+
+	//stmt, err := db.Prepare("INSERT INTO books(id, nombre, isbn, idAutor) VALUES(?,?,?,?)")
+	// stmt, err := db.Prepare("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)")
 
 	if err != nil {
 		panic(err.Error())
@@ -1184,40 +1232,64 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	keyVal := make(map[string]string)
 	json.Unmarshal(body, &keyVal)
 
-	nombre := keyVal["nombre"]
+	//id := keyVal["id"]
+	nombre := keyVal["titulo"]
 	isbn := keyVal["isbn"]
 	idAutor := keyVal["id_author"] //mirar si falla FK es idAutor
-
-	rows, err2 := db.Query("Select count(*) from BOOKS where isbn = ? ", isbn)
-	contador := 0
-	for rows.Next() {
-		contador++
-	}
-
-	if err2 != nil {
-		log.Fatal(err)
-	}
-
-	if contador > 1 {
-		var resp = map[string]interface{}{"status": 200, "message": "ISBN Repetido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(isbn, "isbn") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "ISBN mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	_, err = stmt.Exec(&nombre, &isbn, &idAutor)
-
+	//	extension := keyVal["extension"]
+	// _, err = stmt.Exec(&nombre, &isbn, &idAutor)
+	res, err := db.Exec("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)", &nombre, &isbn, &idAutor)
 	if err != nil {
 		panic(err.Error())
 	}
+	lastId, err := res.LastInsertId()
+	if err != nil { //no encuentra ultima id
+		println("Error:", err.Error())
+	}
+
+	// si no hay error guarda el fichero y su nombre
+	println("LastInsertId:", lastId)
+	nombreImagenBook = strconv.FormatInt(lastId, 10)
+	println(" nombreImagenBook:::::::::", nombreImagenBook)
+	// nombreImagenBook = strconv.FormatInt(id, 10)
+	// println(" nombreImagenBook:::::::::", nombreImagenBook)
+
+	// portada := strconv.FormatInt(id, 10) + "." + extension
+	// println("portada:", portada)
+	// stmt, err := db.Prepare("UPDATE books SET portada = ? WHERE id = ?")
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
+	// _, err = stmt.Exec(&portada, &id)
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
 	//	fmt.Fprintf(w, "Se a añadido un nuevo libro")
 
 	fmt.Println("ESTO ES POST LIBRO")
+
+}
+
+///// insertar nombre imagen libro //////
+func putImgBook() {
+
+	portada := nombreImagenBook + extension
+	println("nombre:", nombreImagenBook)
+	println("ext:", extension)
+	println("portada:", portada)
+	id, err := strconv.ParseInt(nombreImagenBook, 10, 64)
+	if err != nil {
+		panic(err.Error())
+	}
+	println("Id:", id)
+	stmt, err := db.Prepare("UPDATE books SET portada = ? WHERE id = ?")
+	if err != nil {
+		panic(err.Error())
+	}
+	_, err = stmt.Exec(&portada, &id)
+	if err != nil {
+		panic(err.Error())
+	}
 }
 
 ///////////////////// PUT LIBRO /////////////////////
@@ -1254,33 +1326,12 @@ func putLibro(w http.ResponseWriter, r *http.Request) {
 	newIsbn := claveValor["isbn"]
 	newIdAutor := claveValor["idAutor"]
 
-	if comprobarCampos(newIsbn, "isbn") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "ISBN mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	rows, err2 := db.Query("Select count(*) from BOOKS where isbn = ? ", newIsbn)
-	contador := 0
-	for rows.Next() {
-		contador++
-	}
-
-	if err2 != nil {
-		log.Fatal(err)
-	}
-
-	if contador > 1 {
-		var resp = map[string]interface{}{"status": 200, "message": "ISBN Repetido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
 	_, err = stmt.Exec(&newId, &newNombre, &newIsbn, &newIdAutor, params["id"])
 	if err != nil {
 		panic(err.Error())
 	}
-
+	nombreImagenBook = params["id"]
+	println(" nombreImagenBook:::::::::", nombreImagenBook)
 	// fmt.Fprintf(w, "El registro con Id %s se ha actualizado correctamente", params["id"])
 	fmt.Println("ESTO ES PUT LIBRO")
 }
@@ -1397,18 +1448,6 @@ func postAutor(w http.ResponseWriter, r *http.Request) {
 	firstName := clave["first_name"]
 	lastName := clave["last_name"]
 
-	if comprobarCampos(firstName, "firstname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "primer nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(lastName, "lastname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "segundo nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
 	_, err = stmt.Exec(&id, &firstName, &lastName)
 	if err != nil {
 		panic(err.Error())
@@ -1450,18 +1489,6 @@ func putAutor(w http.ResponseWriter, r *http.Request) {
 	//nuevoId := key["idAutor"]
 	nuevoFirstName := key["first_name"]
 	nuevoLastName := key["last_name"]
-
-	if comprobarCampos(nuevoFirstName, "firstname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "primer nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(nuevoLastName, "lastname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "segundo nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
 
 	_, err = stmt.Exec(&nuevoFirstName, &nuevoLastName, params["id"])
 	if err != nil {
@@ -1519,18 +1546,6 @@ func buscaAutor(w http.ResponseWriter, r *http.Request) {
 
 	firstName := clave["first_name"]
 	lastName := clave["last_name"]
-
-	if comprobarCampos(firstName, "firstname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "primer nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(lastName, "firstname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "segundo nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
 
 	_, err = result.Exec(&firstName, &lastName)
 	if err != nil {
@@ -1620,24 +1635,6 @@ func postUsuario(w http.ResponseWriter, r *http.Request) {
 	tok := key["tok"]
 	codigo := key["tok"]
 
-	if comprobarCampos(nombre, "firstname") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "primer nombre mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(password, "password") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "contraseña mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	if comprobarCampos(email, "email") == false {
-		var resp = map[string]interface{}{"status": 200, "message": "email mal introducido"}
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-	fmt.Println("ESTO ES insert AUTOR")
 	pass := encriptarPass(password, email)
 	tok = crearToken(id, nombre, email)
 
@@ -1734,3 +1731,76 @@ func deleteUsuario(w http.ResponseWriter, r *http.Request) {
 }
 
 ////////////////////////////////// FIN API USUARIOS //////////////////////////////
+func nombreArchivo(nombre int64) int64 {
+	println("nombreArchivo::::::::::::::", nombre)
+	return nombre
+}
+
+func comprobarCampos(campo, nombrecampo string) bool {
+	var estado bool
+	fmt.Println("El valor de campo:", campo)
+	fmt.Println("El valor de nombrecampo:", nombrecampo)
+
+	switch nombrecampo {
+	case "mail":
+		fmt.Println("Has llegado al mail")
+
+		var match3, err = regexp.MatchString(`^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$`, campo)
+		err = err
+		if match3 == false {
+			estado = false
+
+		} else {
+			estado = true
+		}
+
+	case "passDB":
+		var match2, err = regexp.MatchString(`^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,250}$`, campo)
+		err = err
+		if match2 == false {
+			estado = false
+
+		} else {
+			estado = true
+		}
+
+	case "firstname":
+
+		var match4, err = regexp.MatchString(`^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$`, campo)
+		err = err
+
+		if match4 == false {
+			fmt.Println("Entrado a firstname, esta mal ")
+			estado = false
+		} else {
+			estado = true
+		}
+
+	case "lastname":
+		var match5, err = regexp.MatchString(`^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$`, campo)
+		err = err
+		if match5 == false {
+			estado = false
+		} else {
+			estado = true
+		}
+
+	case "isbn":
+		var match1, err = regexp.MatchString(`^(?:ISBN(?:-1[03])?:?●)?(?=[0-9X]{10}$|(?=(?:[0-9]+[-●]){3})↵
+		[-●0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[-●]){4})[-●0-9]{17}$)↵
+		(?:97[89][-●]?)?[0-9]{1,5}[-●]?[0-9]+[-●]?[0-9]+[-●]?[0-9X]$`, campo)
+		err = err
+		if match1 == false {
+			estado = false
+		} else {
+			estado = true
+		}
+
+	default:
+		fmt.Println("Has llegado al default")
+		estado = false
+	}
+
+	return estado
+
+}

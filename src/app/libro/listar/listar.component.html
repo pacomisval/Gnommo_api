@@ -1,32 +1,44 @@
 <div class="container">
     <div class="card">
-        <!-- <div class="card-header d-flex">
-            <h3>LIBROS</h3>
-            <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
-            <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2">
-                <option value="autor">Autor</option>
-                <option value="libro" selected>Libro</option>
-            </select>
-            <form action="" class="ml-5 pt-1">
-                <label for="" id="textoBusqueda" class="ml-5">Buscar libro</label>
-                <input type="text" id="contenido" (keyup)="buscar()" class="ml-2">
-                <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
-            </span>
-            </form>
-        </div> -->
         <div class="card-header d-flex">
             <h3>LIBROS</h3>
-            <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
-            <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2">
-              <option value="autor">Autor</option>
-              <option value="libro" selected>Libro</option>
-          </select>
-            <form action="" class="ml-5 pt-1">
-                <label for="" id="textoBusqueda" class="ml-5">Buscar libro</label>
-                <input type="text" id="contenido" (keyup)="buscar()" class="ml-2">
+            <!-- <form [formGroup]="findForm">
+                <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
+            <option value="autor">Autor</option>
+            <option value="libro">Titulo</option>
+        </select>
+                <span action="" class="ml-5 pt-1">
+                <label for="contenido" id="textoBusqueda" class="ml-5">Buscar libro</label>
+                <input type="text" id="contenido" class="ml-2" formControlName="texto" (keyup)="buscar()">
                 <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
-            </form>
+            </span>
+            </form> -->
+            <!-- ********** BARRA DE BUSQUEDA CORRECTA********** -->
+            <form [formGroup]="findForm">
+                <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
+                <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
+                  <option value="autor">Autor</option>
+                  <option value="libro">Libro</option>
+                </select>
+                <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
+                <ng-container *ngIf="buscarXautor; then autorTemplate; else tituloTemplate"></ng-container>
+        
+                <ng-template #autorTemplate>
+                  <input type="text" list="autores" (change)="buscar()" class="ml-2" formControlName="texto" />
+                  <datalist id="autores">
+                    <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
+                  </datalist>
+                </ng-template>
+        
+                <ng-template #tituloTemplate>
+                  <input type="text" formControlName="texto" class="ml-2" (keyup)="buscar()" />
+                </ng-template>
+              </form>
+
+            <!-- ********** BARRA DE BUSQUEDA CORRECTA********** -->
+
         </div>
+
 
         <div class="card-body">
             <table class="table table-hover">
@@ -41,11 +53,11 @@
                         <td class="selecionable" (click)="getBook(modalGetBook, book)">{{ book.nombre }}</td>
                         <td>
                             <button *ngIf="admin" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning">
-                           Editar
-                        </button>
+                Editar
+              </button>
                             <button *ngIf="admin" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger">
-                           Delete
-                        </button>
+                Delete
+              </button>
                         </td>
                     </tr>
                 </tbody>
@@ -133,8 +145,8 @@
                     <div class="form-group">
                         <div class="input-group">
                             <label class="inputfile--label" for="inputfile">
-                       <img id="uploadPreview" style="width: 100px; height: 100px;" [src]="imgBook" alt="Image preview" >
-                    </label>
+                <img id="uploadPreview" style="width: 100px; height: 100px;" [src]="imgBook" alt="Image preview">
+              </label>
                             <input id="inputfile" type="file" accept="image/*" (change)="onFileChange($event)" formControlName="imgBook" name="imgBook" />
                         </div>
                     </div>
@@ -144,11 +156,11 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
-          Descartar cambios
-        </button>
+      Descartar cambios
+    </button>
         <button type="button" class="btn btn-outline-dark" (click)="editBook(book,modalInformation)">
-           Guardar cambios
-        </button>
+      Guardar cambios
+    </button>
     </div>
 </ng-template>
 <!-- VENTANA MODAL CONFIRMAR DELETE UN LIBRO -->
@@ -192,16 +204,16 @@
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Gnomo`s Librery</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-  <span aria-hidden="true">&times;</span>
-</button>
+      <span aria-hidden="true">&times;</span>
+    </button>
     </div>
     <div class="modal-body">
         <p>{{information}}</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
-           Cerrar
-        </button>
+      Cerrar
+    </button>
     </div>
 </ng-template>
 <!-- VENTANA MODAL INFORMATIVA DELETE -->

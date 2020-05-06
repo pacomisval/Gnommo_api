@@ -267,7 +267,7 @@ export class LoginComponent implements OnInit {
    var res =true;
    var reg : RegExp = /^[0-9-a-zA-Z]+$/;
    var reg2 : RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/;
-   var reg3 : RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+   var reg3 : RegExp =  /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,250}$/;
 
    if (this.rfc.userName.value.length>70){
     this.information = "Has superado el límite de carácteres máximos en el campo usuario \n";
@@ -286,7 +286,7 @@ export class LoginComponent implements OnInit {
   }
 
    if(reg3.test(this.rfc.password.value)==false){
-    this.information = "La contraseña tiene que tener como mínimo una mayuscula, un número y una mínuscula, ademas tiene que tener como mínimo 6 carácteres \n";
+    this.information = "La contraseña tiene que tener como mínimo una mayuscula, un número y una mínuscula, ademas tiene que tener entre 6 y 250 carácteres \n";
     res=false;
   }else if(this.rfc.password.value != this.rfc.passwordRepeat.value){
     this.information = "Las contraseñas tienen que coincidir \n";
