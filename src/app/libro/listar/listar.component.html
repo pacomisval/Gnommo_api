@@ -22,18 +22,18 @@
                 </select>
                 <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
                 <ng-container *ngIf="buscarXautor; then autorTemplate; else tituloTemplate"></ng-container>
-        
+
                 <ng-template #autorTemplate>
-                  <input type="text" list="autores" (change)="buscar()" class="ml-2" formControlName="texto" />
-                  <datalist id="autores">
+                    <input type="text" list="autores" (change)="buscar()" class="ml-2" formControlName="texto" />
+                    <datalist id="autores">
                     <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
                   </datalist>
                 </ng-template>
-        
+
                 <ng-template #tituloTemplate>
-                  <input type="text" formControlName="texto" class="ml-2" (keyup)="buscar()" />
+                    <input type="text" formControlName="texto" class="ml-2" (keyup)="buscar()" />
                 </ng-template>
-              </form>
+            </form>
 
             <!-- ********** BARRA DE BUSQUEDA CORRECTA********** -->
 
@@ -69,18 +69,20 @@
 <!-- ////// TODO MOSTRANDO LIBROS (PORTADA) -->
 <div *ngFor="let genero of generos">
     <h1 class="titulo">{{genero}}</h1>
-    <div *ngFor="let libro of books" class="contain l-columns--5columns">
-        <br>
-        <div>
-            <h5>{{ libro.nombre }}</h5>
+    <div class="contain l-columns--5columns">
+        <div *ngFor="let libro of books">
+            <br>
+            <div>
+                <h5>{{ libro.nombre }}</h5>
+            </div>
+            <br>
+            <div class="sombraLibro">
+                <a><img src="./assets/images/book/{{libro.portada}}" alt="libro.portada" height="100"></a>
+            </div>
+            <br>
+            <div><span>{{ libro.first_name }} {{ libro.last_name }}</span></div>
+            <br>
         </div>
-        <br>
-        <div class="sombraLibro">
-            <a><img src="/.././assets/images/book/{{libro.portada}}" alt="libro.portada" height="100"></a>
-        </div>
-        <br> 
-        <div><span>{{ libro.first_name }} {{ libro.last_name }}</span></div>
-        <br>
     </div>
 </div>
 
