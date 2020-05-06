@@ -97,12 +97,13 @@ export class ListarComponent implements OnInit {
    */
   information = '';
   imgBook;
+  generos: string[]=[];
   oldIsbn: string;
   filechange = false;
   // Cambiarfile = false;
   oldFile: any;
   oldNombre: any;
-  findForm: FormGroup;
+  findForm: FormGroup; 
   buscarXautor: boolean;
   textoBusqueda = 'Nombre del Autor';
   authors: any;
@@ -203,7 +204,7 @@ export class ListarComponent implements OnInit {
         console.log(texto);
         this.bookService.obtenerLibro(data).subscribe(
           (result) => {
-            this.books = result;
+            this.books = result; 
             console.log(result);
           },
           (error) => {
@@ -234,8 +235,17 @@ export class ListarComponent implements OnInit {
     this.bookService.getAll().subscribe(
       (result) => {
         this.books = result;
-        console.log('respuesta libros');
+        console.log('LISTA libros: ');
         console.log(result);
+        console.log('LISTA GENEROS: ');
+        result.forEach(element => {
+      console.log(element.genero);
+      if (!this.generos.includes(element.genero)) {
+        this.generos.push(element.genero);
+     }
+        });
+        console.log("Array de generos",this.generos);
+
       },
       (error) => {
         this.information = 'No se ha cargado la lista de libros';
