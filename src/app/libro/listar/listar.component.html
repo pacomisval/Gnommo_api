@@ -66,6 +66,24 @@
     </div>
 </div>
 
+<!-- ////// TODO MOSTRANDO LIBROS (PORTADA) -->
+<div *ngFor="let genero of generos">
+    <h1 class="titulo">{{genero}}</h1>
+    <div *ngFor="let libro of books" class="contain l-columns--5columns">
+        <br>
+        <div>
+            <h5>{{ libro.nombre }}</h5>
+        </div>
+        <br>
+        <div class="sombraLibro">
+            <a><img src="/.././assets/images/book/{{libro.portada}}" alt="libro.portada" height="100"></a>
+        </div>
+        <br> 
+        <div><span>{{ libro.first_name }} {{ libro.last_name }}</span></div>
+        <br>
+    </div>
+</div>
+
 <!-- VENTANA MODAL MUESTRA UN LIBRO -->
 <ng-template #modalGetBook let-modal>
     <div class="modal-header">
