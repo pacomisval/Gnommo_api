@@ -1164,7 +1164,7 @@ func getAll(w http.ResponseWriter, r *http.Request) {
 
 	var libros []Libro
 
-	result, err := db.Query("SELECT b.id, b.nombre, b.isbn,b.genero,b.descripcion, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id ORDER BY b.genero")
+	result, err := db.Query("SELECT b.id, b.nombre, b.isbn,b.genero,b.descripcion, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1438,7 +1438,7 @@ func postAutor(w http.ResponseWriter, r *http.Request) {
 
 	///////////////////////////////////////////////
 
-	stmt, err := db.Prepare("INSERT INTO autor(id, first_name, last_name) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO autor(id, first_name, last_name, nationality, date) VALUES (?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1452,8 +1452,9 @@ func postAutor(w http.ResponseWriter, r *http.Request) {
 	id := clave["id"]
 	firstName := clave["first_name"]
 	lastName := clave["last_name"]
-
-	_, err = stmt.Exec(&id, &firstName, &lastName)
+	nationality := clave["nationality"]
+	date := clave["date"]
+	_, err = stmt.Exec(&id, &firstName, &lastName, &nationality, &date)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1478,7 +1479,7 @@ func putAutor(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 
-	stmt, err := db.Prepare("UPDATE autor SET first_name = ?, last_name = ? WHERE id = ?")
+	stmt, err := db.Prepare("UPDATE autor SET nationality = ?, date = ?,  first_name = ?, last_name = ? WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1494,8 +1495,10 @@ func putAutor(w http.ResponseWriter, r *http.Request) {
 	//nuevoId := key["idAutor"]
 	nuevoFirstName := key["first_name"]
 	nuevoLastName := key["last_name"]
+	nuvoNationality := key["nationality"]
+	nuevoDate := key["date"]
 
-	_, err = stmt.Exec(&nuevoFirstName, &nuevoLastName, params["id"])
+	_, err = stmt.Exec(&nuevoDate, &nuvoNationality, &nuevoFirstName, &nuevoLastName, params["id"])
 	if err != nil {
 		panic(err.Error())
 	}
