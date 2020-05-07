@@ -42,6 +42,8 @@ export class AddautorComponent implements OnInit {
   autor = {
     first_name: '',
     last_name: '',
+    nacionalidad:'',
+    fecha:'',
   };
   /**
    * Mensaje en ventana modal
@@ -78,6 +80,8 @@ export class AddautorComponent implements OnInit {
     this.authorForm = this.formBuilder.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
+      nacionalidad: ['', Validators.required],
+      fecha: ['', Validators.required],
     });
   }
   /**
@@ -99,27 +103,48 @@ export class AddautorComponent implements OnInit {
     console.log(this.autor)
     var res=true;
     var letras : RegExp = /^[A-Za-z\s]+$/g;
-    
-    
-    if(this.mautor.length>50){
-      this.information = "-Has superado el límite de carácteres máximos en el campo nombre";
-      res=false;
-    }else if(letras.test(this.mautor)==false){
-      this.information = "-En el campo nombre solo se permiten letras";
+
+    var hoy = new Date();
+    var fecha = new Date(this.afc.fecha.value);
+      
+    console.log(this.afc.first_name.value)
+    console.log(this.afc.last_name.value)
+    console.log(this.afc.nacionalidad.value)
+    console.log(this.afc.fecha.value)
+
+    if((this.afc.first_name.value=="") || (this.afc.last_name.value=="") ||(this.afc.nacionalidad.value =="") || (this.afc.fecha.value=="")){
+      this.information = "-Asegurese de estar rellenando todos los campos";
       res=false;
     }
-    console.log(letras.test(this.mautor));
-    if (this.mapellido.length>50){
-      this.information = "-Has superado el límite de carácteres máximos en el campo apellido";
-      res=false;
-    }else if(letras.test(this.mapellido)==false){
-      this.information = "-En el campo apellido solo se permiten letras";
-      res=false;
+    else{
+
+        if(this.afc.first_name.value.length>50){
+          this.information = "-Has superado el límite de carácteres máximos en el campo nombre";
+          res=false;
+        }else if(letras.test(this.afc.first_name.value)==false){
+          this.information = "-En el campo nombre solo se permiten letras";
+          res=false;
+        }
+        console.log(letras.test(this.afc.first_name.value));
+        if (this.afc.last_name.value.length>50){
+          this.information = "-Has superado el límite de carácteres máximos en el campo apellido";
+          res=false;
+        }else if(letras.test(this.afc.last_name.value)==false){
+          this.information = "-En el campo apellido solo se permiten letras";
+          res=false;
+        }
+
+        if(fecha.getTime()>hoy.getTime() || !Date.parse(fecha)){
+          this.information = "-Asegurese de estar introduciendo una fecha válida";
+          res=false;
+       }
+
     }
 
     if(!res){
       this.openInformationWindows();
     }
+    
     return res;
    }
 
@@ -135,6 +160,8 @@ export class AddautorComponent implements OnInit {
       const data = {
         first_name: this.afc.first_name.value,
         last_name: this.afc.last_name.value,
+        nacionalidad:this.afc.nacionalidad.value,
+        fecha:this.afc.fecha.value,
       };
 
       // controlamos que no este repetido.

@@ -54,6 +54,8 @@ export class AuthorService {
     const data = {
       first_name: datosAutor.first_name,
       last_name:  datosAutor.last_name,
+      nacionalidad:datosAutor.nacionalidad,
+      fecha:datosAutor.fecha,
     };
     console.log('mandando datos');
     console.log(data);
