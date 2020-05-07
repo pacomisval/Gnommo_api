@@ -93,6 +93,7 @@ export class ListarComponent implements OnInit {
    * @memberof ListarComponent
    */
   admin = false;
+  admin1=true;
   /**
    * Mensaje en ventana modal
    */
