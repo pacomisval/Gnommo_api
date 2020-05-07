@@ -35,16 +35,16 @@ var extension string
 var lastId int64
 
 type Libro struct {
-    Id          string `json:"id"`
-    Nombre      string `json:"nombre"`
-    Isbn        string `json:"isbn"`
-    Genero      string `json:"genero"`
-    Descripcion string `json:"descripcion"`
-    Portada     string `json:"portada"`
-    IdAutor     string `json:"idAutor"`
+	Id          string `json:"id"`
+	Nombre      string `json:"nombre"`
+	Isbn        string `json:"isbn"`
+	Genero      string `json:"genero"`
+	Descripcion string `json:"descripcion"`
+	Portada     string `json:"portada"`
+	IdAutor     string `json:"idAutor"`
 
-    FirstName   string `json:"first_name"`
-    LastName    string `json:"last_name"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
 }
 
 type Libro2 struct {
@@ -57,11 +57,11 @@ type Libro2 struct {
 }
 
 type Autor struct { //TODO MODIFICADO
-    Id              string `json:"id"`
-    FirstName       string `json:"first_name"`
-    LastName        string `json:"last_name"`
-    Nacionalidad    string `json:"nacionalidad"`
-    FechaNacimiento string `json:"fechaNacimiento"`
+	Id              string `json:"id"`
+	FirstName       string `json:"first_name"`
+	LastName        string `json:"last_name"`
+	Nacionalidad    string `json:"nacionalidad"`
+	FechaNacimiento string `json:"fechaNacimiento"`
 }
 
 type Usuario struct {
@@ -93,7 +93,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/newlibrary")
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/newlibrary")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1164,7 +1164,7 @@ func getAll(w http.ResponseWriter, r *http.Request) {
 
 	var libros []Libro
 
-	result, err := db.Query("SELECT b.id, b.nombre, b.isbn,b.genero,b.descripcion, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
+	result, err := db.Query("SELECT b.id, b.nombre, b.isbn,b.genero,b.descripcion, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id ORDER BY b.genero")
 	if err != nil {
 		panic(err.Error())
 	}

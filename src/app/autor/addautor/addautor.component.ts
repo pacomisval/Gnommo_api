@@ -15,7 +15,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-addautor',
   templateUrl: './addautor.component.html',
-  styleUrls: ['./addautor.component.css'],
+  styleUrls: ['./addautor.component.scss'],
 })
 export class AddautorComponent implements OnInit {
   /**
@@ -156,7 +156,7 @@ export class AddautorComponent implements OnInit {
         return;
       }
       //  console.log(this.authorService.comesAddLibro);
-    
+
       const data = {
         first_name: this.afc.first_name.value,
         last_name: this.afc.last_name.value,

@@ -23,7 +23,8 @@ import {
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
 // import { UploadService } from './../../services/upload.service';
-/** Componente actua sobre los libros haciendo
+/**import { element } from 'protractor';
+ Componente actua sobre los libros haciendo
  * READ UPDATE y DELETE
  * @export
  * @class ListarComponent
@@ -32,7 +33,7 @@ import { UploadService } from 'src/app/services/upload.service';
 @Component({
   selector: 'app-listar',
   templateUrl: './listar.component.html',
-  styleUrls: ['./listar.component.css'],
+  styleUrls: ['./listar.component.scss'],
 })
 export class ListarComponent implements OnInit {
   /**
@@ -92,6 +93,7 @@ export class ListarComponent implements OnInit {
    * @memberof ListarComponent
    */
   admin = false;
+  admin1=true;
   /**
    * Mensaje en ventana modal
    */
@@ -103,10 +105,13 @@ export class ListarComponent implements OnInit {
   // Cambiarfile = false;
   oldFile: any;
   oldNombre: any;
-  findForm: FormGroup; 
+  findForm: FormGroup;
   buscarXautor: boolean;
   textoBusqueda = 'Nombre del Autor';
   authors: any;
+  matriz;
+  sublibros2: Book[];
+  map: Map<any, any>;
 
   /**
    * Creando una instancia de ListarComponent.
@@ -204,7 +209,7 @@ export class ListarComponent implements OnInit {
         console.log(texto);
         this.bookService.obtenerLibro(data).subscribe(
           (result) => {
-            this.books = result; 
+            this.books = result;
             console.log(result);
           },
           (error) => {
@@ -245,7 +250,7 @@ export class ListarComponent implements OnInit {
      }
         });
         console.log("Array de generos",this.generos);
-
+        this.matrizLibros();
       },
       (error) => {
         this.information = 'No se ha cargado la lista de libros';
@@ -287,6 +292,8 @@ export class ListarComponent implements OnInit {
       id: this.book.idAutor,
       first_name: this.book.first_name,
       last_name: this.book.last_name,
+      nacionalidad: "la",
+      fechaNacimiento:"10/02/2001"
     };
     this.oldFile = this.book.portada;
     this.oldIsbn = this.book.isbn;
@@ -530,7 +537,7 @@ export class ListarComponent implements OnInit {
     return res;
   }
 
-  /**
+/**
  * Da valor a la lista de Autores
  *
  * @returns
@@ -552,4 +559,21 @@ export class ListarComponent implements OnInit {
       }
     );
   }
+  matrizLibros() {
+    this.map = new Map();
+    this.sublibros2 = [];
+    this.generos.forEach(genero => {
+      this.books.forEach(libro => {
+               if (genero == libro.genero) {
+           this.sublibros2.push(libro);
+          }
+      });
+      this.map.set(genero, this.sublibros2);
+      this.sublibros2 = null;
+      this.sublibros2 = [];
+        })
+    console.log("El MAP");
+    console.log(this.map);
+  }
+
 }

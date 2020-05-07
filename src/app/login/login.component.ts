@@ -29,7 +29,7 @@ import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -263,7 +263,7 @@ export class LoginComponent implements OnInit {
    */
 
   comprobarRegistro(){
- 
+
    var res =true;
    var reg : RegExp = /^[0-9-a-zA-Z]+$/;
    var reg2 : RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/;
@@ -277,7 +277,7 @@ export class LoginComponent implements OnInit {
     res=false;
   }
 
-   if(this.rfc.email.value.length>100){ 
+   if(this.rfc.email.value.length>100){
     this.information = "Has superado el límite de carácteres máximos en el campo email \n";
     res=false;
   }else if(reg2.test(this.rfc.email.value)==false){

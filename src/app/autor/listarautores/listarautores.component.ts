@@ -15,7 +15,7 @@ import { Author } from 'src/app/models/author';
 @Component({
   selector: 'app-listarautores',
   templateUrl: './listarautores.component.html',
-  styleUrls: ['./listarautores.component.css'],
+  styleUrls: ['./listarautores.component.scss'],
 })
 export class ListarautoresComponent implements OnInit {
   /**
@@ -179,9 +179,9 @@ export class ListarautoresComponent implements OnInit {
   }
 
   openDeleteAutor(modalDeleteAutor) {
-    
+
     this.modalDeleteAutor = this.modalService.open(modalDeleteAutor, {
-      ariaLabelledBy: 'modal-basic-title',  
+      ariaLabelledBy: 'modal-basic-title',
     });
 
   }
