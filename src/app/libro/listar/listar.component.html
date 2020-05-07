@@ -63,8 +63,8 @@
     <!-- ////// TODO MOSTRANDO LIBROS (PORTADA) -->
     <div *ngFor="let genero of map | keyvalue">
         <h1 class="titulo">{{genero.key}}</h1>
-        <div class="contain l-columns--5columns">
-            <div *ngFor="let libro of genero.value ">
+        <div class="contain l-columns--4columns ml2">
+            <div *ngFor="let libro of genero.value" class="card">
                 <br>
                 <div>
                     <h5>{{ libro.nombre }}</h5>
