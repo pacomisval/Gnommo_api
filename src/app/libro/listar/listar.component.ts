@@ -23,7 +23,8 @@ import {
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
 // import { UploadService } from './../../services/upload.service';
-/** Componente actua sobre los libros haciendo
+/**import { element } from 'protractor';
+ Componente actua sobre los libros haciendo
  * READ UPDATE y DELETE
  * @export
  * @class ListarComponent
@@ -107,6 +108,9 @@ export class ListarComponent implements OnInit {
   buscarXautor: boolean;
   textoBusqueda = 'Nombre del Autor';
   authors: any;
+  matriz;
+  sublibros2: Book[];
+  map: Map<any, any>;
 
   /**
    * Creando una instancia de ListarComponent.
@@ -245,7 +249,7 @@ export class ListarComponent implements OnInit {
      }
         });
         console.log("Array de generos",this.generos);
-
+        this.matrizLibros();
       },
       (error) => {
         this.information = 'No se ha cargado la lista de libros';
@@ -532,7 +536,7 @@ export class ListarComponent implements OnInit {
     return res;
   }
 
-  /**
+/**
  * Da valor a la lista de Autores
  *
  * @returns
@@ -554,4 +558,21 @@ export class ListarComponent implements OnInit {
       }
     );
   }
+  matrizLibros() {
+    this.map = new Map();
+    this.sublibros2 = [];
+    this.generos.forEach(genero => {
+      this.books.forEach(libro => {
+               if (genero == libro.genero) {
+           this.sublibros2.push(libro);
+          }
+      });
+      this.map.set(genero, this.sublibros2);
+      this.sublibros2 = null;
+      this.sublibros2 = [];
+        })
+    console.log("El MAP");
+    console.log(this.map);
+  }
+
 }

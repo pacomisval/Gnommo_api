@@ -1164,7 +1164,7 @@ func getAll(w http.ResponseWriter, r *http.Request) {
 
 	var libros []Libro
 
-	result, err := db.Query("SELECT b.id, b.nombre, b.isbn,b.genero,b.descripcion, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id")
+	result, err := db.Query("SELECT b.id, b.nombre, b.isbn,b.genero,b.descripcion, b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id ORDER BY b.genero")
 	if err != nil {
 		panic(err.Error())
 	}
