@@ -22,9 +22,9 @@ import {
 } from '@angular/platform-browser'; // para imagen libro en local
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
-// import { UploadService } from './../../services/upload.service';
-/**import { element } from 'protractor';
- Componente actua sobre los libros haciendo
+
+
+/** Componente actua sobre los libros haciendo
  * READ UPDATE y DELETE
  * @export
  * @class ListarComponent
@@ -93,7 +93,7 @@ export class ListarComponent implements OnInit {
    * @memberof ListarComponent
    */
   admin = false;
-  admin1=true;
+
   /**
    * Mensaje en ventana modal
    */

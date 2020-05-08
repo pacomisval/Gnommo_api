@@ -50,6 +50,7 @@
         </div>
     </div>
 </div> -->
+
     <!-- ////// TODO MOSTRANDO LIBROS (PORTADA) -->
     <div *ngFor="let genero of map | keyvalue">
         <h1 class="titulo">{{genero.key}}</h1>
@@ -57,16 +58,16 @@
             <div *ngFor="let book of genero.value" class="card" (click)="getBook(modalGetBook, book)">
                 <br>
                 <h5>{{ book.nombre }}</h5>
-
                 <br>
-                <div class="sombraLibro"><a><img src="./assets/images/book/{{book.portada}} " alt="" height="100 "></a></div>
+                <div class="sombraLibro">
+                    <a><img src="./assets/images/book/{{book.portada}}" alt="" height="100"></a>
+                </div>
                 <br>
                 <div><span>{{ book.first_name }} {{ book.last_name }}</span></div>
-
                 <br>
                 <div>
-                    <button *ngIf="admin1" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning btn-edit">Editar</button>
-                    <button *ngIf="admin1" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger btn-delet">Delete</button>
+                    <button *ngIf="admin" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning btn-edit">Editar</button>
+                    <button *ngIf="admin" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger btn-delet">Delete</button>
                     <!-- BOTONES ^^^^ -->
                 </div>
             </div>
@@ -75,13 +76,13 @@
 
         <!-- VENTANA MODAL MUESTRA UN LIBRO -->
         <ng-template #modalGetBook let-modal>
-            <div class="modal-header ">
-                <h4 class="modal-title " id="modal-basic-title ">Libro:</h4>
-                <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
-      <span aria-hidden="true ">&times;</span>
-    </button>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss( 'Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
             </div>
-            <div class="modal-body ">
+            <div class="modal-body">
                 <p>
                     Titulo:&nbsp;<span>{{ book.nombre }}</span>
                 </p>
@@ -99,86 +100,24 @@
                     Apellido:&nbsp;<span>{{ book.last_name }}</span>
                 </p>
             </div>
-            <img [(attr.src)]="imgBook " alt={{imgBook}} width="150 " height="200 " class="ml-8 ">
-            <div class="modal-footer ">
-                <button type="button " class="btn btn-outline-dark " (click)="modal.close() ">
-      cerrar
-    </button>
+            <img [(attr.src)]="imgBook" alt={{imgBook}} width="150" height="200" class="ml-8">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+          cerrar
+        </button>
             </div>
         </ng-template>
-        <!-- VENTANA MODAL EDITAR UN LIBRO -->
-        <ng-template #editBookModal let-modal>
-            <div class="modal-header ">
-                <h4 class="modal-title " id="modal-basic-title ">Libro:</h4>
-                <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
-      <span aria-hidden="true ">&times;</span>
-    </button>
-            </div>
-            <div class="modal-body ">
-                <form [formGroup]="editBookForm " enctype="multipart/form-data ">
-                    <div class="form-group ">
-                        <label for="name ">Titulo:&nbsp;</label>
-                        <div class="input-group ">
-                            <input id="name " class="form-control " [(ngModel)]="book.nombre " formControlName="nombre " [ngClass]="{ 'is-invalid':submittedEditBook && ebfc.nombre.errors } " />
-                            <div *ngIf="submittedEditBook && ebfc.nombre.errors " class="invalid-feedback ">
-                                <div *ngIf="ebfc.nombre.errors.required ">titulo is required</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <label for="isbn ">Isbn:&nbsp;</label>
-                        <div class="input-group ">
-                            <input id="isbn " class="form-control " [(ngModel)]=" book.isbn " formControlName="isbn " />
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row ">
-                        <div class="col ">
-                            <p>Autor&nbsp;</p>
-                            <div class="form-group ">
-                                <label for="first_name ">Nombre:&nbsp;</label>
-                                <div class="input-group ">
-                                    <input id="first_name " class="form-control " formControlName="first_name " [(ngModel)]="book.first_name " />
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <label for="last_name ">Apellido:&nbsp;</label>
-                                <div class="input-group ">
-                                    <input id="last_name " class="form-control " [(ngModel)]="book.last_name " formControlName="last_name " />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col ">
-                            <div class="form-group ">
-                                <div class="input-group ">
-                                    <label class="inputfile--label " for="inputfile ">
-                <img id="uploadPreview " style="width: 100px; height: 100px; " [src]="imgBook " alt="Image preview ">
-              </label>
-                                    <input id="inputfile " type="file " accept="image/* " (change)="onFileChange($event) " formControlName="imgBook " name="imgBook " />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer ">
-                <button type="button " class="btn btn-outline-dark " (click)="modal.close() ">
-      Descartar cambios
-    </button>
-                <button type="button " class="btn btn-outline-dark " (click)="editBook(book,modalInformation) ">
-      Guardar cambios
-    </button>
-            </div>
-        </ng-template>
+
+
         <!-- VENTANA MODAL CONFIRMAR DELETE UN LIBRO -->
         <ng-template #confirmDeleteBookModal let-modal>
-            <div class="modal-header ">
-                <h4 class="modal-title " id="modal-basic-title ">Libro:</h4>
-                <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
-      <span aria-hidden="true ">&times;</span>
-    </button>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss( 'Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
             </div>
-            <div class="modal-body ">
+            <div class="modal-body">
                 <h1>El libro va a ser borrado</h1>
                 <p>
                     Titulo:&nbsp;<span>{{ book.nombre }}</span>
@@ -197,47 +136,94 @@
                     Apellido:&nbsp;<span>{{ book.last_name }}</span>
                 </p>
             </div>
-            <div class="modal-footer ">
-                <button type="button " class="btn btn-outline-dark " (click)="modal.close() ">
-      Cancelar
-    </button>
-                <button type="button " class="btn btn-outline-dark " (click)="deleteBook(book);modal.close() ">
-      Confirmar
-    </button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+          Cancelar
+        </button>
+                <button type="button" class="btn btn-outline-dark" (click)="deleteBook(book);modal.close()">
+          Confirmar
+        </button>
             </div>
         </ng-template>
         <!-- VENTANA MODAL INFORMATIVA -->
         <ng-template #modalInformation let-modal>
-            <div class="modal-header ">
-                <h4 class="modal-title " id="modal-basic-title ">Gnomo`s Librery</h4>
-                <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
-      <span aria-hidden="true ">&times;</span>
-    </button>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Gnomo`s Librery</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss( 'Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
             </div>
-            <div class="modal-body ">
+            <div class="modal-body">
                 <p>{{information}}</p>
             </div>
-            <div class="modal-footer ">
-                <button type="button " class="btn btn-outline-dark " (click)="modal.close() ">
-      Cerrar
-    </button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+          Cerrar
+        </button>
             </div>
         </ng-template>
-        <!-- VENTANA MODAL INFORMATIVA DELETE -->
-        <!-- <ng-template #modalInformationDelete let-modal>
-    <div class="modal-header ">
-        <h4 class="modal-title " id="modal-basic-title ">Libro:</h4>
-        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
-    <span aria-hidden="true ">&times;</span>
-  </button>
-    </div>
-    <div class="modal-body ">
-        <h1>El libro se ha eliminado</h1>
 
-    </div>
-    <div class="modal-footer ">
-        <button type="button " class="btn btn-outline-dark " (click)="modal.close() ">
-    Cerrar
-  </button>
-    </div>
-</ng-template> -->
+        <!-- VENTANA MODAL EDITAR UN LIBRO -->
+        <ng-template #editBookModal let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title " id="modal-basic-title ">Libro:</h4>
+                <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+          <span aria-hidden="true ">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editBookForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Titulo:&nbsp;</label>
+                        <div class="input-group">
+                            <input id="name" class="form-control" [(ngModel)]="book.nombre" formControlName="nombre" [ngClass]="{ 'is-invalid':submittedEditBook && ebfc.nombre.errors } " />
+                            <div *ngIf="submittedEditBook && ebfc.nombre.errors" class="invalid-feedback">
+                                <div *ngIf="ebfc.nombre.errors.required">titulo is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isbn">Isbn:&nbsp;</label>
+                        <div class="input-group">
+                            <input id="isbn" class="form-control" [(ngModel)]=" book.isbn" formControlName="isbn" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col">
+                            <p>Autor&nbsp;</p>
+                            <div class="form-group">
+                                <label for="first_name">Nombre:&nbsp;</label>
+                                <div class="input-group">
+                                    <input id="first_name" class="form-control" formControlName="first_name" [(ngModel)]="book.first_name" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Apellido:&nbsp;</label>
+                                <div class="input-group">
+                                    <input id="last_name" class="form-control" [(ngModel)]="book.last_name" formControlName="last_name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label class="inputfile--label" for="inputfile">
+                    <img id="uploadPreview" style="width: 100px; height: 100px;" [src]="imgBook" alt="Image preview">
+                  </label>
+                                    <input id="inputfile" type="file" accept="image/*" (change)="onFileChange($event)" formControlName="imgBook" name="imgBook" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+          Descartar cambios
+        </button>
+                <button type="button" class="btn btn-outline-dark" (click)="editBook(book,modalInformation)">
+          Guardar cambios
+        </button>
+            </div>
+        </ng-template>

@@ -126,7 +126,9 @@ export class AppComponent {
 
       break;
       case 'tokensiN':
-        this.currentUserName = atob(cookie);
+     //   this.currentUserName = atob(cookie);
+        this.currentUserName =atob(cookie);
+
         console.log(this.currentUserName);
         break;
       case 'tokensiR':
@@ -142,7 +144,9 @@ export class AppComponent {
 
         break;
       case 'tokensiT':
-        this.token = atob(cookie);
+   //     this.token = atob(cookie);
+        this.token = cookie;
+
         console.log(this.token);
         break;
       default:
