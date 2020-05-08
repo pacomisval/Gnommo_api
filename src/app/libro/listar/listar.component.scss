@@ -1,5 +1,5 @@
-@import "src/styles/layout/columns.scss";
-@import "src/styles/abstracts/variables.scss";
+@import "src/styles/layout/columns";
+@import "src/styles/abstracts/variables";
 .titulo {
     padding: 30px 30px 0px 30px;
     font-family: sans-serif;
@@ -41,9 +41,24 @@
     margin: 0 auto;
 }
 
-.selecionable:hover {
-    cursor: pointer;
+.btn-edit, .btn-delet {
+    height: 25px;
+    margin-bottom: 5px;
+    text-align: start;
+    color: white;
 }
+
+.btn-edit {
+    margin-right: 5px;
+}
+
+.btn-delet {
+    margin-left: 5px;
+}
+
+/* .selecionable:hover {
+    cursor: pointer;
+} */
 
 #inputfile {
     width: 0.1px;

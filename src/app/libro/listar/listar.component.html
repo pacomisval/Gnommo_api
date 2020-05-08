@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="card">
+    <div>
         <div class="card-header d-flex">
             <h3>LIBROS</h3>
 
@@ -54,28 +54,19 @@
     <div *ngFor="let genero of map | keyvalue">
         <h1 class="titulo">{{genero.key}}</h1>
         <div class="contain l-columns--4columns ml2">
-            <div *ngFor="let book of genero.value" class="card">
+            <div *ngFor="let book of genero.value" class="card" (click)="getBook(modalGetBook, book)">
                 <br>
-                <div class="selecionable" (click)="getBook(modalGetBook, book)">
-                    <h5>{{ book.nombre }}</h5>
+                <h5>{{ book.nombre }}</h5>
 
-                    <br>
-                    <div class="sombraLibro ">
-                        <a><img src="./assets/images/book/{{book.portada}} " alt="book.portada " height="100 "></a>
-                    </div>
-                    <br>
-                    <div><span>{{ book.first_name }} {{ book.last_name }}</span></div>
+                <br>
+                <div class="sombraLibro"><a><img src="./assets/images/book/{{book.portada}} " alt="" height="100 "></a></div>
+                <br>
+                <div><span>{{ book.first_name }} {{ book.last_name }}</span></div>
 
-                    <!-- BOTONES -->
-                </div>
                 <br>
                 <div>
-                    <button *ngIf="admin1" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning">
-        Editar
-      </button>
-                    <button *ngIf="admin1" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger">
-        Delete
-      </button>
+                    <button *ngIf="admin1" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning btn-edit">Editar</button>
+                    <button *ngIf="admin1" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger btn-delet">Delete</button>
                     <!-- BOTONES ^^^^ -->
                 </div>
             </div>

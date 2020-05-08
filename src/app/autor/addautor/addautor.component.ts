@@ -111,6 +111,8 @@ export class AddautorComponent implements OnInit {
     console.log(this.afc.last_name.value)
     console.log(this.afc.nacionalidad.value)
     console.log(this.afc.fecha.value)
+    console.log("valor de fecha: " + fecha);
+    console.log("valor de hoy: " + hoy);
 
     if((this.afc.first_name.value=="") || (this.afc.last_name.value=="") ||(this.afc.nacionalidad.value =="") || (this.afc.fecha.value=="")){
       this.information = "-Asegurese de estar rellenando todos los campos";
@@ -134,7 +136,7 @@ export class AddautorComponent implements OnInit {
           res=false;
         }
 
-        if(fecha.getTime()>hoy.getTime() || !Date.parse(fecha)){
+        if(fecha.getTime()>hoy.getTime()/*  || !Date.parse(fecha) */){
           this.information = "-Asegurese de estar introduciendo una fecha válida";
           res=false;
        }

@@ -93,7 +93,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/newlibrary")
+	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libraryapp")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -618,6 +618,9 @@ func login(w http.ResponseWriter, r *http.Request) {
 //////////////////////////////////////////  TOKEN  ////////////////////////////////////////
 
 func encontrarUsuario(password, email string) Value {
+
+	fmt.Println("DENTRO DE ENCONTRAR USUARIO")
+
 	var user []Usuario
 	var ok bool
 	var id string
@@ -649,6 +652,8 @@ func encontrarUsuario(password, email string) Value {
 		mail = usuario.Email
 		rol = usuario.Rol
 	}
+
+	fmt.Println("ESTO ES ID EN ENCONTRAR USUARIO: ", id)
 
 	if resultVacio {
 
@@ -694,6 +699,14 @@ func encontrarUsuario(password, email string) Value {
 	guardarToken(tokenString, id)
 
 	value := Value{id, nombre, rol, tokenString}
+
+	fmt.Println("")
+	fmt.Println("value de id: ", id)
+	fmt.Println("value de nombre: ", nombre)
+	fmt.Println("value de rol: ", rol)
+	fmt.Println("value de tokenstring: ", tokenString)
+	fmt.Println("")
+
 	return value
 }
 
@@ -800,11 +813,14 @@ func crearToken(id, nombre, email string) string {
 
 func verificarToken(tknStr, SecretKey string) int {
 	resp := 0 // ok
-	claims := &Claims{}
+	claims := &Claims{
+		// Email: SecretKey,
+	}
 
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
+	fmt.Println("valor de tkn: ", tkn)
 	fmt.Println("Valor del token: ", tknStr)
 	fmt.Println("Valor de claims: ", claims)
 	if err != nil {
@@ -827,10 +843,12 @@ func verificarToken(tknStr, SecretKey string) int {
 
 func crearCookie(w http.ResponseWriter, r *http.Request, value Value) {
 
-	I := base64.StdEncoding.EncodeToString([]byte(value.Id))
+	 I := base64.StdEncoding.EncodeToString([]byte(value.Id))
+	//I := value.Id
 	N := base64.StdEncoding.EncodeToString([]byte(value.Nombre))
 	R := base64.StdEncoding.EncodeToString([]byte(value.Rol))
-	T := base64.StdEncoding.EncodeToString([]byte(value.Token))
+	T := value.Token
+	// T := base64.StdEncoding.EncodeToString([]byte(value.Token))
 
 	expiration := time.Now().Add(time.Minute * 5)
 
@@ -946,8 +964,21 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 		}
 	}
 	idStr := d.Value
+	fmt.Println("Valor de idStr: linea 950 ", idStr)
+////////////////////////////// DECODE COOKIE ID ////////////////////////
+	base64.StdEncoding.EncodeToString([]byte(idStr))
+	data, err := base64.StdEncoding.DecodeString(idStr)
+    if err != nil {
+        return 0
+	}
+	ident := string(data)
 
-	result, err := db.Query("SELECT * FROM usuarios WHERE id = ?", idStr)
+	fmt.Println("Valor de data: linea 976 ", data)
+	fmt.Println("Valor de ident: linea 977 ", ident)
+	fmt.Println("Valor de ident: linea 977 ", string(ident))
+
+////////////////////////////////////////////////////////////////////////
+	result, err := db.Query("SELECT * FROM usuarios WHERE id = ?", ident)
 	if err != nil {
 		panic(err.Error())
 	}
