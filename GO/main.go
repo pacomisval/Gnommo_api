@@ -93,7 +93,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libraryapp")
+	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/newlibrary")
 	if err != nil {
 		panic(err.Error())
 	}
