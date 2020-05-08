@@ -93,7 +93,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libraryapp")
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/newlibrary")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -843,7 +843,7 @@ func verificarToken(tknStr, SecretKey string) int {
 
 func crearCookie(w http.ResponseWriter, r *http.Request, value Value) {
 
-	 I := base64.StdEncoding.EncodeToString([]byte(value.Id))
+	I := base64.StdEncoding.EncodeToString([]byte(value.Id))
 	//I := value.Id
 	N := base64.StdEncoding.EncodeToString([]byte(value.Nombre))
 	R := base64.StdEncoding.EncodeToString([]byte(value.Rol))
@@ -965,11 +965,11 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 	}
 	idStr := d.Value
 	fmt.Println("Valor de idStr: linea 950 ", idStr)
-////////////////////////////// DECODE COOKIE ID ////////////////////////
+	////////////////////////////// DECODE COOKIE ID ////////////////////////
 	base64.StdEncoding.EncodeToString([]byte(idStr))
 	data, err := base64.StdEncoding.DecodeString(idStr)
-    if err != nil {
-        return 0
+	if err != nil {
+		return 0
 	}
 	ident := string(data)
 
@@ -977,7 +977,7 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 	fmt.Println("Valor de ident: linea 977 ", ident)
 	fmt.Println("Valor de ident: linea 977 ", string(ident))
 
-////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
 	result, err := db.Query("SELECT * FROM usuarios WHERE id = ?", ident)
 	if err != nil {
 		panic(err.Error())

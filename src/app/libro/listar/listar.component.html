@@ -57,16 +57,16 @@
             <div *ngFor="let book of genero.value" class="card" (click)="getBook(modalGetBook, book)">
                 <br>
                 <h5>{{ book.nombre }}</h5>
-
                 <br>
-                <div class="sombraLibro"><a><img src="./assets/images/book/{{book.portada}} " alt="" height="100 "></a></div>
+                <div class="sombraLibro">
+                    <a><img src="./assets/images/book/{{book.portada}} " alt="" height="100 "></a>
+                </div>
                 <br>
                 <div><span>{{ book.first_name }} {{ book.last_name }}</span></div>
-
                 <br>
                 <div>
-                    <button *ngIf="admin1" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning btn-edit">Editar</button>
-                    <button *ngIf="admin1" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger btn-delet">Delete</button>
+                    <button *ngIf="admin" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning btn-edit">Editar</button>
+                    <button *ngIf="admin" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger btn-delet">Delete</button>
                     <!-- BOTONES ^^^^ -->
                 </div>
             </div>
@@ -106,6 +106,7 @@
     </button>
             </div>
         </ng-template>
+
         <!-- VENTANA MODAL EDITAR UN LIBRO -->
         <ng-template #editBookModal let-modal>
             <div class="modal-header ">
