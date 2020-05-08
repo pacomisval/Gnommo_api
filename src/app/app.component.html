@@ -1,17 +1,17 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <div>
-        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-            <img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
-        </a>
-        <br>
-        <a class="navbar-brand logo" href="#">{{title}}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top"> -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #cc7a00;">
 
+    <div>
+        <!-- <a class="navbar-brand logo" href="#">{{title}}</a> -->
+        <img src="./assets/images/book/logo.png" height="60px">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     </div>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <ul class="navbar-nav flex-row w-100">
+        <!-- <ul class="navbar-nav flex-row w-100"> -->
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
@@ -21,11 +21,18 @@
             <li class="nav-item">
                 <a class="nav-link" routerLink="autores">Autores</a>
             </li>
-            <li *ngIf="adminExits" class="nav-item">
-                <a class="nav-link" routerLink="addLibro">Nuevo Libro</a>
-            </li>
-            <li *ngIf="adminExits" class="nav-item">
-                <a class="nav-link" routerLink="addAutor">Nuevo Autor</a>
+            <li class="nav-item dropdown" *ngIf="adminExits">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Añadir
+        </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li *ngIf="adminExits" class="dropdown-item">
+                        <a class="nav-link" routerLink="addLibro">Nuevo Libro</a>
+                    </li>
+                    <li *ngIf="adminExits" class="dropdown-item">
+                        <a class="nav-link" routerLink="addAutor">Nuevo Autor</a>
+                    </li>
+                </div>
             </li>
             <!-- <form [formGroup]="findForm">
 
