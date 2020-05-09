@@ -31,7 +31,7 @@ export class AppComponent {
   cookieMessage = 'Estamos obligados a darte el coñazo con esto de las cukis';
   cookieDismiss = 'Cerrar';
   cookieLinkText = 'Vea que las cukis solo guardan informacion util para ti';
-
+  informacion;
   title = 'Gnomo Librery';
   registerForm: FormGroup;
   registerModal: NgbModalRef;
@@ -48,6 +48,9 @@ export class AppComponent {
   books;
   findForm: FormGroup;
   authors: Author[];
+  information: string;
+  modalInformation: any;
+
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -76,7 +79,8 @@ export class AppComponent {
     this.getCookie('tokensiR');
     this.getCookie('tokensiT');
     this.getAllAutor();
-
+    this.books = this.bookService.getLibros();
+    console.log("libros",this.books)
     this.registerForm = this.formBuilder.group(
       {
         userName: ['', Validators.required],
@@ -207,32 +211,7 @@ cambiarBusqueda() {
    }
 }
 
-  buscar() {
-    const opcion = this.findForm.value.filtro;
-    console.log("Opcion:", opcion);
-    if (opcion == 'autor') {
-      const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
-      if (texto.length > 2) {
-        //  this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
-        //  this.openInformationWindows();
-      } else {
-        const data = { nombre: texto[0], apellido: texto[1] };
 
-        console.log(data.nombre);
-        this.bookService.obtenerLibrosPorAutor(data).subscribe(
-          (result) => {
-            this.books = result;
-            console.log("libros de un autor", result);
-          },
-          (error) => {
-            //   this.information = 'No se ha cargado la lista de libros';
-            //   this.openInformationWindows();
-            console.log(error);
-          }
-        );
-      }
-    }
-  }
   /**
    * Da valor a la lista de Autores
    *
@@ -254,5 +233,90 @@ cambiarBusqueda() {
         // console.log(error);
       }
     );
+  }
+  buscar() {
+    console.log('busca', this.findForm.value);
+
+    if(this.findForm.value.texto=="" || this.findForm.value.texto==null || this.findForm.value.texto==undefined){
+      this.getLibros();
+    }
+    if (this.findForm.value.texto != null) {
+    const opcion = this.findForm.value.filtro;
+    console.log(opcion);
+    if (opcion == 'autor') {
+          const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
+       // const texto = this.findForm.value.texto;
+          if (texto.length > 2) {
+          this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
+          this.openInformationWindows();
+        } else {
+          const data = { nombre: texto[0], apellido: texto[1] };
+          console.log(data.nombre);
+          this.bookService.obtenerLibrosPorAutor(data).subscribe(
+            (result) => {
+              this.books = result;
+              console.log(result);
+            },
+            (error) => {
+              this.information = 'No se ha cargado la lista de libros';
+              this.openInformationWindows();
+              console.log(error);
+            }
+          );
+        }
+      } else if (opcion == 'libro') {
+        console.log('opcion LIBRO');
+        const texto = this.findForm.value.texto.replace(/\s+/g, ' ');
+        const data = { nombre: texto };
+        console.log(texto);
+        this.bookService.obtenerLibro(data).subscribe(
+          (result) => {
+            this.books = result;
+            console.log(result);
+          },
+          (error) => {
+            this.information = 'No se ha cargado la lista de libros';
+            this.openInformationWindows();
+            console.log(error);
+          }
+        );
+      }
+    }
+  }
+ /**
+   * Obtiene la lista de todos los libros
+   *
+   * @memberof ListarComponent
+   */
+  getLibros() {
+    this.bookService.getAll().subscribe(
+      (result) => {
+        this.books = result;
+        console.log('LISTA libros: ');
+        console.log(result);
+        console.log('LISTA GENEROS: ');
+        result.forEach(element => {
+      console.log(element.genero);
+    //   if (!this.generos.includes(element.genero)) {
+    //     this.generos.push(element.genero);
+    //  }
+        });
+        // console.log("Array de generos",this.generos);
+        // this.matrizLibros();
+      },
+      (error) => {
+        this.information = 'No se ha cargado la lista de libros';
+        this.openInformationWindows();
+        //  console.log(error);
+      }
+    );
+  }
+   /**
+   * Abre Ventana Modal informativa
+   *
+   * @memberof ListarComponent
+   */
+  openInformationWindows() {
+    this.modalService.open(this.modalInformation);
   }
 }

@@ -48,12 +48,13 @@ type Libro struct {
 }
 
 type Libro2 struct {
-	Id      string `json:"id"`
-	Nombre  string `json:"nombre"`
-	Isbn    string `json:"isbn"`
-	IdAutor string `json:"idAutor"`
-
-	Portada string `json:"first_name"`
+	Id          string `json:"id"`
+	Nombre      string `json:"nombre"`
+	Isbn        string `json:"isbn"`
+	IdAutor     string `json:"idAutor"`
+	Portada     string `json:"portada"`
+	Genero      string `json:"genero"`
+	Descripcion string `json:"descripcion"`
 }
 
 type Autor struct { //TODO MODIFICADO
@@ -319,7 +320,7 @@ func obtenerLibro(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var libro Libro2
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada) //BUG
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.Genero, &libro.Descripcion, &libro.IdAutor, &libro.Portada) //BUG
 		if err != nil {
 			fmt.Println("error4 ", err)
 		}

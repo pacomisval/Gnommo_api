@@ -193,7 +193,7 @@ export class ListarComponent implements OnInit {
           this.bookService.obtenerLibrosPorAutor(data).subscribe(
             (result) => {
               this.books = result;
-              console.log(result);
+              console.log("obtener libros por autor",result);
             },
             (error) => {
               this.information = 'No se ha cargado la lista de libros';
@@ -547,8 +547,6 @@ export class ListarComponent implements OnInit {
     this.autorService.getAll().subscribe(
       (result) => {
         this.authors = result;
-        // console.log('respuesta authors');
-        // console.log(result);
         console.log('authors', this.authors);
       },
       (error) => {

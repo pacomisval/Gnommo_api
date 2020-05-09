@@ -1,5 +1,9 @@
 @import "src/styles/layout/columns";
 @import "src/styles/abstracts/variables";
+.container {
+    margin-top: 90px;
+}
+
 .titulo {
     padding: 30px 30px 0px 30px;
     font-family: sans-serif;
@@ -41,7 +45,8 @@
     margin: 0 auto;
 }
 
-.btn-edit, .btn-delet {
+.btn-edit,
+.btn-delet {
     height: 25px;
     margin-bottom: 5px;
     text-align: start;
@@ -55,6 +60,7 @@
 .btn-delet {
     margin-left: 5px;
 }
+
 
 /* .selecionable:hover {
     cursor: pointer;
@@ -94,4 +100,8 @@
 
 .grid-containerEJEMPLO {
     grid-template-areas: 'header header header header header header' 'menu main main main right right' 'menu footer footer footer footer footer';
+}
+
+.container {
+    margin-top: 90px;
 }
