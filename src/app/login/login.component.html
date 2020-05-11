@@ -1,5 +1,3 @@
-<app-home></app-home>
-
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 <div class="container ">
     <div *ngIf="loginOpen">
@@ -174,7 +172,7 @@
                             <div *ngIf="rpc1.email.errors.required">Email is required</div>
                         </div>
                     </div>
-                    
+
                     <div class="form-group mostrar" *ngIf="!recoveryPassword2">
                         <!-- <button type="button" class="btn btn-link">* Recuperar password olvidado</button> -->
                         <p><b>* Rellena el formulario<br>* En breve se te enviará un código<br>* Verifica tu correo</b></p>
@@ -187,8 +185,8 @@
             </div>
             <div class="modal-footer">
                 <div class="form-group">
-                
-                    <button (click)="sendCredentialsDB()"class="btn btn-info" style="margin-left:10px">
+
+                    <button (click)="sendCredentialsDB()" class="btn btn-info" style="margin-left:10px">
                     Enviar</button>
                 </div>
                 <!-- <div *ngIf="recoveryPassword2 else abrirModalPass2(recoveryPassword2Modal)" >
@@ -219,7 +217,7 @@
                             <div *ngIf="rpc2.codigo.errors.required">User is required</div>
                         </div>
                     </div>
-             
+
                     <div class="form-group" *ngIf="!recoveryPassword3">
                         <!-- <button type="button" class="btn btn-link">* Recuperar password olvidado</button> -->
                         <p><b>* Introduce el código que has recibido</b></p>
@@ -228,12 +226,12 @@
                         <p><b>* Código aceptado<br>* Haz click en el enlace</b></p>
                         <button type="button" (click)="abrirModalPass3(recoveryPassword3Modal)" class="btn btn-link">* Crear nueva contraseña</button>
                     </div>
-                    
+
                 </form>
             </div>
             <div class="modal-footer">
                 <div class="form-group">
-                
+
                     <button (click)="sendCodigo()" class="btn btn-info" style="margin-left:10px">
                     Enviar</button>
                 </div>
@@ -286,27 +284,16 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <div class="form-group">              
-                    <button *ngIf="!recoveryPassword3" (click)="closeRecoveryPassword3()"class="btn btn-info" style="margin-left:10px">
+                <div class="form-group">
+                    <button *ngIf="!recoveryPassword3" (click)="closeRecoveryPassword3()" class="btn btn-info" style="margin-left:10px">
                     Exit</button>
                 </div>
-                <div class="form-group">              
-                    <button (click)="sendNewPassword()"class="btn btn-info" style="margin-left:10px">
+                <div class="form-group">
+                    <button (click)="sendNewPassword()" class="btn btn-info" style="margin-left:10px">
                     Enviar</button>
                 </div>
-                
+
             </div>
         </div>
     </div>
 </ng-template>
-
-
-
-
-
-
-
-
-
-
-
