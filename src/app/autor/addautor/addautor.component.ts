@@ -136,7 +136,7 @@ export class AddautorComponent implements OnInit {
           res=false;
         }
 
-        if(fecha.getTime()>hoy.getTime()/*  || !Date.parse(fecha) */){
+        if(fecha.getTime()>hoy.getTime()){
           this.information = "-Asegurese de estar introduciendo una fecha válida";
           res=false;
        }
