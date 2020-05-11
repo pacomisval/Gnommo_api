@@ -38,7 +38,7 @@
 
 <ol class="breadcrumb">
   <li>Injectables</li>
-  <li>UserService</li>
+  <li>UploadService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -56,7 +56,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/services/user.service.ts</code>
+            <code>src/app/services/upload.service.ts</code>
         </p>
 
 
@@ -75,7 +75,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#currentUserType">currentUserType</a>
+                                <a href="#archivo">archivo</a>
+                            </li>
+                            <li>
+                                <a href="#file">file</a>
+                            </li>
+                            <li>
+                                <a href="#urlServidor">urlServidor</a>
                             </li>
                         </ul>
                     </td>
@@ -90,13 +96,10 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#createUser">createUser</a>
+                                <a href="#onFileChange">onFileChange</a>
                             </li>
                             <li>
-                                <a href="#devolverEmail">devolverEmail</a>
-                            </li>
-                            <li>
-                                <a href="#userAdmin">userAdmin</a>
+                                <a href="#upload">upload</a>
                             </li>
                         </ul>
                     </td>
@@ -121,7 +124,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/user.service.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/upload.service.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -168,18 +171,86 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="createUser"></a>
+                    <a name="onFileChange"></a>
                     <span class="name">
                         <b>
-                            createUser
+                            onFileChange
                         </b>
-                        <a href="#createUser"><span class="icon ion-ios-link"></span></a>
+                        <a href="#onFileChange"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>createUser(data)</code>
+<code>onFileChange(event)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/app/services/upload.service.ts:50</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Controla cambios select Archivo Imagen</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="upload"></a>
+                    <span class="name">
+                        <b>
+                            upload
+                        </b>
+                        <a href="#upload"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>upload(data)</code>
                 </td>
             </tr>
 
@@ -187,7 +258,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/app/services/user.service.ts:18</a></div>
+                            class="link-to-prism">src/app/services/upload.service.ts:18</a></div>
                 </td>
             </tr>
 
@@ -225,111 +296,6 @@
                     </div>
                     <div class="io-description">
                         
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="devolverEmail"></a>
-                    <span class="name">
-                        <b>
-                            devolverEmail
-                        </b>
-                        <a href="#devolverEmail"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>devolverEmail(data)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/app/services/user.service.ts:28</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>data</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="userAdmin"></a>
-                    <span class="name">
-                        <b>
-                            userAdmin
-                        </b>
-                        <a href="#userAdmin"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>userAdmin()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="22"
-                            class="link-to-prism">src/app/services/user.service.ts:22</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
                     </div>
                 </td>
             </tr>
@@ -345,17 +311,95 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="currentUserType"></a>
+                        <a name="archivo"></a>
                         <span class="name">
                             <b>
-                            currentUserType</b>
-                            <a href="#currentUserType"><span class="icon ion-ios-link"></span></a>
+                            archivo</b>
+                            <a href="#archivo"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{
+    fileName: null,
+    fileExtension: null,
+  }</code>
+                        </td>
+                    </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/user.service.ts:14</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/services/upload.service.ts:9</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="file"></a>
+                        <span class="name">
+                            <b>
+                            file</b>
+                            <a href="#file"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>null</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>null</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/services/upload.service.ts:13</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="urlServidor"></a>
+                        <span class="name">
+                            <b>
+                            urlServidor</b>
+                            <a href="#urlServidor"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;http://localhost:8000/api/upload&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/upload.service.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -369,35 +413,63 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
-import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
-import { User } from &#x27;../models/user&#x27;;
-import { Globals } from &#x27;../Global&#x27;;
-
-
+import { HttpClient, HttpEventType } from &#x27;@angular/common/http&#x27;;
+import { map } from &#x27;rxjs/operators&#x27;;
 
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
-
-export class UserService {
- // Globals.apiUrl &#x3D; &#x27;http://localhost:8000/api&#x27;;
-  currentUserType;
+export class UploadService {
+  archivo &#x3D; {
+    fileName: null,
+    fileExtension: null,
+  };
+  file &#x3D; null;
+  urlServidor &#x3D; &#x27;http://localhost:8000/api/upload&#x27;;
 
   constructor(private http: HttpClient) { }
 
-  createUser(data) { 
-    return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/usuarios&#x27;, data);
-  }
+  upload(data) {
+console.log(&#x27;servicio upload______ &#x27;, data);
+return this.http.post&lt;any&gt;(this.urlServidor, data, {
+      reportProgress: true,
+      observe: &#x27;events&#x27;
+    }).pipe(map((event) &#x3D;&gt; {
 
-  userAdmin() {
-    console.log(&#x27;userAdmin&#x27;);
-    console.log(this.currentUserType);
-    return this.currentUserType &#x3D;&#x3D; &#x27;admin&#x27; ? true : false;
-  }
+      switch (event.type) {
 
-  devolverEmail(data) {
-    return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/email/&#x27;+data);
+        case HttpEventType.UploadProgress:
+          const progress &#x3D; Math.round(100 * event.loaded / event.total);
+          console.log(&#x27;valor de progress: &#x27; + progress);
+
+          return { status: &#x27;progress&#x27;, message: progress };
+
+        case HttpEventType.Response:
+          console.log(&#x27;valor de event.body: &#x27; + event.body);
+          return event.body;
+
+        default:
+          console.log(&#x27;valor de event.type: &#x27; + event.type);
+          return &#x60;Unhandled evento: ${event.type}&#x60;;
+      }
+    })
+    );
   }
+  /**
+   * Controla cambios select Archivo Imagen
+   *
+   * @param {*} fileInput
+   * @memberof AddlibroComponent
+   */
+  onFileChange(event) {
+    console.log(&#x27;onFileChange Service&#x27;);
+    if (event.target.files &amp;&amp; event.target.files.length) {
+      console.log(&#x27;onFileChange Service if&#x27;);
+      this.file &#x3D; event.target.files[0];
+      this.archivo.fileName &#x3D; this.file.name;
+      this.archivo.fileExtension &#x3D; this.file.name.substr(this.file.name.lastIndexOf(&#x27;.&#x27;) + 1);
+  }
+   }
 }
 </code></pre>
     </div>
@@ -432,7 +504,7 @@ export class UserService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'UserService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'UploadService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

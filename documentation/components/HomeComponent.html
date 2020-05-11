@@ -97,7 +97,7 @@
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>./home.component.css</code></td>
+                <td class="col-md-9"><code>./home.component.scss</code></td>
             </tr>
 
 
@@ -226,7 +226,7 @@
 @Component({
   selector: &#x27;app-home&#x27;,
   templateUrl: &#x27;./home.component.html&#x27;,
-  styleUrls: [&#x27;./home.component.css&#x27;]
+  styleUrls: [&#x27;./home.component.scss&#x27;]
 })
 
 export class HomeComponent {
@@ -242,24 +242,68 @@ export class HomeComponent {
   */
  constructor() { }
 
-  // ngOnInit(): void {
-  // }
-
 }
 </code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div style&#x3D;&quot;text-align:center; margin-bottom: 50px;&quot;&gt;
-    &lt;h1&gt;{{title}} &lt;/h1&gt;
-&lt;/div&gt;</code></pre>
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container principal&quot;&gt;
+    &lt;div class&#x3D;&quot;jumbo&quot;&gt;
+
+        &lt;h1 class&#x3D;&quot;display-4 text-center pt-md-4&quot;&gt;
+            &lt;!-- &lt;img _ngcontent-oeu-c108&#x3D;&quot;&quot; src&#x3D;&quot;./assets/images/book/logo.png&quot; height&#x3D;&quot;120px&quot;&gt; --&gt;
+            Gnommo&#x27;s Library
+        &lt;/h1&gt;
+        &lt;p class&#x3D;&quot;leade&quot;&gt;Busca en nuestra web el libro que necesitas.&lt;/p&gt;
+        &lt;a rel&#x3D;&quot;license&quot; href&#x3D;&quot;http://creativecommons.org/licenses/by-sa/4.0/&quot;&gt;
+            &lt;img class&#x3D;&quot;pl-3 mt-5 &quot; alt&#x3D;&quot;Licencia Creative Commons&quot; src&#x3D;&quot;https://i.creativecommons.org/l/by-sa/4.0/80x15.png&quot; /&gt;
+        &lt;/a&gt;
+
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;fondo&quot;&gt;
+        &lt;!-- &lt;img src&#x3D;&quot;./assets/images/book/logo.png&quot; height&#x3D;&quot;320px&quot;&gt; --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-styleData">
                 <p class="comment">
-                    <code>./home.component.css</code>
+                    <code>./home.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss"></code></pre>
+                <pre class="line-numbers"><code class="language-scss">@import &quot;src/styles/abstracts/variables&quot;;
+.jumbo {
+    margin-top: -15px;
+    width: 100%;
+    height: 200px;
+    background-color: $orange-600;
+    color: white;
+}
+
+.leade {
+    margin-top: -15px;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+
+.principal {
+    margin-top: 100px;
+}
+
+.fondo {
+    margin-top: -80px;
+    /* padding-top: 15px; */
+    height: 550px;
+    background-size: cover;
+    background-image: url(&quot;./../../assets/images/book/logo.png&quot;);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    /* background-attachment: fixed; */
+    background-size: contain;
+    z-index: -1;
+}
+</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-tree">
@@ -287,7 +331,7 @@ export class HomeComponent {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div style="text-align:center; margin-bottom: 50px;">    <h1>{{title}} </h1></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="container principal">    <div class="jumbo">        <h1 class="display-4 text-center pt-md-4">            <!-- <img _ngcontent-oeu-c108="" src="./assets/images/book/logo.png" height="120px"> -->            Gnommo\'s Library        </h1>        <p class="leade">Busca en nuestra web el libro que necesitas.</p>        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">            <img class="pl-3 mt-5 " alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />        </a>    </div>    <div class="fondo">        <!-- <img src="./assets/images/book/logo.png" height="320px"> -->    </div></div></div>'
     var COMPONENTS = [{'name': 'AddautorComponent', 'selector': 'app-addautor'},{'name': 'AddlibroComponent', 'selector': 'app-addlibro'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'ListarautoresComponent', 'selector': 'app-listarautores'},{'name': 'ListarComponent', 'selector': 'app-listar'},{'name': 'LoginComponent', 'selector': 'app-login'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'HomeComponent'};

@@ -249,7 +249,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest&lt;any&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;any&gt;&gt; {
 
-    const token: string &#x3D; localStorage.getItem(&#x27;token&#x27;);
+    const token: string &#x3D; localStorage.getItem(&#x27;tokensiT&#x27;);
     let request &#x3D; req;
 
     if (token) {
@@ -269,6 +269,7 @@ export class AuthInterceptorService implements HttpInterceptor {
         return throwError( err );
       })
     );
+
   }
 }
 </code></pre>

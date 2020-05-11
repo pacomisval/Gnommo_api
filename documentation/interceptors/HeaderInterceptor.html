@@ -27,7 +27,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content guard">
+               <div class="content interceptor">
                    <div class="content-data">
 
 
@@ -37,10 +37,9 @@
 
 
 
-
 <ol class="breadcrumb">
-    <li>Guards</li>
-    <li>AuthGuard</li>
+  <li>Interceptors</li>
+  <li>HeaderInterceptor</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -53,36 +52,20 @@
 </ul>
 
 <div class="tab-content">
-        <div class="tab-pane fade active in" id="c-info">
-            <p class="comment">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
             <h3>File</h3>
-            </p>
-            <p class="comment">
-                <code>src/app/auth.guard.ts</code>
-            </p>
+        </p>
+        <p class="comment">
+            <code>src/app/header.interceptor.ts</code>
+        </p>
 
 
 
-
-
-                <section>
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                <a href="#cuki">cuki</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -93,7 +76,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#canActivate">canActivate</a>
+                                <a href="#intercept">intercept</a>
                             </li>
                         </ul>
                     </td>
@@ -107,68 +90,26 @@
     </table>
 </section>
 
-                <section>
+            <section>
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(cookieService: CookieService, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>)</code>
+<code>constructor()</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/auth.guard.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/app/header.interceptor.ts:6</a></div>
                             </td>
                         </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>cookieService</td>
-                                                  
-                                                        <td>
-                                                                    <code>CookieService</code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>router</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
 </section>
 
-                <section>
+            <section>
     
     <h3 id="methods">
         Methods
@@ -177,26 +118,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="canActivate"></a>
+                    <a name="intercept"></a>
                     <span class="name">
                         <b>
-                            canActivate
+                            intercept
                         </b>
-                        <a href="#canActivate"><span class="icon ion-ios-link"></span></a>
+                        <a href="#intercept"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>canActivate(next: <a href="https://angular.io/api/router/ActivatedRouteSnapshot" target="_blank">ActivatedRouteSnapshot</a>, state: <a href="https://angular.io/api/router/RouterStateSnapshot" target="_blank">RouterStateSnapshot</a>)</code>
+<code>intercept(request: HttpRequest<any>, next: <a href="https://angular.io/api/common/http/HttpHandler" target="_blank">HttpHandler</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="12"
-                            class="link-to-prism">src/app/auth.guard.ts:12</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="9"
+                            class="link-to-prism">src/app/header.interceptor.ts:9</a></div>
                 </td>
             </tr>
 
@@ -216,9 +157,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>next</td>
+                                    <td>request</td>
                                     <td>
-                                                <code><a href="https://angular.io/api/router/ActivatedRouteSnapshot" target="_blank" >ActivatedRouteSnapshot</a></code>
+                                            <code>HttpRequest&lt;any&gt;</code>
                                     </td>
 
                                     <td>
@@ -228,9 +169,9 @@
 
                                 </tr>
                                 <tr>
-                                    <td>state</td>
+                                    <td>next</td>
                                     <td>
-                                                <code><a href="https://angular.io/api/router/RouterStateSnapshot" target="_blank" >RouterStateSnapshot</a></code>
+                                                <code><a href="https://angular.io/api/common/http/HttpHandler" target="_blank" >HttpHandler</a></code>
                                     </td>
 
                                     <td>
@@ -245,7 +186,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Observable | Promise | boolean | UrlTree</code>
+                        <b>Returns : </b>    <code>Observable&lt;HttpEvent&lt;any&gt;&gt;</code>
 
                     </div>
                     <div class="io-description">
@@ -256,41 +197,30 @@
         </tbody>
     </table>
 </section>
-        </div>
+
+    </div>
 
 
-        <div class="tab-pane fade  tab-source-code" id="c-source">
-            <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from &#x27;@angular/router&#x27;;
-import { Observable } from &#x27;rxjs&#x27;;
-import { CookieService } from &#x27;ngx-cookie-service&#x27;;
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Observable } from &#x27;rxjs&#x27;;
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from &#x27;@angular/common/http&#x27;;
+import { Injectable } from &#x27;@angular/core&#x27;;
 
-@Injectable({
-  providedIn: &#x27;root&#x27;
-})
-export class AuthGuard implements CanActivate {
-  cuki;
-  constructor(private cookieService: CookieService, private router: Router) {}
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable&lt;boolean | UrlTree&gt; | Promise&lt;boolean | UrlTree&gt; | boolean | UrlTree {
-    if (this.cookieService.get(&#x27;tokensiR&#x27;)) {
-      this.cuki &#x3D; atob(this.cookieService.get(&#x27;tokensiR&#x27;));
-      if (this.cuki &#x3D;&#x3D; &#x27;admin&#x27;) {
-        console.log(&#x27;existe tokensiR &#x3D;&#x3D; admin&#x27;);
-        return true;
-      }
-    }
-    console.log(&#x27;no existe tokensiR &#x3D;&#x3D; admin&#x27;);
-    this.router.navigate([&#x27;login&#x27;]);
-    return false;
+@Injectable()
+export class HeaderInterceptor implements HttpInterceptor {
+  constructor() {}
 
+  intercept(request: HttpRequest&lt;any&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;any&gt;&gt; {
+    request &#x3D; request.clone({
+      withCredentials: true
+  });
+  return next.handle(request);
   }
-
 }
 </code></pre>
-        </div>
+    </div>
 </div>
+
 
 
 
@@ -317,8 +247,8 @@ export class AuthGuard implements CanActivate {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'guard';
-            var COMPODOC_CURRENT_PAGE_URL = 'AuthGuard.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interceptor';
+            var COMPODOC_CURRENT_PAGE_URL = 'HeaderInterceptor.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

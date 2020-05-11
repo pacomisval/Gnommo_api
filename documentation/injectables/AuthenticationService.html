@@ -100,6 +100,15 @@
                             <li>
                                 <a href="#logout">logout</a>
                             </li>
+                            <li>
+                                <a href="#recoveryPassword1">recoveryPassword1</a>
+                            </li>
+                            <li>
+                                <a href="#recoveryPassword2">recoveryPassword2</a>
+                            </li>
+                            <li>
+                                <a href="#recoveryPassword3">recoveryPassword3</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -137,7 +146,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/services/authentication.service.ts:11</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/authentication.service.ts:12</a></div>
                             </td>
                         </tr>
 
@@ -214,8 +223,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="24"
-                            class="link-to-prism">src/app/services/authentication.service.ts:24</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">src/app/services/authentication.service.ts:34</a></div>
                 </td>
             </tr>
 
@@ -230,6 +239,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -241,6 +251,8 @@
                                     </td>
 
 
+                                    <td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>password</td>
@@ -250,6 +262,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>Envio de credenciales para autenticación de usuario registrado.</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -289,8 +305,49 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">src/app/services/authentication.service.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/app/services/authentication.service.ts:44</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Elimina la sesión existente del usuario(admin) logueado.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recoveryPassword1"></a>
+                    <span class="name">
+                        <b>
+                            recoveryPassword1
+                        </b>
+                        <a href="#recoveryPassword1"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>recoveryPassword1(nombre, email)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/app/services/authentication.service.ts:59</a></div>
                 </td>
             </tr>
 
@@ -299,8 +356,207 @@
                 <td class="col-md-4">
 
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nombre</td>
 
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>email</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Envio de credenciales al servidor para su verificación.
+Si es true, se inicia el proceso de recuperación de contraseña.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recoveryPassword2"></a>
+                    <span class="name">
+                        <b>
+                            recoveryPassword2
+                        </b>
+                        <a href="#recoveryPassword2"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>recoveryPassword2(codigo)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">src/app/services/authentication.service.ts:72</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>codigo</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Envio del codigo recibido por email al servidor para su verificación.
+Si es true, continuamos el proceso de recuperación de contraseña.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recoveryPassword3"></a>
+                    <span class="name">
+                        <b>
+                            recoveryPassword3
+                        </b>
+                        <a href="#recoveryPassword3"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>recoveryPassword3(email, password)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="83"
+                            class="link-to-prism">src/app/services/authentication.service.ts:83</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Se establece nueva contraseña.
+Finaliza el proceso de recuperación de contraseña.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -333,7 +589,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/services/authentication.service.ts:11</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/authentication.service.ts:12</a></div>
                             </td>
                         </tr>
 
@@ -361,7 +617,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/services/authentication.service.ts:10</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/services/authentication.service.ts:11</a></div>
                             </td>
                         </tr>
 
@@ -390,7 +646,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/services/authentication.service.ts:20</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/services/authentication.service.ts:23</a></div>
                                 </td>
                             </tr>
 
@@ -402,53 +658,96 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
-import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
 import { BehaviorSubject, Observable } from &#x27;rxjs&#x27;;
 import { map } from &#x27;rxjs/operators&#x27;;
 import { CookieService } from &#x27;ngx-cookie-service&#x27;;
 import { Globals } from &#x27;../Global&#x27;;
+import { User} from &#x27;../models/user&#x27;;
 
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject&lt;any&gt;;
   public currentUser: Observable&lt;any&gt;;
 
+
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.currentUserSubject &#x3D; new BehaviorSubject&lt;any&gt;(
       JSON.parse(localStorage.getItem(&#x27;currentUser&#x27;))
     );
     this.currentUser &#x3D; this.currentUserSubject.asObservable();
+    console.log(this.currentUser);
   }
 
   public get currentUserValue() {
+
     return this.currentUserSubject.value;
   }
 
+  /**
+   *
+   * @param email
+   * @param password
+   * Envio de credenciales para autenticación de usuario registrado.
+   */
   login(email, password) {
+
   console.log(&quot;entra en autenticationservice.login&quot;)
-   return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/login&#x27;, { email, password })
-
-    // const user1 &#x3D; {
-    //   userName: &#x27;jose&#x27;,
-    //   email: &#x27;jose@gmail.com&#x27;,
-    //   password: &#x27;123456&#x27;,
-    //   rol: &#x27;admin&#x27;,
-    //   token: &#x27;el token&#x27;
-    // };
-    // localStorage.setItem(&#x27;currentUser&#x27;, JSON.stringify(user1));
-    // this.currentUserSubject.next(user1);
-    // return user1;
-
+   return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/login&#x27;, { email, password },{ observe: &quot;response&quot;,  withCredentials: true,});
 
   }
 
+  /**
+   * Elimina la sesión existente del usuario(admin) logueado.
+   */
   logout() {
-    // remove user from local storage and set current user to null
-  //  localStorage.removeItem(&#x27;currentUser&#x27;);
-  //  this.currentUserSubject.next(null);
-     this.cookieService.delete(&#x27;cuki&#x27;);
+    this.cookieService.delete(&#x27;tokensiI&#x27;);
+    this.cookieService.delete(&#x27;tokensiN&#x27;);
+    this.cookieService.delete(&#x27;tokensiR&#x27;);
+    this.cookieService.delete(&#x27;tokensiT&#x27;);
 
   }
+
+  /**
+   *
+   * @param nombre
+   * @param email
+   * Envio de credenciales al servidor para su verificación.
+   * Si es true, se inicia el proceso de recuperación de contraseña.
+   */
+  recoveryPassword1(nombre, email) {
+    console.log(&quot;Dentro de autenticationService.recoveryPassword 1&quot;);
+    console.log(nombre);
+    console.log(email);
+    return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/recoveryPass1&#x27;, { nombre, email },{ observe: &quot;response&quot;,  withCredentials: true,});
+  }
+  /**
+   *
+   * @param codigo
+   * Envio del codigo recibido por email al servidor para su verificación.
+   * Si es true, continuamos el proceso de recuperación de contraseña.
+   */
+
+  recoveryPassword2(codigo) {
+    console.log(&quot;Dentro de autenticationService.recoveryPassword 2&quot;);
+    console.log(&quot;Valor de codigo: &quot; + codigo);
+    return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/recoveryPass2&#x27;, { codigo },{ observe: &quot;response&quot;, withCredentials: true,});
+  }
+  /**
+   *
+   * @param password
+   * Se establece nueva contraseña.
+   * Finaliza el proceso de recuperación de contraseña.
+   */
+  recoveryPassword3(email,password) {
+    console.log(&quot;Dentro de autenticationService.recoveryPassword 3&quot;);
+    console.log(&quot;valor de password: &quot; + password);
+    console.log(&quot;valor de email: &quot; + email)
+    return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/recoveryPass3&#x27;, { email, password },{ observe: &quot;response&quot;, withCredentials: true,});
+  }
+
+
+
 }
 </code></pre>
     </div>

@@ -41,13 +41,12 @@ export class BookService {
   obtenerLibro(data) {
     // Initialize Params Object
     let Params = new HttpParams();
-
-    console.log(data);
+    console.log("dentro de obtener libro, pasamos:",data);
     console.log(data.nombre);
     // Begin assigning parameters
     Params = Params.append('firstParameter', data.nombre);
+    console.log(Params);
     return this.http.get<any>(Globals.apiUrl + '/buscarLibro', { params: Params }); // BUG .....
-
   }
 
   createBook(data) {
@@ -75,4 +74,28 @@ export class BookService {
   //   return this.http.get<any>(Globals.apiUrl + '/buscarLibro', { params: Params }); // BUG .....
 
   // }
+  getLibros() {
+    this.getAll().subscribe(
+      (result) => {
+        this.books = result;
+        console.log('LISTA libros: ');
+        console.log(result);
+        return result;
+    //     console.log('LISTA GENEROS: ');
+    //     result.forEach(element => {
+    //   console.log(element.genero);
+    //   if (!this.generos.includes(element.genero)) {
+    //     this.generos.push(element.genero);
+    //  }
+    //     });
+    //     console.log("Array de generos",this.generos);
+    //     this.matrizLibros();
+      },
+      (error) => {
+     //   this.information = 'No se ha cargado la lista de libros';
+     //   this.openInformationWindows();
+          console.log(error);
+      }
+    );
+  }
 }

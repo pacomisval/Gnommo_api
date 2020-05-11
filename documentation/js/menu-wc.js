@@ -70,13 +70,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/AppModule.html" data-type="entity-link">AppModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-AppModule-fcc4cd59297a3f6c5495927410ba635a"' : 'data-target="#xs-components-links-module-AppModule-fcc4cd59297a3f6c5495927410ba635a"' }>
+                                            'data-target="#components-links-module-AppModule-d8533f4d876ea2c442f35902693367fb"' : 'data-target="#xs-components-links-module-AppModule-d8533f4d876ea2c442f35902693367fb"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppModule-fcc4cd59297a3f6c5495927410ba635a"' :
-                                            'id="xs-components-links-module-AppModule-fcc4cd59297a3f6c5495927410ba635a"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppModule-d8533f4d876ea2c442f35902693367fb"' :
+                                            'id="xs-components-links-module-AppModule-d8533f4d876ea2c442f35902693367fb"' }>
                                             <li class="link">
                                                 <a href="components/AddautorComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">AddautorComponent</a>
@@ -109,13 +109,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     </li>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                        'data-target="#injectables-links-module-AppModule-fcc4cd59297a3f6c5495927410ba635a"' : 'data-target="#xs-injectables-links-module-AppModule-fcc4cd59297a3f6c5495927410ba635a"' }>
+                                        'data-target="#injectables-links-module-AppModule-d8533f4d876ea2c442f35902693367fb"' : 'data-target="#xs-injectables-links-module-AppModule-d8533f4d876ea2c442f35902693367fb"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-AppModule-fcc4cd59297a3f6c5495927410ba635a"' :
-                                        'id="xs-injectables-links-module-AppModule-fcc4cd59297a3f6c5495927410ba635a"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-AppModule-d8533f4d876ea2c442f35902693367fb"' :
+                                        'id="xs-injectables-links-module-AppModule-d8533f4d876ea2c442f35902693367fb"' }>
                                         <li class="link">
                                             <a href="injectables/AuthenticationService.html"
                                                 data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>AuthenticationService</a>
@@ -127,6 +127,10 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                         <li class="link">
                                             <a href="injectables/BookService.html"
                                                 data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>BookService</a>
+                                        </li>
+                                        <li class="link">
+                                            <a href="injectables/UploadService.html"
+                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules" }>UploadService</a>
                                         </li>
                                         <li class="link">
                                             <a href="injectables/UserService.html"
@@ -174,6 +178,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <a href="injectables/Globals.html" data-type="entity-link">Globals</a>
                                 </li>
                                 <li class="link">
+                                    <a href="injectables/UploadService.html" data-type="entity-link">UploadService</a>
+                                </li>
+                                <li class="link">
                                     <a href="injectables/UserService.html" data-type="entity-link">UserService</a>
                                 </li>
                             </ul>
@@ -188,6 +195,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         <ul class="links collapse " ${ isNormalMode ? 'id="interceptors-links"' : 'id="xs-interceptors-links"' }>
                             <li class="link">
                                 <a href="interceptors/AuthInterceptorService.html" data-type="entity-link">AuthInterceptorService</a>
+                            </li>
+                            <li class="link">
+                                <a href="interceptors/HeaderInterceptor.html" data-type="entity-link">HeaderInterceptor</a>
                             </li>
                         </ul>
                     </li>

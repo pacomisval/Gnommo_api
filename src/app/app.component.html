@@ -1,17 +1,12 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #cc7a00;">
     <div>
-        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-            <img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
-        </a>
-        <br>
-        <a class="navbar-brand logo" href="#">{{title}}</a>
+        <img src="./assets/images/book/logo.png" height="60px">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-
       <span class="navbar-toggler-icon"></span>
     </button>
     </div>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <ul class="navbar-nav flex-row w-100">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
@@ -21,39 +16,42 @@
             <li class="nav-item">
                 <a class="nav-link" routerLink="autores">Autores</a>
             </li>
-            <li *ngIf="adminExits" class="nav-item">
-                <a class="nav-link" routerLink="addLibro">Nuevo Libro</a>
+            <li class="nav-item dropdown" *ngIf="adminExits">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Añadir
+        </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li *ngIf="adminExits" class="dropdown-item">
+                        <a class="nav-link" routerLink="addLibro">Nuevo Libro</a>
+                    </li>
+                    <li *ngIf="adminExits" class="dropdown-item">
+                        <a class="nav-link" routerLink="addAutor">Nuevo Autor</a>
+                    </li>
+                </div>
             </li>
-            <li *ngIf="adminExits" class="nav-item">
-                <a class="nav-link" routerLink="addAutor">Nuevo Autor</a>
-            </li>
+            <!-- ****vvvv****** BARRA DE BUSQUEDA CORRECTA********** -->
             <!-- <form [formGroup]="findForm">
-
                 <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
-                <!-- <select name="filtro" id="filtro" class="ml-2">
                 <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
-          <option value="autor">Autor</option>
-          <option value="libro">Libro</option>
-        </select>
-                <span action="" class="ml-5 pt-1">
-          <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
-          <ng-container *ngIf="buscarXautor; then autorTemplate; else tituloTemplate"></ng-container>
-          <ng-template #autorTemplate>
-            <input type="text" list="autores" (click)="buscar()" class="ml-2" />
-            <datalist id="autores">
-              <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
-            </datalist>
-          </ng-template>
-          <ng-template #tituloTemplate>
-            <input type="text" list="autores" class="ml-2" />
-            <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
-          </ng-template>
-          <!-- <input type="button" class="ml-2" id="bttBuscar" value="Buscar">
-          <!-- <input type="button" class="ml-2" id="bttBuscar" (click)="buscar()" value="Buscar">
-        </span>
+                  <option value="autor">Autor</option>
+                  <option value="libro">Libro</option>
+                </select>
+                <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
+                <ng-container *ngIf="buscarXautor; then autorTemplate; else tituloTemplate"></ng-container>
+                <ng-template #autorTemplate>
+                    <input type="text" list="autores" (change)="buscar()" class="ml-2" formControlName="texto" />
+                    <datalist id="autores">
+                    <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
+                  </datalist>
+                </ng-template>
+                <ng-template #tituloTemplate>
+                    <input type="text" formControlName="texto" class="ml-2" (keyup)="buscar()" />
+                </ng-template>
             </form> -->
+            <!-- ********** BARRA DE BUSQUEDA CORRECTA*****^^^^^^***** -->
 
             <ng-container *ngIf="CukiExits; then thenTemplate; else elseTemplate"></ng-container>
+
             <ng-template #thenTemplate>
                 <li class="nav-item  ml-auto px-2">
                     <a class="nav-link" href="" (click)="logout()">Logout</a>
@@ -68,13 +66,9 @@
                     <a class="nav-link  " routerLink="login">Login</a>
                 </li>
             </ng-template>
-
         </ul>
-        <!-- <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form> -->
     </div>
 </nav>
+
 
 <router-outlet></router-outlet>
