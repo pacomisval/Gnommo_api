@@ -78,6 +78,8 @@ export class AddlibroComponent implements OnInit {
   book = {
     title: '',
     isbn: '',
+    genero:'',
+    descripcion:'',
   };
   /**
    * Mensaje a mostrar en Ventana Modal
@@ -98,6 +100,8 @@ export class AddlibroComponent implements OnInit {
     this.bookForm = this.formBuilder.group({
       title: '',
       isbn: '',
+      genero:'',
+      descripcion:'',
       imgBook: null,
       selectedAuthor: [''],
     });
@@ -317,6 +321,8 @@ saveBookDB() {
       id: '',
       titulo: this.bookForm.value.title,
       isbn: this.bookForm.value.isbn,
+      genero:this.bookForm.value.genero,
+      descripcion:this.bookForm.value.descripcion,
       id_author: this.id_author,
       extension:  this.imgBook.name.substr(this.imgBook.name.lastIndexOf('.') + 1),
   };

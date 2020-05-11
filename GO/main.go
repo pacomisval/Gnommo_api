@@ -96,7 +96,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/newlibrary")
+	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/newlibrary")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1281,10 +1281,13 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	//id := keyVal["id"]
 	nombre := keyVal["titulo"]
 	isbn := keyVal["isbn"]
+    genero := keyVal["genero"] 
+    descripcion := keyVal["descripcion"] 
 	idAutor := keyVal["id_author"] //mirar si falla FK es idAutor
+    
 	//	extension := keyVal["extension"]
 	// _, err = stmt.Exec(&nombre, &isbn, &idAutor)
-	res, err := db.Exec("INSERT INTO books(nombre, isbn, idAutor) VALUES(?,?,?)", &nombre, &isbn, &idAutor)
+	res, err := db.Exec("INSERT INTO books(nombre, isbn, genero,descripcion,idAutor) VALUES(?,?,?,?,?)", &nombre, &isbn,&genero,&descripcion, &idAutor)
 	if err != nil {
 		panic(err.Error())
 	}
