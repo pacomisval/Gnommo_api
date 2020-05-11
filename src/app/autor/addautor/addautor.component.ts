@@ -106,7 +106,7 @@ export class AddautorComponent implements OnInit {
 
     var hoy = new Date();
     var fecha = new Date(this.afc.fecha.value);
-      
+
     console.log(this.afc.first_name.value)
     console.log(this.afc.last_name.value)
     console.log(this.afc.nacionalidad.value)
@@ -146,7 +146,7 @@ export class AddautorComponent implements OnInit {
     if(!res){
       this.openInformationWindows();
     }
-    
+
     return res;
    }
 
@@ -195,9 +195,9 @@ export class AddautorComponent implements OnInit {
   backRoute() {
     if (this.authorService.comesAddLibro) {
       this.authorService.comesAddLibro = false;
-      this.router.navigate(['agregarLibro']);
+      this.router.navigate(['addLibro']);
     } else {
-      this.router.navigate(['listarAutores']);
+      this.router.navigate(['autores']);
     }
   }
 

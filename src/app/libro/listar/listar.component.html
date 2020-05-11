@@ -132,7 +132,7 @@
             <p>{{information}}</p>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
+            <button type="button" class="btn btn-outline-dark" (click)="modalClose()">
         Cerrar
       </button>
         </div>
@@ -167,10 +167,24 @@
                 <div class="row">
                     <div class="col">
                         <p>Autor&nbsp;</p>
+<<<<<<< HEAD
                         
                         <datalist id="autores">
                             <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
                           </datalist>
+=======
+
+                        <input type="text" list="autores" (change)="buscar()" class="ml-2" formControlName="textoSelect" [(ngModel)]="textoSelect" placeholder="{{book.first_name}}&nbsp;{{book.last_name}}" />
+                        <datalist id="autores">
+                    <option *ngFor="let autor of authors" >
+                      {{autor.id}}
+                      &nbsp;{{autor.first_name}}&nbsp;{{autor.last_name}}
+                    </option>
+
+                  </datalist>
+
+
+>>>>>>> 7411b61e8324c643fb79216cf43ee745e70cd41f
                     </div>
                     <div class="col">
                         <div class="form-group">

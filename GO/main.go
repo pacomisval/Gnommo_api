@@ -96,7 +96,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/newlibrary")
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/newlibrary")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1479,7 +1479,7 @@ func postAutor(w http.ResponseWriter, r *http.Request) {
 
 	///////////////////////////////////////////////
 
-	stmt, err := db.Prepare("INSERT INTO autor(id, first_name, last_name, nationality, date) VALUES (?,?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO autor(id, first_name, last_name, nacionalidad, fechaNacimiento) VALUES (?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1493,8 +1493,8 @@ func postAutor(w http.ResponseWriter, r *http.Request) {
 	id := clave["id"]
 	firstName := clave["first_name"]
 	lastName := clave["last_name"]
-	nationality := clave["nationality"]
-	date := clave["date"]
+	nationality := clave["nacionalidad"]
+	date := clave["fecha"]
 	_, err = stmt.Exec(&id, &firstName, &lastName, &nationality, &date)
 	if err != nil {
 		panic(err.Error())
