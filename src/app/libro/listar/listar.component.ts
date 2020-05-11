@@ -93,7 +93,7 @@ export class ListarComponent implements OnInit {
    * @memberof ListarComponent
    */
   admin = false;
-
+  idautornuevo = '';
   /**
    * Mensaje en ventana modal
    */
@@ -112,7 +112,13 @@ export class ListarComponent implements OnInit {
   matriz;
   sublibros2: Book[];
   map: Map<any, any>;
+  textoSelect;
+  textoSelect1 = '';
 
+  oldAuthor1: {
+    // id: this.book.idAutor,
+    first_name: any; last_name: any;
+  };
   /**
    * Creando una instancia de ListarComponent.
    * @param {FormBuilder} formBuilder Necesario para formularios
@@ -149,9 +155,10 @@ export class ListarComponent implements OnInit {
     this.editBookForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       isbn: ['', Validators.required],
-      first_name: ['', [Validators.required]],
-      last_name: ['', Validators.required],
+      // first_name: ['', [Validators.required]],
+      // last_name: ['', Validators.required],
       imgBook: [''],
+      textoSelect: [''],
     });
     this.findForm = new FormGroup({
       filtro: new FormControl(),
@@ -174,6 +181,7 @@ export class ListarComponent implements OnInit {
 
   buscar() {
     console.log('busca', this.findForm.value);
+
     if (this.findForm.value.texto == '' || this.findForm.value.texto == null || this.findForm.value.texto == undefined) {
       this.getLibros();
     }
@@ -338,13 +346,13 @@ export class ListarComponent implements OnInit {
     console.log('libro: ', book);
     this.book = book;
     this.imgBook = Globals.imagenBookURL + this.book.portada;
-    this.oldAuthor = {
-      id: this.book.idAutor,
-      first_name: this.book.first_name,
-      last_name: this.book.last_name,
-      nacionalidad: 'la',
-      fechaNacimiento: '10/02/2001'
-    };
+    // this.oldAuthor = {
+    //   id: this.book.idAutor,
+    //   first_name: this.book.first_name,
+    //   last_name: this.book.last_name,
+    //  // nacionalidad: 'la',
+    // //  fechaNacimiento: '10/02/2001'
+    // };
     this.oldFile = this.book.portada;
     this.oldIsbn = this.book.isbn;
     this.oldNombre = this.book.nombre;
@@ -357,36 +365,50 @@ export class ListarComponent implements OnInit {
   editBook(book: Book, modalInformationDelete: any) {
     this.submittedEditBook = true;
     const okFields = this.checkFields();
+    // textoSelect;
+    console.log("textoSelect", this.textoSelect);
+    const idnuevo = this.textoSelect.substring(0, this.textoSelect.indexOf(' '));
+
+    console.log("oldAutor -------------------", this.book.idAutor);
+    console.log("idautornuevo", idnuevo);
+
+
     const datosAutor = {
       id: this.book.idAutor,
-      first_name: this.ebfc.first_name.value,
-      last_name: this.ebfc.last_name.value,
+      // first_name: this.ebfc.first_name.value, //BUG
+      // last_name: this.ebfc.last_name.value,
     };
+
     if (okFields) {
-      if (JSON.stringify(this.oldAuthor) === JSON.stringify(datosAutor)) {
-        this.updateBookDB();
+      //    if (JSON.stringify(this.oldAuthor) === JSON.stringify(datosAutor)) {
+      if (this.book.idAutor === idnuevo) {
+        console.log("igual*******************");
+        this.updateBookDB(this.book.idAutor);
       } else {
-        this.authorService
-          .modificarAuthor(datosAutor)
-          .toPromise()
-          .then((result) => {
-            //      console.log('autor modificado');
-            this.information = 'Se ha modificado el autor';
-            this.openInformationWindows();
-            // //////Cuando ha Modificado el autor entonces Modifica el libro //////////
-            this.updateBookDB();
-          })
-          .catch((err) => {
-            //     console.log('Error en autor modificado');
-            //     console.log('respuesta updateBook error');
-            console.log('Error en editBook: ' + err);
-            this.information = 'No se ha modificado el autor';
-            this.openInformationWindows();
-          });
+        this.book.id_author = idnuevo;
+             console.log("distinto*********");
+        //     this.authorService
+        //       .modificarAuthor(datosAutor)
+        //       .toPromise()
+        //       .then((result) => {
+        //         //      console.log('autor modificado');
+        //         this.information = 'Se ha modificado el autor';
+        //         this.openInformationWindows();
+        //         // //////Cuando ha Modificado el autor entonces Modifica el libro //////////
+        this.updateBookDB(idnuevo);
+        //       })
+        //       .catch((err) => {
+        //         //     console.log('Error en autor modificado');
+        //         //     console.log('respuesta updateBook error');
+        //         console.log('Error en editBook: ' + err);
+        //         this.information = 'No se ha modificado el autor';
+        //         this.openInformationWindows();
+        //       });
+        //   }
+        // } else {
+        //   this.information = 'Error indocumentado en algun campo';
+        //   this.openInformationWindows();
       }
-    } else {
-      this.information = 'Error indocumentado en algun campo';
-      this.openInformationWindows();
     }
   }
 
@@ -395,12 +417,12 @@ export class ListarComponent implements OnInit {
    *
    * @memberof ListarComponent
    */
-  updateBookDB() {
+  updateBookDB(valorId) {
     const datosLibro = {
       id: this.book.id,
       nombre: this.ebfc.nombre.value,
       isbn: this.ebfc.isbn.value,
-      idAutor: this.book.idAutor,
+      idAutor: valorId,
     };
     this.bookService
       .updateBook(datosLibro)
@@ -415,6 +437,9 @@ export class ListarComponent implements OnInit {
         this.uploadFile();
         this.information = 'Se han guardado las modificaciones';
         this.openInformationWindows();
+     //   location.reload();
+      // this.router.navigate(['listar']);
+
       })
       .catch((err) => {
         //    console.log('respuesta updateBook error');
@@ -492,7 +517,11 @@ export class ListarComponent implements OnInit {
   openInformationWindows() {
     this.modalService.open(this.modalInformation);
   }
+  modalClose() {
+    this.modalService.dismissAll(); //close(this.modalInformation);
 
+    location.reload();
+}
   onFileChange(event) {
     this.filechange = true;
 
@@ -645,5 +674,8 @@ export class ListarComponent implements OnInit {
     });
     console.log('El MAP');
     console.log(this.map);
-}
+  }
+  sacarid() {
+    console.log("*************************tengo la id nueva")
+  }
 }
