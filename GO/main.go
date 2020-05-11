@@ -289,7 +289,7 @@ func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
 		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.Genero, &libro.Descripcion, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName) //BUG
 
 		if err != nil {
-			fmt.Println("error4 ::", err)
+			fmt.Println("error4 ", err)
 		}
 		libros = append(libros, libro)
 	}
