@@ -61,10 +61,10 @@
     margin-left: 5px;
 }
 
-
-/* .selecionable:hover {
+.selecionable:hover {
     cursor: pointer;
-} */
+    opacity: 0.5;
+}
 
 #inputfile {
     width: 0.1px;
@@ -100,8 +100,4 @@
 
 .grid-containerEJEMPLO {
     grid-template-areas: 'header header header header header header' 'menu main main main right right' 'menu footer footer footer footer footer';
-}
-
-.container {
-    margin-top: 90px;
 }

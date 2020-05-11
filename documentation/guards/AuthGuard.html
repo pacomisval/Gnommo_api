@@ -274,14 +274,14 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable&lt;boolean | UrlTree&gt; | Promise&lt;boolean | UrlTree&gt; | boolean | UrlTree {
-    if (this.cookieService.get(&#x27;cuki&#x27;)) {
-      this.cuki &#x3D; JSON.parse(this.cookieService.get(&#x27;cuki&#x27;));
-      if (this.cuki.rol &#x3D;&#x3D; &#x27;admin&#x27;) {
-        console.log(&#x27;existe this.cuki.rol &#x3D;&#x3D; admin&#x27;);
+    if (this.cookieService.get(&#x27;tokensiR&#x27;)) {
+      this.cuki &#x3D; atob(this.cookieService.get(&#x27;tokensiR&#x27;));
+      if (this.cuki &#x3D;&#x3D; &#x27;admin&#x27;) {
+        console.log(&#x27;existe tokensiR &#x3D;&#x3D; admin&#x27;);
         return true;
       }
     }
-    console.log(&#x27;no existe this.cuki.rol &#x3D;&#x3D; admin&#x27;);
+    console.log(&#x27;no existe tokensiR &#x3D;&#x3D; admin&#x27;);
     this.router.navigate([&#x27;login&#x27;]);
     return false;
 

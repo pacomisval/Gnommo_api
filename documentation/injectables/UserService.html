@@ -93,6 +93,9 @@
                                 <a href="#createUser">createUser</a>
                             </li>
                             <li>
+                                <a href="#devolverEmail">devolverEmail</a>
+                            </li>
+                            <li>
                                 <a href="#userAdmin">userAdmin</a>
                             </li>
                         </ul>
@@ -231,6 +234,72 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="devolverEmail"></a>
+                    <span class="name">
+                        <b>
+                            devolverEmail
+                        </b>
+                        <a href="#devolverEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>devolverEmail(data)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="28"
+                            class="link-to-prism">src/app/services/user.service.ts:28</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="userAdmin"></a>
                     <span class="name">
                         <b>
@@ -316,7 +385,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  createUser(data) {
+  createUser(data) { 
     return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/usuarios&#x27;, data);
   }
 
@@ -324,6 +393,10 @@ export class UserService {
     console.log(&#x27;userAdmin&#x27;);
     console.log(this.currentUserType);
     return this.currentUserType &#x3D;&#x3D; &#x27;admin&#x27; ? true : false;
+  }
+
+  devolverEmail(data) {
+    return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/email/&#x27;+data);
   }
 }
 </code></pre>

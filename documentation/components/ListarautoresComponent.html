@@ -108,7 +108,7 @@
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>./listarautores.component.css</code></td>
+                <td class="col-md-9"><code>./listarautores.component.scss</code></td>
             </tr>
 
 
@@ -151,7 +151,13 @@
                                 <a href="#authors">authors</a>
                             </li>
                             <li>
+                                <a href="#id">id</a>
+                            </li>
+                            <li>
                                 <a href="#message">message</a>
+                            </li>
+                            <li>
+                                <a href="#modalDeleteAutor">modalDeleteAutor</a>
                             </li>
                             <li>
                                 <a href="#modalInformation">modalInformation</a>
@@ -169,16 +175,28 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#closeDeleteAutor">closeDeleteAutor</a>
+                            </li>
+                            <li>
                                 <a href="#deleteAuthor">deleteAuthor</a>
                             </li>
                             <li>
                                 <a href="#getAll">getAll</a>
                             </li>
                             <li>
+                                <a href="#getId">getId</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnInit">ngOnInit</a>
                             </li>
                             <li>
+                                <a href="#openDeleteAutor">openDeleteAutor</a>
+                            </li>
+                            <li>
                                 <a href="#openInformationWindows">openInformationWindows</a>
+                            </li>
+                            <li>
+                                <a href="#setId">setId</a>
                             </li>
                         </ul>
                     </td>
@@ -203,7 +221,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:55</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:60</a></div>
                             </td>
                         </tr>
 
@@ -341,6 +359,45 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="closeDeleteAutor"></a>
+                    <span class="name">
+                        <b>
+                            closeDeleteAutor
+                        </b>
+                        <a href="#closeDeleteAutor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeDeleteAutor()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="189"
+                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:189</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="deleteAuthor"></a>
                     <span class="name">
                         <b>
@@ -352,63 +409,29 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>deleteAuthor(author: <a href="../interfaces/Author.html">Author</a>)</code>
+<code>deleteAuthor()</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="132"
-                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:132</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:138</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Borra un Autor</p>
+                    <div class="io-description"><p>Borra un Autor
+Si el autor tiene libros en la DB, no será null, por consiguiente no se podrá eliminar el auto.
+Si el autor no tiene libros en la DB, será null. Entonces si se puede eliminar.</p>
 </div>
 
                     <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>author</td>
-                                    <td>
-                                                <code><a href="../interfaces/Author.html" target="_self" >Author</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>objeto a borrar</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -436,8 +459,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="94"
-                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:94</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="99"
+                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:99</a></div>
                 </td>
             </tr>
 
@@ -455,6 +478,45 @@
                     </div>
                     <div class="io-description">
                         
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getId"></a>
+                    <span class="name">
+                        <b>
+                            getId
+                        </b>
+                        <a href="#getId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getId()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="177"
+                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:177</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
                     </div>
                 </td>
             </tr>
@@ -482,21 +544,87 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="83"
-                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:83</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:88</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Obtiene la lista de authors</p>
+                    <div class="io-description"><p>Obtiene la lista de autores</p>
 <p>Obtiene el rol usuario</p>
 </div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openDeleteAutor"></a>
+                    <span class="name">
+                        <b>
+                            openDeleteAutor
+                        </b>
+                        <a href="#openDeleteAutor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openDeleteAutor(modalDeleteAutor)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="181"
+                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:181</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>modalDeleteAutor</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -524,8 +652,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="161"
-                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:161</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:169</a></div>
                 </td>
             </tr>
 
@@ -538,6 +666,72 @@
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setId"></a>
+                    <span class="name">
+                        <b>
+                            setId
+                        </b>
+                        <a href="#setId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setId(id)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:173</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -563,12 +757,18 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
                             <i>Default value : </i><code>false</code>
                         </td>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:35</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:40</a></div>
                             </td>
                         </tr>
 
@@ -603,7 +803,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:49</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:54</a></div>
                             </td>
                         </tr>
 
@@ -636,7 +836,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:42</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:47</a></div>
                             </td>
                         </tr>
 
@@ -646,6 +846,33 @@
 </div>
                     </td>
                 </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="id"></a>
+                        <span class="name">
+                            <b>
+                            id</b>
+                            <a href="#id"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
 
             </tbody>
         </table>
@@ -674,7 +901,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:60</a></div>
                             </td>
                         </tr>
 
@@ -684,6 +911,33 @@
 </div>
                     </td>
                 </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="modalDeleteAutor"></a>
+                        <span class="name">
+                            <b>
+                            modalDeleteAutor</b>
+                            <a href="#modalDeleteAutor"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>NgbModalRef</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/autor/listarautores/listarautores.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
 
             </tbody>
         </table>
@@ -740,7 +994,7 @@ import { Router, ActivatedRoute } from &#x27;@angular/router&#x27;;
 import { AuthorService } from &#x27;src/app/services/author.service&#x27;;
 import { BookService } from &#x27;src/app/services/book.service&#x27;;
 import { UserService } from &#x27;src/app/services/user.service&#x27;;
-import { NgbModal } from &#x27;@ng-bootstrap/ng-bootstrap&#x27;;
+import { NgbModal, NgbModalRef } from &#x27;@ng-bootstrap/ng-bootstrap&#x27;;
 import { Author } from &#x27;src/app/models/author&#x27;;
 /**
  * Componente Lista de autores READ &amp; DELETE
@@ -752,7 +1006,7 @@ import { Author } from &#x27;src/app/models/author&#x27;;
 @Component({
   selector: &#x27;app-listarautores&#x27;,
   templateUrl: &#x27;./listarautores.component.html&#x27;,
-  styleUrls: [&#x27;./listarautores.component.css&#x27;],
+  styleUrls: [&#x27;./listarautores.component.scss&#x27;],
 })
 export class ListarautoresComponent implements OnInit {
   /**
@@ -760,6 +1014,11 @@ export class ListarautoresComponent implements OnInit {
    */
   @ViewChild(&#x27;modalInformation&#x27;, { static: false })
   modalInformation: TemplateRef&lt;any&gt;;
+
+  modalDeleteAutor: NgbModalRef;
+
+  id: number;
+
   /**
    * Boolean para describir rol del usuario
    *
@@ -769,7 +1028,7 @@ export class ListarautoresComponent implements OnInit {
    *
    * @memberof ListarComponent
    */
-  admin &#x3D; false;
+  admin: boolean &#x3D; false;
   /**
    * Lista de autores
    *
@@ -811,7 +1070,7 @@ export class ListarautoresComponent implements OnInit {
   ) { }
 
   /**
-   * Obtiene la lista de authors
+   * Obtiene la lista de autores
    *
    * Obtiene el rol usuario
    *
@@ -831,16 +1090,16 @@ export class ListarautoresComponent implements OnInit {
   getAll() {
     this.authorService.getAll().subscribe(
       (result) &#x3D;&gt; {
+        this.authors &#x3D; result;
         // console.log(&#x27;respuesta authors&#x27;);
         // console.log(result);
         // console.log(&#x27;authors&#x27;);
-        this.authors &#x3D; result;
       },
       (error) &#x3D;&gt; {
-        // console.log(&#x27;respuesta error authors&#x27;);
-        // console.log(error);
         this.message &#x3D; &#x27;No se ha cargado la lista de authors&#x27;;
         this.openInformationWindows();
+        // console.log(&#x27;respuesta error authors&#x27;);
+        // console.log(error);
       }
     );
   }
@@ -862,22 +1121,25 @@ export class ListarautoresComponent implements OnInit {
 
   /**
    * Borra un Autor
-   *
+   * Si el autor tiene libros en la DB, no será null, por consiguiente no se podrá eliminar el auto.
+   * Si el autor no tiene libros en la DB, será null. Entonces si se puede eliminar.
    * @param {*} author objeto a borrar
    * @memberof ListarautoresComponent
    */
-  deleteAuthor(author: Author ) {
-     // console.log(author.id);
-    this.bookService.getBookFromAutor(author.id).subscribe(
+  deleteAuthor(/* author: Author */) {
+    var idd &#x3D; this.getId()
+    console.log(&quot;Dentro de delete author&quot;);
+    this.bookService.getBookFromAutor(/* author.id */idd).subscribe(
       (result) &#x3D;&gt; {
-       // console.log(result);
+        console.log(result);
         if (result !&#x3D; null) {
           this.message &#x3D; &#x27;No se puede eliminar un autor que tiene libros en la biblioteca&#x27;;
           this.openInformationWindows();
         } else {
-          console.log(&#x27;estoy en el else&#x27;);
-          this.authorService.deleteAutor(author.id).subscribe((result) &#x3D;&gt; {
-            this.message &#x3D; &#x27;El autor se ha eliminado correctamente&#x27;;
+          this.authorService.deleteAutor(/* author.id */idd).subscribe((result) &#x3D;&gt; {
+            console.log(result);
+            this.closeDeleteAutor();
+            this.message &#x3D; &#x27;El autor se ha eliminado correctamente !!&#x27;;
             this.openInformationWindows();
             this.getAll();
           });
@@ -898,6 +1160,28 @@ export class ListarautoresComponent implements OnInit {
   openInformationWindows() {
     this.modalService.open(this.modalInformation);
   }
+
+  setId(id) {
+    this.id &#x3D; parseInt(id);
+  }
+
+  getId() {
+    return this.id;
+  }
+
+  openDeleteAutor(modalDeleteAutor) {
+
+    this.modalDeleteAutor &#x3D; this.modalService.open(modalDeleteAutor, {
+      ariaLabelledBy: &#x27;modal-basic-title&#x27;,
+    });
+
+  }
+
+  closeDeleteAutor() {
+    console.log(&quot;Dentro de close Delete autor&quot;);
+    this.modalService.dismissAll();
+  }
+
 }
 </code></pre>
     </div>
@@ -915,23 +1199,31 @@ export class ListarautoresComponent implements OnInit {
                 &lt;tr&gt;
                     &lt;th&gt;NOMBRE&lt;/th&gt;
                     &lt;th&gt;APELLIDO&lt;/th&gt;
+                    &lt;th&gt;NACIONALIDAD&lt;/th&gt;
+                    &lt;th&gt;F.NACIMIENTO&lt;/th&gt;
+
                 &lt;/tr&gt;
             &lt;/thead&gt;
             &lt;tbody class&#x3D;&quot;tbody&quot;&gt;
                 &lt;tr class&#x3D;&quot;tr&quot; *ngFor&#x3D;&quot;let autor of authors&quot; id&#x3D;&quot;tr&quot;&gt;
+
                     &lt;td *ngIf&#x3D;&quot;autor.id!&#x3D;1 &quot;&gt;{{autor.first_name}}&lt;/td&gt;
                     &lt;td *ngIf&#x3D;&quot;autor.id!&#x3D;1 &quot;&gt;{{autor.last_name}}&lt;/td&gt;
+                    &lt;td *ngIf&#x3D;&quot;autor.id!&#x3D;1 &quot;&gt;{{autor.nacionalidad}}&lt;/td&gt;
+                    &lt;td *ngIf&#x3D;&quot;autor.id!&#x3D;1 &quot;&gt;{{autor.fechaNacimiento}}&lt;/td&gt;
+
                     &lt;ng-container *ngIf&#x3D;&quot;admin&quot;&gt;
                         &lt;td *ngIf&#x3D;&quot;autor.id!&#x3D;1 &amp;&amp; autor.id!&#x3D;2 &quot;&gt;
-                            &lt;button (click)&#x3D;&quot;deleteAuthor(autor)&quot; class&#x3D;&quot;btn btn-danger&quot;&gt;Delete&lt;/button&gt;
+                            &lt;button (click)&#x3D;&quot;openDeleteAutor(modalDeleteAutor); setId(autor.id)&quot; class&#x3D;&quot;btn btn-danger&quot;&gt;Delete&lt;/button&gt;
                         &lt;/td&gt;
                     &lt;/ng-container&gt;
                 &lt;/tr&gt;
             &lt;/tbody&gt;
         &lt;/table&gt;
+
     &lt;/div&gt;
 &lt;/div&gt;
-&lt;!-- VENTANA MODAL INFORMATIVA --&gt;
+&lt;!--////////////////  VENTANA MODAL INFORMATIVA  ////////////////////////--&gt;
 &lt;ng-template #modalInformation let-modal&gt;
     &lt;div class&#x3D;&quot;modal-header&quot;&gt;
         &lt;h4 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;modal-basic-title&quot;&gt;Gnomo Librery&lt;/h4&gt;
@@ -943,20 +1235,44 @@ export class ListarautoresComponent implements OnInit {
         &lt;p&gt;{{message}}&lt;/p&gt;
     &lt;/div&gt;
     &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
-        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-dark&quot; (click)&#x3D;&quot;modal.close()&quot;&gt;
-       Cerrar
-    &lt;/button&gt;
+
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-dark&quot; (click)&#x3D;&quot;modal.close()&quot;&gt;Cerrar&lt;/button&gt;
     &lt;/div&gt;
-&lt;/ng-template&gt;</code></pre>
+&lt;/ng-template&gt;
+
+&lt;!--///////////////  VENTANA MODAL ELIMINAR AUTOR  ///////////////////--&gt;
+&lt;ng-template #modalDeleteAutor let-modal&gt;
+    &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+        &lt;h4 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;modal-basic-title&quot;&gt;Gnomo Librery&lt;/h4&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; aria-label&#x3D;&quot;Close&quot; (click)&#x3D;&quot;modal.dismiss(&#x27;Cross click&#x27;)&quot;&gt;
+&lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;/span&gt;
+&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+        &lt;h3&gt;&lt;b&gt;Estas seguro !!&lt;/b&gt;&lt;/h3&gt;
+        &lt;h5&gt;Se eliminará el autor definitivamente&lt;/h5&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-success&quot; (click)&#x3D;&quot;deleteAuthor()&quot;&gt;Eliminar&lt;/button&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-dark&quot; (click)&#x3D;&quot;modal.close()&quot;&gt;Cerrar&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/ng-template&gt;
+</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-styleData">
                 <p class="comment">
-                    <code>./listarautores.component.css</code>
+                    <code>./listarautores.component.scss</code>
                 </p>
                 <pre class="line-numbers"><code class="language-scss">.selecionable:hover {
     cursor: pointer;
-}</code></pre>
+    opacity: 0.7;
+}
+
+.container {
+    margin-top: 90px;
+}
+</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-tree">
@@ -984,7 +1300,7 @@ export class ListarautoresComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="container">    <div class="card">        <div class="card-header">            <h3>AUTORES</h3>        </div>    </div>    <div class="card-body">        <table class="table table-hover">            <thead>                <tr>                    <th>NOMBRE</th>                    <th>APELLIDO</th>                </tr>            </thead>            <tbody class="tbody">                <tr class="tr" *ngFor="let autor of authors" id="tr">                    <td *ngIf="autor.id!=1 ">{{autor.first_name}}</td>                    <td *ngIf="autor.id!=1 ">{{autor.last_name}}</td>                    <ng-container *ngIf="admin">                        <td *ngIf="autor.id!=1 && autor.id!=2 ">                            <button (click)="deleteAuthor(autor)" class="btn btn-danger">Delete</button>                        </td>                    </ng-container>                </tr>            </tbody>        </table>    </div></div><!-- VENTANA MODAL INFORMATIVA --><ng-template #modalInformation let-modal>    <div class="modal-header">        <h4 class="modal-title" id="modal-basic-title">Gnomo Librery</h4>        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(\'Cross click\')"><span aria-hidden="true">&times;</span></button>    </div>    <div class="modal-body">        <p>{{message}}</p>    </div>    <div class="modal-footer">        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">       Cerrar    </button>    </div></ng-template></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="container">    <div class="card">        <div class="card-header">            <h3>AUTORES</h3>        </div>    </div>    <div class="card-body">        <table class="table table-hover">            <thead>                <tr>                    <th>NOMBRE</th>                    <th>APELLIDO</th>                    <th>NACIONALIDAD</th>                    <th>F.NACIMIENTO</th>                </tr>            </thead>            <tbody class="tbody">                <tr class="tr" *ngFor="let autor of authors" id="tr">                    <td *ngIf="autor.id!=1 ">{{autor.first_name}}</td>                    <td *ngIf="autor.id!=1 ">{{autor.last_name}}</td>                    <td *ngIf="autor.id!=1 ">{{autor.nacionalidad}}</td>                    <td *ngIf="autor.id!=1 ">{{autor.fechaNacimiento}}</td>                    <ng-container *ngIf="admin">                        <td *ngIf="autor.id!=1 && autor.id!=2 ">                            <button (click)="openDeleteAutor(modalDeleteAutor); setId(autor.id)" class="btn btn-danger">Delete</button>                        </td>                    </ng-container>                </tr>            </tbody>        </table>    </div></div><!--////////////////  VENTANA MODAL INFORMATIVA  ////////////////////////--><ng-template #modalInformation let-modal>    <div class="modal-header">        <h4 class="modal-title" id="modal-basic-title">Gnomo Librery</h4>        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(\'Cross click\')"><span aria-hidden="true">&times;</span></button>    </div>    <div class="modal-body">        <p>{{message}}</p>    </div>    <div class="modal-footer">        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>    </div></ng-template><!--///////////////  VENTANA MODAL ELIMINAR AUTOR  ///////////////////--><ng-template #modalDeleteAutor let-modal>    <div class="modal-header">        <h4 class="modal-title" id="modal-basic-title">Gnomo Librery</h4>        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(\'Cross click\')"><span aria-hidden="true">&times;</span></button>    </div>    <div class="modal-body">        <h3><b>Estas seguro !!</b></h3>        <h5>Se eliminará el autor definitivamente</h5>    </div>    <div class="modal-footer">        <button type="button" class="btn btn-outline-success" (click)="deleteAuthor()">Eliminar</button>        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>    </div></ng-template></div>'
     var COMPONENTS = [{'name': 'AddautorComponent', 'selector': 'app-addautor'},{'name': 'AddlibroComponent', 'selector': 'app-addlibro'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'ListarautoresComponent', 'selector': 'app-listarautores'},{'name': 'ListarComponent', 'selector': 'app-listar'},{'name': 'LoginComponent', 'selector': 'app-login'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'ListarautoresComponent'};

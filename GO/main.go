@@ -55,6 +55,8 @@ type Libro2 struct {
 	Portada     string `json:"portada"`
 	Genero      string `json:"genero"`
 	Descripcion string `json:"descripcion"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
 }
 
 type Autor struct { //TODO MODIFICADO
@@ -272,7 +274,9 @@ func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", &autor.Id) //BUG
+	// result, err := db.Query("SELECT * FROM books WHERE idAutor = ? ", &autor.Id) //BUG
+	result, err := db.Query("SELECT b.id,b.nombre,b.isbn,b.genero,b.descripcion,b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id AND b.idAutor = ? ", &autor.Id) //BUG
+
 	if err != nil {
 		fmt.Println("error3 ", err)
 	}
@@ -281,9 +285,11 @@ func obtenerLibrosPorAutor(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var libro Libro2
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada) //BUG
+		// err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.IdAutor, &libro.Portada) //BUG
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.Genero, &libro.Descripcion, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName) //BUG
+
 		if err != nil {
-			fmt.Println("error4 ", err)
+			fmt.Println("error4 ::", err)
 		}
 		libros = append(libros, libro)
 	}
@@ -311,7 +317,10 @@ func obtenerLibro(w http.ResponseWriter, r *http.Request) {
 
 	var libros []Libro2
 
-	result, err := db.Query("SELECT * FROM books WHERE nombre LIKE ?", &nombre) //BUG
+	// result, err := db.Query("SELECT * FROM books WHERE nombre LIKE ?", &nombre)  , a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id                                               //BUG
+	//	result, err := db.Query("SELECT b.id,b.nombre,b.isbn,b.genero,b.descripcion,b.idAutor,b.portada, a.first_name, a.last_name FROM books b WHERE nombre LIKE ? INNER JOIN autor a ON b.idAutor = a.id ", &nombre) //BUG
+	result, err := db.Query("SELECT b.id,b.nombre,b.isbn,b.genero,b.descripcion,b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id AND b.nombre LIKE ? ", &nombre) //BUG
+
 	if err != nil {
 		fmt.Println("error3 ", err)
 	}
@@ -320,9 +329,9 @@ func obtenerLibro(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var libro Libro2
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.Genero, &libro.Descripcion, &libro.IdAutor, &libro.Portada) //BUG
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.Genero, &libro.Descripcion, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName) //BUG
 		if err != nil {
-			fmt.Println("error4 ", err)
+			fmt.Println("error4 AQUI ", err)
 		}
 		libros = append(libros, libro)
 	}

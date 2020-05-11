@@ -99,7 +99,7 @@ export class ListarComponent implements OnInit {
    */
   information = '';
   imgBook;
-  generos: string[]=[];
+  generos: string[] = [];
   oldIsbn: string;
   filechange = false;
   // Cambiarfile = false;
@@ -174,44 +174,93 @@ export class ListarComponent implements OnInit {
 
   buscar() {
     console.log('busca', this.findForm.value);
-
-    if(this.findForm.value.texto=="" || this.findForm.value.texto==null || this.findForm.value.texto==undefined){
+    if (this.findForm.value.texto == '' || this.findForm.value.texto == null || this.findForm.value.texto == undefined) {
       this.getLibros();
     }
     if (this.findForm.value.texto != null) {
     const opcion = this.findForm.value.filtro;
     console.log(opcion);
     if (opcion == 'autor') {
-          const texto = this.findForm.value.texto.replace(/\s+/g, ' ').split(' ', (this.findForm.value.texto.length));
-       // const texto = this.findForm.value.texto;
-          if (texto.length > 2) {
-          this.information = 'Asegurese de estar escribiendo el nombre y el apellido';
-          this.openInformationWindows();
-        } else {
-          const data = { nombre: texto[0], apellido: texto[1] };
-          console.log(data.nombre);
-          this.bookService.obtenerLibrosPorAutor(data).subscribe(
-            (result) => {
-              this.books = result;
-              console.log("obtener libros por autor",result);
-            },
+      const texto = this.findForm.value.texto.replace(/\s+/g, ' ');
+      const indice = this.findForm.value.texto.replace(/\s+/g, ' ').indexOf(' ');
+      const texto1 = texto.substring(0, indice);
+      const texto2 = texto.substring(indice + 1);
+      console.log('texto1', texto1);
+      console.log('texto2', texto2);
+      const data = { nombre: texto1, apellido: texto2 };
+      console.log('data.nombre:', data);
+      this.bookService.obtenerLibrosPorAutor(data).subscribe(
+        (result) => {
+          this.books = result;
+          console.log('obtener libros por autor', result);
+          this.map = new Map();
+          this.sublibros2 = [];
+          this.generos = [];
+          if (result !== null) {
+          result.forEach(element => {
+            console.log(element.genero);
+            if (!this.generos.includes(element.genero)) {
+              this.generos.push(element.genero);
+            }
+          });
+          this.generos.forEach(genero => {
+            this.books.forEach(libro => {
+              if (genero == libro.genero) {
+                this.sublibros2.push(libro);
+              }
+            });
+            this.map.set(genero, this.sublibros2);
+            this.sublibros2 = null;
+            this.sublibros2 = [];
+          });
+          console.log('El MAP');
+          console.log(this.map);
+          } else {
+            this.information = 'No hay ningun libro por esa busqueda';
+            this.openInformationWindows();
+        }   },
             (error) => {
               this.information = 'No se ha cargado la lista de libros';
               this.openInformationWindows();
               console.log(error);
             }
           );
-        }
       } else if (opcion == 'libro') {
         console.log('opcion LIBRO');
         const texto = this.findForm.value.texto.replace(/\s+/g, ' ');
         const data = { nombre: texto };
         console.log(texto);
         this.bookService.obtenerLibro(data).subscribe(
-          (result) => {
-            this.books = result;
-            console.log(result);
-          },
+        (result) => {
+          this.map = new Map();
+          this.sublibros2 = [];
+          this.generos = [];
+          this.books = result;
+          console.log('datos llegada:', result);
+          if (result !== null) {
+          result.forEach(element => {
+            console.log(element.genero);
+            if (!this.generos.includes(element.genero)) {
+              this.generos.push(element.genero);
+            }
+          });
+          this.generos.forEach(genero => {
+            this.books.forEach(libro => {
+              if (genero == libro.genero) {
+                this.sublibros2.push(libro);
+              }
+            });
+            this.map.set(genero, this.sublibros2);
+            this.sublibros2 = null;
+            this.sublibros2 = [];
+          });
+          console.log('El MAP');
+          console.log(this.map);
+
+          } else {
+            this.information = 'No hay ningun libro por esa busqueda';
+            this.openInformationWindows();
+        }},
           (error) => {
             this.information = 'No se ha cargado la lista de libros';
             this.openInformationWindows();
@@ -220,6 +269,7 @@ export class ListarComponent implements OnInit {
         );
       }
     }
+
   }
 
   /**
@@ -249,7 +299,7 @@ export class ListarComponent implements OnInit {
         this.generos.push(element.genero);
      }
         });
-        console.log("Array de generos",this.generos);
+        console.log('Array de generos', this.generos);
         this.matrizLibros();
       },
       (error) => {
@@ -292,8 +342,8 @@ export class ListarComponent implements OnInit {
       id: this.book.idAutor,
       first_name: this.book.first_name,
       last_name: this.book.last_name,
-      nacionalidad: "la",
-      fechaNacimiento:"10/02/2001"
+      nacionalidad: 'la',
+      fechaNacimiento: '10/02/2001'
     };
     this.oldFile = this.book.portada;
     this.oldIsbn = this.book.isbn;
@@ -569,9 +619,31 @@ export class ListarComponent implements OnInit {
       this.map.set(genero, this.sublibros2);
       this.sublibros2 = null;
       this.sublibros2 = [];
-        })
-    console.log("El MAP");
+        });
+    console.log('El MAP');
     console.log(this.map);
   }
-
+  matrizLibros1() {
+    this.map = new Map();
+    this.sublibros2 = [];
+    this.generos = [];
+    this.book.forEach(element => {
+      console.log(element.genero);
+      if (!this.generos.includes(element.genero)) {
+        this.generos.push(element.genero);
+      }
+    });
+    this.generos.forEach(genero => {
+      this.books.forEach(libro => {
+        if (genero == libro.genero) {
+          this.sublibros2.push(libro);
+        }
+      });
+      this.map.set(genero, this.sublibros2);
+      this.sublibros2 = null;
+      this.sublibros2 = [];
+    });
+    console.log('El MAP');
+    console.log(this.map);
+}
 }

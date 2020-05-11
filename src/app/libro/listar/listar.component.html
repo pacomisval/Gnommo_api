@@ -28,7 +28,7 @@
         <h1 class="titulo">{{genero.key}}</h1>
         <div class="contain l-columns--4columns ml2">
             <div *ngFor="let book of genero.value" class="card">
-                <div (click)="getBook(modalGetBook, book)">
+                <div class="selecionable" (click)="getBook(modalGetBook, book)">
                     <br>
                     <h5>{{ book.nombre }}</h5>
                     <br>
