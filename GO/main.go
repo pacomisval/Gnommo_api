@@ -447,9 +447,9 @@ func sendMailRecoveryPassword(body string) { // pasar variables con el from, pas
 	// Haz click en el link:  Acceso de aplicaciones poco seguras
 	// La opción debe estar así: Permitir el acceso de aplicaciones poco seguras: SÍ
 
-	from := "Aqui tu email"                      // tu email
-	pass := "Aqui tu contraseña de gmail"        // tu contraseña de gmail o google
-	to := "Aqui el email a quien quieres enviar" // email del usuario que renueva la contraseña
+	from := "rafainsti99@gmail.com"                      // tu email
+	pass := "rafa04031999"        // tu contraseña de gmail o google
+	to := "rafainsti99@gmail.com" // email del usuario que renueva la contraseña
 
 	msg := "From: " + from + "\n" +
 		"To: " + to + "\n" +
@@ -1357,7 +1357,7 @@ func putLibro(w http.ResponseWriter, r *http.Request) {
 	///////////////////////////////////////////////
 	params := mux.Vars(r)
 
-	stmt, err := db.Prepare("UPDATE books SET id = ?, nombre = ?, isbn = ?, idAutor = ? WHERE id = ?")
+	stmt, err := db.Prepare("UPDATE books SET id = ?, nombre = ?, isbn = ?, genero = ?, descripcion = ?, idAutor = ? WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1373,9 +1373,11 @@ func putLibro(w http.ResponseWriter, r *http.Request) {
 	newId := claveValor["id"]
 	newNombre := claveValor["nombre"]
 	newIsbn := claveValor["isbn"]
+    newGenero := claveValor["genero"]
+    newDescripcion := claveValor["descripcion"]
 	newIdAutor := claveValor["idAutor"]
 
-	_, err = stmt.Exec(&newId, &newNombre, &newIsbn, &newIdAutor, params["id"])
+	_, err = stmt.Exec(&newId, &newNombre, &newIsbn, &newGenero, &newDescripcion, &newIdAutor, params["id"])
 	if err != nil {
 		panic(err.Error())
 	}

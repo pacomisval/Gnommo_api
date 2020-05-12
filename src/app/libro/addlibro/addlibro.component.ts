@@ -11,6 +11,7 @@ import {
   checkLengthString,
   checkIsbnFormat,
   checkFile,
+  comprobarLetras,
 } from 'src/app/_helpers';
 /**
  * Componente para añadir libro
@@ -122,6 +123,8 @@ export class AddlibroComponent implements OnInit {
     const title = this.book.title;
     let mtitulo = true;
     let misbn = true;
+    
+    var res2=true;
 
     this.message = '';
     this.message = checkLengthString(title, 50);
@@ -137,15 +140,7 @@ export class AddlibroComponent implements OnInit {
       misbn = false;
     }
 
-    let res = true;
-    for (let i = 0; i < resultados.length; i++) {
-      if (resultados[i].isbn == this.book.isbn) {
-        this.message = 'El libro que intenta introducir ya existe \n';
-        res = false;
-      }
-    }
-
-    if (res && misbn && mtitulo) {
+    if (misbn && mtitulo) {
       localStorage.setItem('comprobar', 'bien');
     } else {
       this.openInformationWindows();
@@ -161,17 +156,15 @@ export class AddlibroComponent implements OnInit {
     this.message = '';
     let text = '';
 
-    text = checkLengthString(title, 50);
+    text = checkLengthString(title, 50,'titulo');
     if (text != '') {
-      text = text + ' titulo \n';
       checkOK = false;
       this.message += text;
       text = '';
     }
 
-    text = checkLengthString(isbn, 15);
+    text = checkLengthString(isbn, 15,'isbn');
     if (text != '') {
-      text = text + ' isbn \n';
       checkOK = false;
       this.message += text;
       text = '';
@@ -184,7 +177,6 @@ export class AddlibroComponent implements OnInit {
       text = '';
     }
     // comprobar si ya existe el isbn
-    console.log('devolucion isbn ', this.checkIsbnExits(isbn));
 
     if (this.checkIsbnExits(isbn)) {
       console.log('isbn repetido');
@@ -193,7 +185,19 @@ export class AddlibroComponent implements OnInit {
       console.log('isbn no no no no repetido');
     }
 
+    if(comprobarLetras(this.bookForm.value.genero)!=''){
+      this.message += comprobarLetras(this.bookForm.value.genero);
+      checkOK =false;
+    }
 
+    text = checkLengthString(this.bookForm.value.genero, 50,'isbn');
+    if(checkLengthString(this.bookForm.value.genero,50,'genero')!=''){
+      checkOK =false;
+      this.message += text;
+      text = '';
+    }
+
+    
     console.log('checkOK:', checkOK);
     if (checkOK) {
       localStorage.setItem('comprobar', 'bien');
@@ -207,24 +211,21 @@ export class AddlibroComponent implements OnInit {
     let finFor = false;
     let check = false;
     console.log('entra en isbn', isbn);
-    for (let index = 0; index < this.books.length; index++) {
-      const book = this.books[index];
-      console.log('--', book.isbn, ':::', isbn);
-      if (book.isbn == isbn) {
-        console.log('isbn Repetido: ' + this.books[index].isbn + '---::' + isbn);
-        const text = 'El libro que intenta introducir ya existe \n';
-        this.message += text;
+   
+    var i = 0;
+    while(!finFor && i<this.books.length){
+      console.log(i);
+      if(this.books[i].isbn==isbn){
+        console.log("aqui estoy rafa"+ this.books[i]);
         finFor = true;
-        check = true;
+        console.log("--------------------------",i);
+        this.message  += 'El libro que intenta introducir ya existe \n';
+        
       }
-      if (finFor) {
-    console.log('check1', check);
-    return check;
-      }
+        i++;
+      
     }
-    console.log('check2', check);
-
-    return check;
+    return finFor;
   }
 
 
@@ -232,7 +233,7 @@ addBook() {
     console.log('addbook_____');
     console.log(this.bookForm.value);
     this.checkForm();
-
+    
     if (localStorage.getItem('comprobar') == 'bien') {
       console.log('comprobar = bien');
 
@@ -332,7 +333,8 @@ saveBookDB() {
         this.uploadFile();  //////no es su sitio
         this.message = 'Libro añadido';
         this.openInformationWindows();
-        this.router.navigate(['listar']);
+        this.router.navigate(['libros']);
+        
       },
       (error) => {
         this.message = 'El libro no se ha añadido:';

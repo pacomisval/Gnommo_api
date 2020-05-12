@@ -22,7 +22,13 @@ import {
 } from '@angular/platform-browser'; // para imagen libro en local
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
-
+import { checkLengthString } from 'src/app/_helpers';
+import {
+  checkLengthString,
+  checkIsbnFormat,
+  checkFile,
+  comprobarLetras,
+} from 'src/app/_helpers';
 
 /** Componente actua sobre los libros haciendo
  * READ UPDATE y DELETE
@@ -155,6 +161,8 @@ export class ListarComponent implements OnInit {
     this.editBookForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       isbn: ['', Validators.required],
+      genero: ['', Validators.required],
+      descripcion: ['', Validators.required],
       // first_name: ['', [Validators.required]],
       // last_name: ['', Validators.required],
       imgBook: [''],
@@ -422,6 +430,8 @@ export class ListarComponent implements OnInit {
       id: this.book.id,
       nombre: this.ebfc.nombre.value,
       isbn: this.ebfc.isbn.value,
+      genero: this.ebfc.genero.value,
+      descripcion:this.ebfc.descripcion.value,
       idAutor: valorId,
     };
     this.bookService
@@ -577,6 +587,16 @@ export class ListarComponent implements OnInit {
       res = false;
     } else if (sololetras.test(this.book.last_name) == false) {
       this.information = '-En el campo apellido solo se permiten letras';
+      res = false;
+    }
+
+    if(comprobarLetras(this.book.genero)!=''){
+      this.information = comprobarLetras(this.book.genero);
+      res = false;
+    }
+    
+    if(checkLengthString(this.book.genero,50,'genero')!=''){
+      this.information = checkLengthString(this.book.genero,50,'genero');
       res = false;
     }
 

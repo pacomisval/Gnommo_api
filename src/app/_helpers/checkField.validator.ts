@@ -1,13 +1,26 @@
 import { FormGroup } from '@angular/forms';
 
 // custom validator to check that two fields match
-export function checkLengthString(texto: string,maximo:number) {
+export function checkLengthString(texto: string,maximo:number,campo :string) {
   let message = '';
   if (texto.length > maximo) {
-    message = 'Has superado el límite de carácteres máximos en el campo: ';
+    message = 'Has superado el límite de carácteres máximos en el campo: '+campo;
   }
   return message;
 }
+
+export function comprobarLetras(valor){
+
+  var letras : RegExp = /^[A-Za-z]+$/;
+  let message = "";
+
+  if(letras.test(valor)==false){
+    message = "-En el campo genero solo se permiten letras";
+    
+  }
+  return message;
+}
+
 export function checkFile(file: File) {
   if (file.type.match(/image\/*/) == null) {
     return true;
@@ -17,7 +30,7 @@ export function checkIsbnFormat(texto: string) {
   let message = '';
   const reg: RegExp = /^[0-9-]+$/;
   if (reg.test(texto) == false) {
-    message = 'Asegurese de estar introduciendo un ISBN correcto ';
+    message = 'Asegurese de estar introduciendo un formato correcto en el ISBN ';
   }
   return message;
 }
@@ -37,15 +50,6 @@ export function comprobacionFinal(resultados) {
   } else if (reg.test(this.book.isbn) == false) {
     this.message = 'Asegurese de estar introduciendo un ISBN correcto \n';
     misbn = false;
-  }
-
-  let res = true;
-  for (let i = 0; i < resultados.length; i++) {
-
-    if (resultados[i].isbn == this.book.isbn) {
-      this.message = 'El libro que intenta introducir ya existe \n';
-      res = false;
-    }
   }
 
   if (res && misbn && mtitulo) {
