@@ -96,7 +96,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/newlibrary")
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/newlibrary")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -447,9 +447,9 @@ func sendMailRecoveryPassword(body string) { // pasar variables con el from, pas
 	// Haz click en el link:  Acceso de aplicaciones poco seguras
 	// La opción debe estar así: Permitir el acceso de aplicaciones poco seguras: SÍ
 
-	from := "rafainsti99@gmail.com"                      // tu email
-	pass := "rafa04031999"        // tu contraseña de gmail o google
-	to := "rafainsti99@gmail.com" // email del usuario que renueva la contraseña
+	from := "rafainsti99@gmail.com" // tu email
+	pass := "hay que ponerla"       // tu contraseña de gmail o google
+	to := "rafainsti99@gmail.com"   // email del usuario que renueva la contraseña
 
 	msg := "From: " + from + "\n" +
 		"To: " + to + "\n" +
@@ -1281,13 +1281,13 @@ func postLibro(w http.ResponseWriter, r *http.Request) {
 	//id := keyVal["id"]
 	nombre := keyVal["titulo"]
 	isbn := keyVal["isbn"]
-    genero := keyVal["genero"] 
-    descripcion := keyVal["descripcion"] 
+	genero := keyVal["genero"]
+	descripcion := keyVal["descripcion"]
 	idAutor := keyVal["id_author"] //mirar si falla FK es idAutor
-    
+
 	//	extension := keyVal["extension"]
 	// _, err = stmt.Exec(&nombre, &isbn, &idAutor)
-	res, err := db.Exec("INSERT INTO books(nombre, isbn, genero,descripcion,idAutor) VALUES(?,?,?,?,?)", &nombre, &isbn,&genero,&descripcion, &idAutor)
+	res, err := db.Exec("INSERT INTO books(nombre, isbn, genero,descripcion,idAutor) VALUES(?,?,?,?,?)", &nombre, &isbn, &genero, &descripcion, &idAutor)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -1373,8 +1373,8 @@ func putLibro(w http.ResponseWriter, r *http.Request) {
 	newId := claveValor["id"]
 	newNombre := claveValor["nombre"]
 	newIsbn := claveValor["isbn"]
-    newGenero := claveValor["genero"]
-    newDescripcion := claveValor["descripcion"]
+	newGenero := claveValor["genero"]
+	newDescripcion := claveValor["descripcion"]
 	newIdAutor := claveValor["idAutor"]
 
 	_, err = stmt.Exec(&newId, &newNombre, &newIsbn, &newGenero, &newDescripcion, &newIdAutor, params["id"])
