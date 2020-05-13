@@ -22,7 +22,7 @@ import {
 } from '@angular/platform-browser'; // para imagen libro en local
 import { SecurityContext } from '@angular/compiler/src/core';
 import { UploadService } from 'src/app/services/upload.service';
-import { checkLengthString } from 'src/app/_helpers';
+//import { checkLengthString } from 'src/app/_helpers';
 import {
   checkLengthString,
   checkIsbnFormat,
@@ -594,7 +594,7 @@ export class ListarComponent implements OnInit {
       this.information = comprobarLetras(this.book.genero);
       res = false;
     }
-    
+
     if(checkLengthString(this.book.genero,50,'genero')!=''){
       this.information = checkLengthString(this.book.genero,50,'genero');
       res = false;

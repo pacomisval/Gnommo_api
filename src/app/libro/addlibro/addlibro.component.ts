@@ -118,35 +118,35 @@ export class AddlibroComponent implements OnInit {
    });
   }
 
-  comprobacionFinal(resultados) {
-    const isbn = this.book.isbn;
-    const title = this.book.title;
-    let mtitulo = true;
-    let misbn = true;
-    
-    var res2=true;
+  // comprobacionFinal(resultados) {
+  //   const isbn = this.book.isbn;
+  //   const title = this.book.title;
+  //   let mtitulo = true;
+  //   let misbn = true;
 
-    this.message = '';
-    this.message = checkLengthString(title, 50);
-    if (this.message != '') {
-      mtitulo = false;
-    }
-    this.message = checkLengthString(isbn, 15);
-    if (this.message != '') {
-      misbn = false;
-    }
-    this.message = checkIsbnFormat(isbn);
-    if (this.message != '') {
-      misbn = false;
-    }
+  //   var res2=true;
 
-    if (misbn && mtitulo) {
-      localStorage.setItem('comprobar', 'bien');
-    } else {
-      this.openInformationWindows();
-      localStorage.setItem('comprobar', 'mal');
-    }
-  }
+  //   this.message = '';
+  //   this.message = checkLengthString(title, 50);
+  //   if (this.message != '') {
+  //     mtitulo = false;
+  //   }
+  //   this.message = checkLengthString(isbn, 15);
+  //   if (this.message != '') {
+  //     misbn = false;
+  //   }
+  //   this.message = checkIsbnFormat(isbn);
+  //   if (this.message != '') {
+  //     misbn = false;
+  //   }
+
+  //   if (misbn && mtitulo) {
+  //     localStorage.setItem('comprobar', 'bien');
+  //   } else {
+  //     this.openInformationWindows();
+  //     localStorage.setItem('comprobar', 'mal');
+  //   }
+  // }
 
   checkForm() {
     console.log('checkForm');
@@ -197,7 +197,7 @@ export class AddlibroComponent implements OnInit {
       text = '';
     }
 
-    
+
     console.log('checkOK:', checkOK);
     if (checkOK) {
       localStorage.setItem('comprobar', 'bien');
@@ -211,7 +211,7 @@ export class AddlibroComponent implements OnInit {
     let finFor = false;
     let check = false;
     console.log('entra en isbn', isbn);
-   
+
     var i = 0;
     while(!finFor && i<this.books.length){
       console.log(i);
@@ -220,10 +220,10 @@ export class AddlibroComponent implements OnInit {
         finFor = true;
         console.log("--------------------------",i);
         this.message  += 'El libro que intenta introducir ya existe \n';
-        
+
       }
         i++;
-      
+
     }
     return finFor;
   }
@@ -233,7 +233,7 @@ addBook() {
     console.log('addbook_____');
     console.log(this.bookForm.value);
     this.checkForm();
-    
+
     if (localStorage.getItem('comprobar') == 'bien') {
       console.log('comprobar = bien');
 
@@ -334,7 +334,7 @@ saveBookDB() {
         this.message = 'Libro añadido';
         this.openInformationWindows();
         this.router.navigate(['libros']);
-        
+
       },
       (error) => {
         this.message = 'El libro no se ha añadido:';

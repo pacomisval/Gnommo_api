@@ -35,7 +35,6 @@
                     <button (click)="abrirRegisterModal(registerModal)" class="btn btn-info" style="margin-left:10px">
                   Registrarse</button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -147,7 +146,7 @@
 
 <!-- ///////////////////////    MODAL RECUPERACIÓN CONTRASEÑA 1 CREDENCIALES ////////////////////-->
 
-<ng-template #recoveryPassword1Modal let-moda>
+<!-- <ng-template #recoveryPassword1Modal let-moda>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -172,9 +171,8 @@
                             <div *ngIf="rpc1.email.errors.required">Email is required</div>
                         </div>
                     </div>
-
                     <div class="form-group mostrar" *ngIf="!recoveryPassword2">
-                        <!-- <button type="button" class="btn btn-link">* Recuperar password olvidado</button> -->
+
                         <p><b>* Rellena el formulario<br>* En breve se te enviará un código<br>* Verifica tu correo</b></p>
                     </div>
                     <div class="form-group ocultar" *ngIf="recoveryPassword2">
@@ -189,17 +187,153 @@
                     <button (click)="sendCredentialsDB()" class="btn btn-info" style="margin-left:10px">
                     Enviar</button>
                 </div>
-                <!-- <div *ngIf="recoveryPassword2 else abrirModalPass2(recoveryPassword2Modal)" >
-
-                </div>  -->
 
             </div>
         </div>
     </div>
+</ng-template> -->
+
+
+
+
+
+<!-- PROBANDO MODALES ENCADENADAS -->
+<ng-template #recoveryPassword1Modal let-moda>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div *ngIf="enviarPeticion">
+                <div class="modal-header">
+
+                    <div class="modal-title">
+
+                        <h2>Recupera Password</h2>
+                        <h4>Credenciales</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="recoveryPassword1Form" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="userName">User</label>
+                            <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submittedRecoveryPassword1 && rpc1.userName.errors }" />
+                            <div *ngIf="submittedRecoveryPassword1 && rpc1.userName.errors" class="invalid-feedback">
+                                <div *ngIf="rpc1.userName.errors.required">User is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submittedRecoveryPassword1 && rpc1.email.errors }" />
+                            <div *ngIf="submittedRecoveryPassword1 && rpc1.email.errors" class="invalid-feedback">
+                                <div *ngIf="rpc1.email.errors.required">Email is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group mostrar" *ngIf="!recoveryPassword2">
+                            <p><b>* Rellena el formulario<br>* En breve se te enviará un código<br>* Verifica tu correo</b></p>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button (click)="sendCredentialsDB()" class="btn btn-info" style="margin-left:10px">
+                        Enviar</button>
+                    </div>
+                </div>
+            </div>
+            <!-- MODAL INGRESAR CODIGO -->
+            <div *ngIf="recoveryPassword2">
+                <!-- <div class="modal-dialog">
+                        <div class="modal-content">-->
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <h2>Recupera Password</h2>
+                        <h4>Código</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="recoveryPassword2Form" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="codigo">Código</label>
+                            <input type="text" formControlName="codigo" class="form-control" [ngClass]="{ 'is-invalid': submittedRecoveryPassword2 && rpc2.codigo.errors }" />
+                            <div *ngIf="submittedRecoveryPassword2 && rpc2.codigo.errors" class="invalid-feedback">
+                                <div *ngIf="rpc2.codigo.errors.required">User is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="!recoveryPassword3">
+                            <!-- <button type="button" class="btn btn-link">* Recuperar password olvidado</button> -->
+                            <p><b>* Introduce el código que has recibido</b></p>
+                        </div>
+                        <div class="form-group ocultar" *ngIf="recoveryPassword3">
+                            <p><b>* Código aceptado<br>* Haz click en el enlace</b></p>
+                            <button type="button" (click)="abrirModalPass3(recoveryPassword3Modal)" class="btn btn-link">* Crear nueva contraseña</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button (click)="sendCodigo()" class="btn btn-info" style="margin-left:10px">
+                                    Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="recoveryPassword3">
+        <div class="modal-header">
+            <div class="modal-title">
+                <h2>Recupera Password</h2>
+                <h4>Nueva Contraseña</h4>
+            </div>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="recoveryPassword3Form" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submittedRecoveryPassword3 && rpc3.email.errors }" />
+                    <div *ngIf="submittedRecoveryPassword3 && rpc3.email.errors" class="invalid-feedback">
+                        <div *ngIf="rpc3.email.errors.required">Email is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submittedRecoveryPassword3 && rpc3.password.errors }" />
+                    <div *ngIf="submittedRecoveryPassword3 && rpc3.password.errors" class="invalid-feedback">
+                        <div *ngIf="rpc3.password.errors.required">Password is required</div>
+                        <div *ngIf="rpc3.password.errors.minlength">Password must be at least 6 characters</div>
+                        <div *ngIf="rpc3.confirmPassword.errors.mustMatch">Passwords must match</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="passwordRepeat">passwordRepeat</label>
+                    <input type="password" formControlName="passwordRepeat" class="form-control" [ngClass]="{ 'is-invalid': submittedRecoveryPassword3 && rpc3.passwordRepeat.errors }" />
+                    <div *ngIf="submittedRecoveryPassword3 && rpc3.passwordRepeat.errors" class="invalid-feedback">
+                        <div *ngIf="rpc3.passwordRepeat.errors.required">PasswordRepeat is required</div>
+                        <div *ngIf="rpc3.passwordRepeat.errors.mustMatch">PasswordRepeat must be at least 6 characters</div>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="!recoveryPassword3">
+                    <p><b>* Contraseña recuperada</b></p>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group">
+                <button *ngIf="!recoveryPassword3" (click)="closeRecoveryPassword3()" class="btn btn-info" style="margin-left:10px">
+            Exit</button>
+            </div>
+            <div class="form-group">
+                <button (click)="sendNewPassword()" class="btn btn-info" style="margin-left:10px">
+            Enviar</button>
+            </div>
+
+        </div>
+    </div>
 </ng-template>
 
+
+
+
+
 <!-- ///////////////////////    MODAL RECUPERACIÓN CONTRASEÑA 2 CODIGOMODAL  ////////////////////-->
-<ng-template #recoveryPassword2Modal let-moda>
+<!-- <ng-template #recoveryPassword2Modal let-moda>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -217,16 +351,14 @@
                             <div *ngIf="rpc2.codigo.errors.required">User is required</div>
                         </div>
                     </div>
-
                     <div class="form-group" *ngIf="!recoveryPassword3">
-                        <!-- <button type="button" class="btn btn-link">* Recuperar password olvidado</button> -->
+
                         <p><b>* Introduce el código que has recibido</b></p>
                     </div>
                     <div class="form-group ocultar" *ngIf="recoveryPassword3">
                         <p><b>* Código aceptado<br>* Haz click en el enlace</b></p>
                         <button type="button" (click)="abrirModalPass3(recoveryPassword3Modal)" class="btn btn-link">* Crear nueva contraseña</button>
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">
@@ -239,7 +371,7 @@
             </div>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <!--////////////////////////////  MODAL RECUPERACION DE CONTRASEÑA 3  NUEVACONTRASEÑA  ///////////////////////-->
 <ng-template #recoveryPassword3Modal let-moda>
@@ -278,7 +410,6 @@
                         </div>
                     </div>
                     <div class="form-group" *ngIf="!recoveryPassword3">
-                        <!-- <button type="button" class="btn btn-link">* Recuperar password olvidado</button> -->
                         <p><b>* Contraseña recuperada</b></p>
                     </div>
                 </form>
@@ -287,12 +418,13 @@
                 <div class="form-group">
                     <button *ngIf="!recoveryPassword3" (click)="closeRecoveryPassword3()" class="btn btn-info" style="margin-left:10px">
                     Exit</button>
+                    <button (click)="closeRecoveryPassword3()" class="btn btn-info" style="margin-left:10px">
+                      Exit</button>
                 </div>
                 <div class="form-group">
                     <button (click)="sendNewPassword()" class="btn btn-info" style="margin-left:10px">
                     Enviar</button>
                 </div>
-
             </div>
         </div>
     </div>

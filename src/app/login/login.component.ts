@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
   recoveryPassword1Modal: NgbModalRef;
   recoveryPassword1Form: FormGroup;
   recoveryPassword1 = false;
+  enviarPeticion = true;
 
   recoveryPassword2Modal: NgbModalRef;
   recoveryPassword2Form: FormGroup;
@@ -373,6 +374,7 @@ export class LoginComponent implements OnInit {
    */
   sendCredentialsDB() {
     this.submittedRecoveryPassword1 = true;
+
     console.log("Dentro de sendCredentials");
     if(this.recoveryPassword1Form.invalid) {
       return
@@ -382,13 +384,13 @@ export class LoginComponent implements OnInit {
     .recoveryPassword1(this.rpc1.userName.value, this.rpc1.email.value)
     .subscribe((results) => {
       console.log(results.body);
-      if(results.body) {
+      if (results.body) {
+        this.enviarPeticion = false;
         this.recoveryPassword2 = true;
-        //this.abrirModalPass2(this.recoveryPassword2Modal);
+
       }
       else {
-        this.closeRecoveryPassword1();
-
+    //    this.closeRecoveryPassword1();
         this.loginOpen = true;
       }
     },
@@ -402,6 +404,7 @@ export class LoginComponent implements OnInit {
    */
   sendCodigo() {
     console.log("Dentro de sendCodigo");
+    this.recoveryPassword2 = false;
     this.submittedRecoveryPassword2 = true;
     if(this.recoveryPassword2Form.invalid) {
       return
@@ -415,7 +418,7 @@ export class LoginComponent implements OnInit {
         this.recoveryPassword3 = true;
       }
       else {
-        this.closeRecoveryPassword2();
+     //   this.closeRecoveryPassword2();
         this.loginOpen = true;
       }
     },
@@ -442,11 +445,15 @@ export class LoginComponent implements OnInit {
       if(results.body) {
         console.log("dentro de recoveryPassword3")
         this.recoveryPassword3 = false;
-
+        this.modalService.dismissAll();
+        // this.recoveryPassword2 = false;
+        // this.enviarPeticion = true;
       }
       else {
         this.closeRecoveryPassword3();
         this.loginOpen = true;
+    //    this.modalService.dismissAll();
+
       }
     },
     (error) => {
@@ -475,11 +482,11 @@ export class LoginComponent implements OnInit {
    * @param recoveryPassword2Modal
    */
   abrirModalPass2(recoveryPassword2Modal: any) {
-    console.log("Dentro de abrirModalPass2");
+    console.log("Dentro de abrirModalPass2",recoveryPassword2Modal);
     // cierra ventana login
     this.loginOpen = false;
     // cierra el modas recoveryPassword1 teoricamente
-    this.closeRecoveryPassword1();
+    //this.closeRecoveryPassword1();
     // abre recoveryPassword2Modal
     this.recoveryPassword2Modal = this.modalService.open(recoveryPassword2Modal, {
       ariaLabelledBy: 'modal-basic-title',

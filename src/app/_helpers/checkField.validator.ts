@@ -16,7 +16,7 @@ export function comprobarLetras(valor){
 
   if(letras.test(valor)==false){
     message = "-En el campo genero solo se permiten letras";
-    
+
   }
   return message;
 }
@@ -34,29 +34,29 @@ export function checkIsbnFormat(texto: string) {
   }
   return message;
 }
-export function comprobacionFinal(resultados) {
-  let mtitulo = true;
-  let misbn = true;
-  let reg: RegExp = /^[0-9-a-zA-Z]+$/;
+// export function comprobacionFinal(resultados) {
+//   let mtitulo = true;
+//   let misbn = true;
+//   let reg: RegExp = /^[0-9-a-zA-Z]+$/;
 
-  if (this.book.title.length > 50) {
-    this.message = 'Has superado el límite de carácteres máximos en el campo titulo \n';
-    mtitulo = false;
-  }
+//   if (this.book.title.length > 50) {
+//     this.message = 'Has superado el límite de carácteres máximos en el campo titulo \n';
+//     mtitulo = false;
+//   }
 
-  if (this.book.isbn.length > 15) {
-    this.message = 'Has superado el límite de carácteres máximos en el campo isbn \n';
-    misbn = false;
-  } else if (reg.test(this.book.isbn) == false) {
-    this.message = 'Asegurese de estar introduciendo un ISBN correcto \n';
-    misbn = false;
-  }
+//   if (this.book.isbn.length > 15) {
+//     this.message = 'Has superado el límite de carácteres máximos en el campo isbn \n';
+//     misbn = false;
+//   } else if (reg.test(this.book.isbn) == false) {
+//     this.message = 'Asegurese de estar introduciendo un ISBN correcto \n';
+//     misbn = false;
+//   }
 
-  if (res && misbn && mtitulo) {
-    localStorage.setItem('comprobar', 'bien');
-  } else {
-    this.openInformationWindows();
-    localStorage.setItem('comprobar', 'mal');
-  }
+//   if (res && misbn && mtitulo) {
+//     localStorage.setItem('comprobar', 'bien');
+//   } else {
+//     this.openInformationWindows();
+//     localStorage.setItem('comprobar', 'mal');
+//   }
 
- }
+//  }

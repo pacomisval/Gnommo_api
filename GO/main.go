@@ -212,7 +212,7 @@ func recuperarPass(w http.ResponseWriter, r *http.Request) {
 		clave := crearClaveAleatoria(id, useru.Nombre, useru.Email)
 		fmt.Println("valor de clave: ", clave)
 
-		sendMailRecoveryPassword(clave)
+		sendMailRecoveryPassword(clave, useru.Email, useru.Nombre)
 		fmt.Println("Se ha enviado un correo")
 	}
 
@@ -440,20 +440,20 @@ func crearClaveAleatoria(id, nombre, email string) string {
 	return codigo
 }
 
-func sendMailRecoveryPassword(body string) { // pasar variables con el from, pass, to
+func sendMailRecoveryPassword(body string, correo string, nombre string) { // pasar variables con el from, pass, to
 	// Entra en esta url: https://support.google.com/accounts/answer/6010255
 	// "Hay que habilitar en mi cuenta el modo inseguro"
 	// Entra aqui: Si tu cuenta tiene activado el acceso de aplicaciones poco seguras
 	// Haz click en el link:  Acceso de aplicaciones poco seguras
 	// La opción debe estar así: Permitir el acceso de aplicaciones poco seguras: SÍ
 
-	from := "rafainsti99@gmail.com" // tu email
-	pass := "hay que ponerla"       // tu contraseña de gmail o google
-	to := "rafainsti99@gmail.com"   // email del usuario que renueva la contraseña
+	from := "gnommolibrary@gmail.com" // tu email
+	pass := "Proyecto1"               // tu contraseña de gmail o google
+	to := correo                      // email del usuario que renueva la contraseña
 
 	msg := "From: " + from + "\n" +
 		"To: " + to + "\n" +
-		"Subject: Hello Mari. Introduce este código\n\n" +
+		"Subject: Hello " + nombre + ". Introduce este código\n\n" +
 		body
 
 	err := smtp.SendMail("smtp.gmail.com:587",
@@ -465,7 +465,6 @@ func sendMailRecoveryPassword(body string) { // pasar variables con el from, pas
 		return
 	}
 
-	log.Print("sent, dentro de send")
 }
 
 ///////////////  FIN PASO 1  RECUPERAR CONTRASEÑA  /////////////////////////////
