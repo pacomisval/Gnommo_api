@@ -27,7 +27,7 @@
                         <button type="button" (click)="abrirModalPass1(recoveryPassword1Modal)" class="btn btn-link">* Recuperar password olvidado</button>
                     </div>
                 </form>
-            </div>
+            </div>                             
             <div class="modal-footer">
                 <div class="form-group">
                     <button [disabled]="loading" (click)="onSubmit()" class="btn btn-primary">
@@ -141,7 +141,7 @@
         <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
  Cerrar
 </button>
-    </div>
+    </div>                                                 
 </ng-template>
 
 <!-- ///////////////////////    MODAL RECUPERACIÓN CONTRASEÑA 1 CREDENCIALES ////////////////////-->
@@ -157,13 +157,13 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="recoveryPassword1Form" (ngSubmit)="onSubmit()">
-                    <div class="form-group">
+                     <div class="form-group">
                         <label for="userName">User</label>
                         <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submittedRecoveryPassword1 && rpc1.userName.errors }" />
                         <div *ngIf="submittedRecoveryPassword1 && rpc1.userName.errors" class="invalid-feedback">
                             <div *ngIf="rpc1.userName.errors.required">User is required</div>
                         </div>
-                    </div>
+                    </div> 
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submittedRecoveryPassword1 && rpc1.email.errors }" />
@@ -179,7 +179,7 @@
                         <p><b>* Haz click en el enlace<br>cuando tengas el código</b></p>
                         <button type="button" (click)="abrirModalPass2(recoveryPassword2Modal)" class="btn btn-link">* Introducir codigo</button>
                     </div>
-                </form>
+                </form>                   
             </div>
             <div class="modal-footer">
                 <div class="form-group">
@@ -191,7 +191,7 @@
             </div>
         </div>
     </div>
-</ng-template> -->
+</ng-template> --> 
 
 
 

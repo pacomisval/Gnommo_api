@@ -1,2 +1,11 @@
+@import 'src/styles/abstracts/variables';
 
+
+.container {
+    margin-top: 150px;
+}
+
+.card-header {
+    background-color: $orange-800;
+}
 

@@ -1,7 +1,15 @@
+@import 'src/styles/abstracts/variables';
+
 .oculto {
     display: none;
 }
 
 .container {
     margin-top: 90px;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    background-color: $orange-800;
 }

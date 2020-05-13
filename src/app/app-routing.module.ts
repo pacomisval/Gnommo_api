@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent},
   { path: 'libros', component: ListarComponent },
 
+  { path: 'agregarAutores', component: AddautorComponent },
   { path: 'autores', component: ListarautoresComponent },
   { path: 'listarAutores/:id', component: ListarautoresComponent },
 

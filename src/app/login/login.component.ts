@@ -117,7 +117,7 @@ export class LoginComponent implements OnInit {
     // get return url from route parameters or default to '/'
     //  this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     this.recoveryPassword1Form = this.formBuilder.group({
-      userName: ['', Validators.required],
+      // userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
 
     });
@@ -381,7 +381,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.authenticationService
-    .recoveryPassword1(this.rpc1.userName.value, this.rpc1.email.value)
+    .recoveryPassword1(/* this.rpc1.userName.value,  */this.rpc1.email.value)
     .subscribe((results) => {
       console.log(results.body);
       if (results.body) {

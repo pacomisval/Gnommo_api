@@ -117,7 +117,7 @@ export class ListarComponent implements OnInit {
   authors: any;
   matriz;
   sublibros2: Book[];
-  map: Map<any, any>;
+  map: Map<any, any>;                
   textoSelect;
   textoSelect1 = '';
 
@@ -174,6 +174,7 @@ export class ListarComponent implements OnInit {
     });
     this.getAllAutor();
     this.findForm.patchValue({ filtro: '' });
+
   }
 
   cambiarBusqueda() {

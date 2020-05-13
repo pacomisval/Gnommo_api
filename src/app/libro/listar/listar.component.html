@@ -3,79 +3,90 @@
         <h3>LIBROS</h3>
         <!-- ****vvvv****** BARRA DE BUSQUEDA CORRECTA********** -->
         <form [formGroup]="findForm">
+            <div class="busqueda-input">
             <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
             <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
-          <option value="autor">Autor</option>
-          <option value="libro">Libro</option>
-        </select>
+                <option value="autor">Autor</option>
+                <option value="libro">Libro</option>
+            </select>
             <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
-            <ng-container *ngIf="buscarXautor; then autorTemplate; else tituloTemplate"></ng-container>
+
+            </div>
+            <ng-container *ngIf="buscarXautor; then autorTemplate; else tituloTemplate"><div class="busqueda-input"></div></ng-container>
             <ng-template #autorTemplate>
+                <div class="busqueda-input">
                 <input type="text" list="autores" (change)="buscar()" class="ml-2" formControlName="texto" />
                 <datalist id="autores">
-            <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
-          </datalist>
+                    <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
+                </datalist>
+                </div>
             </ng-template>
             <ng-template #tituloTemplate>
+                <div class="busqueda-input">
                 <input type="text" formControlName="texto" class="ml-2" (keyup)="buscar()" />
+                </div>
             </ng-template>
         </form>
         <!-- ********** BARRA DE BUSQUEDA CORRECTA*****^^^^^^***** -->
     </div>
-
+    <br><br><br><br><br>
     <!-- ////// TODO MOSTRANDO LIBROS (PORTADA) -->
     <div *ngFor="let genero of map | keyvalue">
-        <h1 class="titulo">{{genero.key}}</h1>
-        <div class="contain l-columns--4columns ml2">
-            <div *ngFor="let book of genero.value" class="card pb-2">
-                <div class="selecionable" (click)="getBook(modalGetBook, book)">
+        <h1 class="genero">{{genero.key}}</h1>
+        <div class="contain l-columns--4columns ml2  l-columns--movil-3columns l-columns--movil-2columns l-columns--movil-1columns">
+            <div *ngFor="let book of genero.value">
+               <div class="selecionable" (click)="getBook(modalGetBook, book)">
                     <br>
-                    <h5>{{ book.nombre }}</h5>
+                    <h5 class="titulo">{{ book.nombre }}</h5>
                     <br>
-                    <div class="sombraLibro">
-                        <a><img src="./assets/images/book/{{book.portada}}" alt="" height="100"></a>
-                    </div>
-                    <br>
-                    <div><span>{{ book.first_name }} {{ book.last_name }}</span></div>
+                    <!-- <div class="sombraLibro"> -->
+                        <a><img src="./assets/images/book/{{book.portada}}" class="sombraLibro" alt="" height="100"></a>
+                   <!--  </div> -->
+                    <br><br><br>
+                    <div ><span class="titulo-autor">{{ book.first_name }} {{ book.last_name }}</span></div>
                     <br>
                 </div>
-                <div>
+                <div class="botones" *ngIf="admin">
                     <button *ngIf="admin" (click)="openEditBookModal(editBookModal, book)" class="btn btn-warning btn-edit pb-3 pt-0">Editar</button>
                     <button *ngIf="admin" (click)="confirmDeleteBook(confirmDeleteBookModal,book)" class="btn btn-danger btn-delet pb-3 pt-0">Delete</button>
                 </div>
-            </div>
+                
+            </div> 
         </div>
     </div>
-
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
     <!-- VENTANA MODAL MUESTRA UN LIBRO -->
     <ng-template #modalGetBook let-modal>
         <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss( 'Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+            <h4 class="modalCard-titulo-header"id="modal-basic-title">Gnomo's Library</h4>
+            
+            <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss( 'Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button> -->
         </div>
         <div class="modal-body">
-            <p>
-                Titulo:&nbsp;<span>{{ book.nombre }}</span>
-            </p>
-            <p>Descripcion:</p>
-            <p>{{book.descripcion}}</p>
-            <p>
-                Isbn:&nbsp;<span>{{ book.isbn }}</span>
-            </p>
-            <hr />
-            <p>
-                Autor&nbsp;
-            </p>
-            <p>
-                Nombre:&nbsp;<span>{{ book.first_name }}</span>
-            </p>
-            <p>
-                Apellido:&nbsp;<span>{{ book.last_name }}</span>
-            </p>
+           
+            <div class="modalCard">
+                <div class="modalCard__img margin-left--l">
+                    <img [(attr.src)]="imgBook" alt={{imgBook}} width="150" height="200" class="ml-8 ml-auto mr-auto sombraLibro">
+                </div>
+                <div class="modalCard__content">
+                    <h4 class="modalCard-titulo"><b><span>{{ book.nombre }}</span></b></h4>
+                    <br>
+                    <h5><b>Isbn:</b>&nbsp;<span>{{ book.isbn }}</span></h5>
+                    <br>
+                    <h5><b>Genero:</b>&nbsp;<span>{{ book.genero }}</span></h5>
+                    <br>
+                    <h5><b>Autor:</b>&nbsp;<span>{{ book.first_name }} {{ book.last_name }}</span></h5>
+                    <br>
+                </div>
+                <div class="modalCard__description">
+                    <h4 class="description"><b>Descripcion:</b></h4>
+                    <div>{{ book.descripcion }}</div>
+                </div>
+            </div>
         </div>
-        <img [(attr.src)]="imgBook" alt={{imgBook}} width="150" height="200" class="ml-8 ml-auto mr-auto">
+        <br><br><br>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-dark" (click)="modal.close()">
         cerrar
@@ -87,7 +98,7 @@
     <!-- VENTANA MODAL CONFIRMAR DELETE UN LIBRO -->
     <ng-template #confirmDeleteBookModal let-modal>
         <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Libro:</h4>
+            <h4 class="modal-title" id="modal-basic-title">Gnomo's Library</h4>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss( 'Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -123,7 +134,7 @@
     <!-- VENTANA MODAL INFORMATIVA -->
     <ng-template #modalInformation let-modal>
         <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Gnomo`s Librery</h4>
+            <h4 class="modal-title" id="modal-basic-title">Gnomo's Library</h4>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss( 'Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -141,7 +152,7 @@
     <!-- VENTANA MODAL EDITAR UN LIBRO -->
     <ng-template #editBookModal let-modal>
         <div class="modal-header">
-            <h4 class="modal-title " id="modal-basic-title ">Libro:</h4>
+            <h4 class="modal-title" id="modal-basic-title ">Gnommo's Library</h4>
             <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
         <span aria-hidden="true ">&times;</span>
       </button>

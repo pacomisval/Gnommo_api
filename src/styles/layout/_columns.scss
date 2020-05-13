@@ -16,12 +16,32 @@
     }
   
 
-    @media(max-width:500px) {
-        @for $i from 1 through 12 {
+    @media(max-width:1200px) {
+        @for $i from 1 through 3 {
     
             &--movil-#{$i}columns {
                 grid-template-columns: repeat($i,1fr);
             }
         }
     }
+    
+
+    @media(max-width:990px) {
+        @for $i from 1 through 2 {
+    
+            &--movil-#{$i}columns {
+                grid-template-columns: repeat($i,1fr);
+            }
+        }
+    }
+
+    @media(max-width:768px) {
+        @for $i from 1 through 1 {
+    
+            &--movil-#{$i}columns {
+                grid-template-columns: repeat($i,1fr);
+            }
+        }
+    }
+
 }

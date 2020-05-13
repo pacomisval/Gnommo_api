@@ -70,7 +70,7 @@ export class AddlibroComponent implements OnInit {
    * @type {Author}
    * @memberof AddlibroComponent
    */
-  selectedAuthor: Author;
+  selectedAuthor: any;
   /**
    * Inicializacion del libro
    *
@@ -79,8 +79,8 @@ export class AddlibroComponent implements OnInit {
   book = {
     title: '',
     isbn: '',
-    genero:'',
-    descripcion:'',
+    genero: '',
+    descripcion: ''
   };
   /**
    * Mensaje a mostrar en Ventana Modal
@@ -101,8 +101,8 @@ export class AddlibroComponent implements OnInit {
     this.bookForm = this.formBuilder.group({
       title: '',
       isbn: '',
-      genero:'',
-      descripcion:'',
+      genero: '',
+      descripcion: '',
       imgBook: null,
       selectedAuthor: [''],
     });
@@ -121,10 +121,10 @@ export class AddlibroComponent implements OnInit {
   // comprobacionFinal(resultados) {
   //   const isbn = this.book.isbn;
   //   const title = this.book.title;
+  //   const genero = this.book.genero;
+  //   const descripcion = this.book.descripcion;
   //   let mtitulo = true;
   //   let misbn = true;
-
-  //   var res2=true;
 
   //   this.message = '';
   //   this.message = checkLengthString(title, 50);
@@ -140,7 +140,15 @@ export class AddlibroComponent implements OnInit {
   //     misbn = false;
   //   }
 
-  //   if (misbn && mtitulo) {
+  //   let res = true;
+  //   for (let i = 0; i < resultados.length; i++) {
+  //     if (resultados[i].isbn == this.book.isbn) {
+  //       this.message = 'El libro que intenta introducir ya existe \n';
+  //       res = false;
+  //     }
+  //   }
+
+  //   if (res && misbn && mtitulo) {
   //     localStorage.setItem('comprobar', 'bien');
   //   } else {
   //     this.openInformationWindows();
@@ -152,6 +160,8 @@ export class AddlibroComponent implements OnInit {
     console.log('checkForm');
     const isbn = this.bookForm.value.isbn;
     const title =  this.bookForm.value.title;
+    const genero = this.bookForm.value.genero;
+    const descripcion = this.bookForm.value.descripcion;
     let checkOK = true;
     this.message = '';
     let text = '';
@@ -229,7 +239,7 @@ export class AddlibroComponent implements OnInit {
   }
 
 
-addBook() {
+  addBook() {
     console.log('addbook_____');
     console.log(this.bookForm.value);
     this.checkForm();
@@ -257,7 +267,8 @@ addBook() {
    *
    * @memberof AddlibroComponent
    */
-getAuthors() {
+  getAuthors() {
+
     this.authorService.getAll().subscribe(
       (results) => {
         this.authors = results;
@@ -278,7 +289,7 @@ getAuthors() {
    *
    * @memberof ListarComponent
    */
-getLibros() {
+  getLibros() {
     this.bookService.getAll().subscribe(
       (result) => {
         this.books = result;
@@ -299,7 +310,7 @@ getLibros() {
    *
    * @memberof AddlibroComponent
    */
-optionNewAuthor() {
+  optionNewAuthor() {
     //  console.log('ir a añadir autor');
     this.authorService.comesAddLibro = true;
     this.router.navigate(['agregarAutores']);
@@ -310,7 +321,7 @@ optionNewAuthor() {
    *
    * @memberof AddlibroComponent
    */
-saveBookDB() {
+  saveBookDB() {
 
   // let imagen = this.bookForm.value.imgBook;
 
@@ -341,7 +352,7 @@ saveBookDB() {
         this.openInformationWindows();
         this.router.navigate(['/']);
       }
-  );
+    );
 
   }
 
@@ -350,30 +361,30 @@ saveBookDB() {
    *
    * @memberof ListarComponent
    */
-openInformationWindows() {
+  openInformationWindows() {
     this.modalService.open(this.modalInformation);
   }
 
   /**
    *  Upload files
    */
-uploadFile() {
-  console.log('entra en uploadFile');
-  let formData = new FormData();
-  //formData.append('uploadFile', this.form.get('avatar').value);
-  formData.append('uploadFile', this.file);
+  uploadFile() {
+    console.log('entra en uploadFile');
+    let formData = new FormData();
+    //formData.append('uploadFile', this.form.get('avatar').value);
+    formData.append('uploadFile', this.file);
 
 
-  console.log('valor formData upload:', formData);
+    console.log('valor formData upload:', formData);
 
-  this.uploadService.upload(formData).subscribe(res => {
-    this.uploadResponse = res;
-    console.log('valor de res: ' + res);
-  },
-  err => {
-    this.error = err;
-    console.log('valor de error: ' + err);
-  });
+    this.uploadService.upload(formData).subscribe(res => {
+      this.uploadResponse = res;
+      console.log('valor de res: ' + res);
+    },
+    err => {
+      this.error = err;
+      console.log('valor de error: ' + err);
+    });
 
   }
 
@@ -382,7 +393,7 @@ uploadFile() {
    * @param event
    *  Selección el archivo
    */
-onFileChange(event) {
+  onFileChange(event) {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
       this.form.get('avatar').setValue(this.file);
@@ -415,7 +426,7 @@ onFileChange(event) {
    * @param {*} event
    * @memberof AddlibroComponent
    */
-changeAuthor(event) {
+  changeAuthor(event) {
     this.id_author = this.bookForm.value.selectedAuthor.id;
     console.log('changeAuthor');
     console.log(this.bookForm.value.selectedAuthor.id);
@@ -423,6 +434,7 @@ changeAuthor(event) {
       onlySelf: true,
     });
     if (this.bookForm.value.selectedAuthor.id == 1) {
+      console.log(this.bookForm.value.selectedAuthor.id);
       localStorage.setItem('titulo', this.bookForm.value.title);
       localStorage.setItem('isbn', this.bookForm.value.isbn);
       this.optionNewAuthor();

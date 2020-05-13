@@ -7,6 +7,15 @@
     <div class="card-body">
         <form [formGroup]="bookForm" enctype="multipart/form-data">
             <div class="form-group">
+                <label for="selectAutores">Selecciona el autor</label><br />
+                <select formControlName="selectedAuthor" (change)="changeAuthor($event)">
+                  <option value="" disabled>Selecciona el autor</option>
+                  <option [ngValue]="autor" *ngFor="let autor of authors">
+                      &nbsp; {{ autor.first_name }}&nbsp;{{ autor.last_name }} &nbsp;
+                  </option>
+              </select>
+            </div>
+            <div class="form-group">
                 <label for="title">Titulo:</label>
                 <input type="text" class="form-control" id="title" formControlName="title" />
             </div>
@@ -26,6 +35,14 @@
             </div>
 
             <div class="form-group">
+                <label for="genero">Genero:</label>
+                <input type="text" class="form-control" id="genero" formControlName="genero" />
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripcion:</label>
+                <input class="form-control" id="descripcion" formControlName="descripcion" />
+            </div>
+            <!-- <div class="form-group">
                 <label for="selectAutores">Selecciona el autor</label><br />
                 <select formControlName="selectedAuthor" (change)="changeAuthor($event)">
                   <option value="" disabled>Selecciona el autor</option>
@@ -33,7 +50,7 @@
                       &nbsp; {{ autor.first_name }}&nbsp;{{ autor.last_name }} &nbsp;
                   </option>
               </select>
-            </div>
+            </div> -->
 
         </form>
         <!--////////////////  UPLOAD //////////////////-->

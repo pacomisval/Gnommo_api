@@ -56,11 +56,11 @@ export class AuthenticationService {
    * Envio de credenciales al servidor para su verificación.
    * Si es true, se inicia el proceso de recuperación de contraseña.
    */
-  recoveryPassword1(nombre, email) {
+  recoveryPassword1(/* nombre, */ email) {
     console.log("Dentro de autenticationService.recoveryPassword 1");
-    console.log(nombre);
+    // console.log(nombre);
     console.log(email);
-    return this.http.post<any>(Globals.apiUrl + '/recoveryPass1', { nombre, email },{ observe: "response",  withCredentials: true,});
+    return this.http.post<any>(Globals.apiUrl + '/recoveryPass1', {/*  nombre,  */email },{ observe: "response",  withCredentials: true,});
   }
   /**
    *

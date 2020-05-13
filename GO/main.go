@@ -96,7 +96,7 @@ const maxUploadSize = 100 * 1024 // 100 KB
 const uploadPath = "./../src/assets/images/book"
 
 func main() {
-	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/newlibrary")
+	db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/libraryapp")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -197,7 +197,7 @@ func recuperarPass(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(resp)
 	}
 
-	value, id = findUsuarioByEmail(useru.Nombre, useru.Email)
+	value, id = findUsuarioByEmail(useru.Email)
 
 	fmt.Println("Valor de user.Nombre: ", useru.Nombre)
 	fmt.Println("Valor de user.Email: ", useru.Email)
@@ -360,17 +360,16 @@ func encontrarEmail(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(count)
 }
 
-func findUsuarioByEmail(user, mail string) (bool, string) {
+func findUsuarioByEmail(mail string) (bool, string) {
 	ok := false
 
 	fmt.Println("Valor de mail en findUsuarioByEmail: ", mail)
-	fmt.Println("Valor de user en findUsuarioByEmail: ", user)
+	
 
 	var id string
-	var nombre string
 	var email string
 
-	result, err := db.Query("SELECT id, nombre, email FROM usuarios WHERE email like ?", &mail)
+	result, err := db.Query("SELECT id, email FROM usuarios WHERE email like ?", &mail)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -378,31 +377,26 @@ func findUsuarioByEmail(user, mail string) (bool, string) {
 
 	for result.Next() {
 		var usuario Usuario
-		err := result.Scan(&usuario.Id, &usuario.Nombre, &usuario.Email)
+		err := result.Scan(&usuario.Id, &usuario.Email)
 		if (err) != nil {
 			panic(err.Error())
 		}
 
 		id = usuario.Id
-		nombre = usuario.Nombre
 		email = usuario.Email
 	}
 
-	resultNombre := user == nombre
 	resultEmail := mail == email
 
 	fmt.Println("")
-	fmt.Println("Valor de resultNombre: ", resultNombre)
 	fmt.Println("Valor de resultEmail: ", resultEmail)
 	fmt.Println("")
-	fmt.Println("Valor de nombre: ", nombre)
 	fmt.Println("Valor de email: ", email)
-	fmt.Println("Valor de user: ", user)
 	fmt.Println("Valor de mail: ", mail)
 	fmt.Println("Valor de id: ", id)
 	fmt.Println("")
 
-	if resultNombre && resultEmail {
+	if resultEmail {
 		ok = true
 		// llamamos a metodo enviarCodigo
 		fmt.Println("Valor de ok: ", ok)
@@ -640,7 +634,7 @@ func encontrarUsuario(password, email string) Value {
 	var resultVacio bool
 	resultVacio = true
 
-	expireAt := time.Now().Add(time.Minute * 5).Unix()
+	expireAt := time.Now().Add(time.Minute * 145).Unix()
 	result, err := db.Query("SELECT * FROM usuarios WHERE email like ?", &email)
 	if err != nil {
 		panic(err.Error())
@@ -799,7 +793,7 @@ func recuperarToken(id string) string {
 
 func crearToken(id, nombre, email string) string {
 
-	expireAt := time.Now().Add(time.Minute * 125).Unix()
+	expireAt := time.Now().Add(time.Minute * 145).Unix()
 	claims := Claims{
 		Nombre: nombre,
 		Email:  email,
@@ -859,7 +853,7 @@ func crearCookie(w http.ResponseWriter, r *http.Request, value Value) {
 	T := value.Token
 	// T := base64.StdEncoding.EncodeToString([]byte(value.Token))
 
-	expiration := time.Now().Add(time.Minute * 5)
+	expiration := time.Now().Add(time.Minute * 25)
 
 	cookie1 := &http.Cookie{
 		Name:     "tokensiI",

@@ -4,44 +4,88 @@
     margin-top: 90px;
 }
 
+.genero {
+    font-family: sans-serif;
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
 .titulo {
-    padding: 30px 30px 0px 30px;
+    padding: 0px 30px 0px 30px;
     font-family: sans-serif;
     font-weight: bold;
-}
-
-.autor {
-    font-family: sans-serif;
     font-size: 20px;
 }
+.titulo-autor {
+    margin-bottom: 135px;
+    font-family: sans-serif;
+    font-weight: bold;
 
-.description {
+}
+
+.description, .autor{
     font-family: sans-serif;
     font-size: 16px;
 }
 
+.description {
+    padding: 40px 0px 10px 0;
+    text-align: center;
+}
+
 .contain {
     padding-top: 30px;
+    padding-bottom: 50px;
     display: grid;
 }
 
+.margin-left--l {
+    margin-left: 30px;
+}
+
+.modalCard-titulo {
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+.modalCard-titulo-header {
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 20px 0;
+    margin-left: 140px;
+}
+
+.card-header,
 .modal-header,
 .modal-footer {
     background-color: $orange-800;
 }
 
-.card {
-    //display: flex;
+.modal-header {
+    margin-bottom: 30px;
+}
+
+.selecionable {
     width: 70%;
-    box-shadow: 10px 10px 5px #aaaaaa;
+    min-height: 300px;
+    background-color: $grey-000;
+    box-shadow: 10px 10px 5px $grey-700;
     text-align: center;
-    margin: 10px 25px;
+    margin: 20px 25px 120px 0px;
     border: 3px solid $red-100;
     cursor: pointer;
 }
 
+.botones {
+    margin-top: -155px;
+    margin-left: 10%;
+
+}
+
 .sombraLibro {
-    box-shadow: 5px 5px 5px #aaaaaa;
+    box-shadow: 5px 5px 5px $grey-700;
     margin: 0 auto;
 }
 
@@ -50,7 +94,8 @@
     height: 25px;
     margin-bottom: 5px;
     text-align: start;
-    color: white;
+    color: $grey-000;
+    
 }
 
 .btn-edit {
@@ -59,11 +104,6 @@
 
 .btn-delet {
     margin-left: 5px;
-}
-
-.selecionable:hover {
-    cursor: pointer;
-    opacity: 0.5;
 }
 
 #inputfile {
@@ -75,29 +115,116 @@
     z-index: -1;
 }
 
-.inputfile--label {}
 
 .inputfile--label:hover {
     cursor: pointer;
     opacity: 0.7;
 }
 
-.grid-container {
-    grid-template-areas: 'imagen autor'
+.busqueda-input {
+    display: inline;
 }
 
-.item1 {
-    grid-area: autor;
+.modalCard {
+    display: grid;
+    grid-template-areas: 
+        "__img __content"
+        "__description __description";
+
+
+    &__img {
+        grid-area: __img;
+    }
+    &__content {
+        grid-area: __content;
+    }
+    &__description {
+        grid-area: __description;
+    }
+
 }
 
-.item2 {
-    grid-area: imagen;
+@media(max-width: 1200px) {
+    .genero {
+        margin-left: 5%;
+    }
+    .selecionable {
+        margin-left: 15%;
+    }
+    .botones {
+        margin-left: 27%;
+    }
 }
 
-.item3 {
-    grid-area: main;
+@media(max-width: 990px) {  
+    .busqueda-input {
+        display: block;
+    }
+    .genero {
+        margin-left: 40%;
+    }
+    .selecionable {
+        margin-left: 15%;
+    }
+    .botones {
+        margin-left: 30%;
+    }
+ }
+
+@media(max-width: 768px) {
+    .genero {
+        margin-left: 30%;
+    }
+  
+    .selecionable {
+        width: 45%;
+        margin-left: 25%;
+    }
+    
+    .botones {
+        margin-left: 33%;
+    }
+    
 }
 
-.grid-containerEJEMPLO {
-    grid-template-areas: 'header header header header header header' 'menu main main main right right' 'menu footer footer footer footer footer';
+@media(max-width: 520px) {
+    .genero {
+        margin-left: 30%;
+    }
+  
+    .selecionable {
+        width: 45%;
+        margin-left: 25%;
+    }
+    
+    .botones {
+        display:flex;
+        flex-direction: column;
+        width: 70px;
+        margin-left: 40%;
+          
+    }
+
+    .btn-edit {
+        margin: -30px 0px 0px 0px;
+    }
+    .btn-delet {
+        margin: 10px 0px 0px 0px;
+    }
+    .titulo-autor {
+        display: none;
+    }
 }
+
+@media(max-width: 420px) {
+   
+    
+    .botones {
+        display:flex;
+        flex-direction: column;
+        width: 70px;
+        margin-left: 38%; 
+    }
+
+}
+
