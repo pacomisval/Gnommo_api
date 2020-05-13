@@ -6,7 +6,7 @@
 
 .genero {
     font-family: sans-serif;
-    font-size: 26px;
+    font-size: 50px;
     font-weight: bold;
     margin-top: 30px;
 }
@@ -17,14 +17,15 @@
     font-weight: bold;
     font-size: 20px;
 }
+
 .titulo-autor {
     margin-bottom: 135px;
     font-family: sans-serif;
     font-weight: bold;
-
 }
 
-.description, .autor{
+.description,
+.autor {
     font-family: sans-serif;
     font-size: 16px;
 }
@@ -49,6 +50,7 @@
     font-weight: bold;
     font-size: 20px;
 }
+
 .modalCard-titulo-header {
     font-family: sans-serif;
     font-weight: bold;
@@ -81,7 +83,6 @@
 .botones {
     margin-top: -155px;
     margin-left: 10%;
-
 }
 
 .sombraLibro {
@@ -95,7 +96,6 @@
     margin-bottom: 5px;
     text-align: start;
     color: $grey-000;
-    
 }
 
 .btn-edit {
@@ -115,7 +115,6 @@
     z-index: -1;
 }
 
-
 .inputfile--label:hover {
     cursor: pointer;
     opacity: 0.7;
@@ -127,11 +126,7 @@
 
 .modalCard {
     display: grid;
-    grid-template-areas: 
-        "__img __content"
-        "__description __description";
-
-
+    grid-template-areas: "__img __content" "__description __description";
     &__img {
         grid-area: __img;
     }
@@ -141,7 +136,6 @@
     &__description {
         grid-area: __description;
     }
-
 }
 
 @media(max-width: 1200px) {
@@ -156,7 +150,7 @@
     }
 }
 
-@media(max-width: 990px) {  
+@media(max-width: 990px) {
     .busqueda-input {
         display: block;
     }
@@ -169,42 +163,35 @@
     .botones {
         margin-left: 30%;
     }
- }
+}
 
 @media(max-width: 768px) {
     .genero {
         margin-left: 30%;
     }
-  
     .selecionable {
         width: 45%;
         margin-left: 25%;
     }
-    
     .botones {
         margin-left: 33%;
     }
-    
 }
 
 @media(max-width: 520px) {
     .genero {
         margin-left: 30%;
     }
-  
     .selecionable {
         width: 45%;
         margin-left: 25%;
     }
-    
     .botones {
-        display:flex;
+        display: flex;
         flex-direction: column;
         width: 70px;
         margin-left: 40%;
-          
     }
-
     .btn-edit {
         margin: -30px 0px 0px 0px;
     }
@@ -217,14 +204,10 @@
 }
 
 @media(max-width: 420px) {
-   
-    
     .botones {
-        display:flex;
+        display: flex;
         flex-direction: column;
         width: 70px;
-        margin-left: 38%; 
+        margin-left: 38%;
     }
-
 }
-

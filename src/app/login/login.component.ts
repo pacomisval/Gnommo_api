@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
   submittedRecoveryPassword3 = false;
   Administrador = false;
   error: string;
-
+  email;
   codigo: string = '';
 
   user = {
@@ -126,7 +126,7 @@ export class LoginComponent implements OnInit {
     });
     this.recoveryPassword3Form = this.formBuilder.group(
       {
-      email: ['', [Validators.required, Validators.email]],
+      // email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       passwordRepeat: ['', Validators.required],
       },
@@ -227,6 +227,7 @@ export class LoginComponent implements OnInit {
         }
       );
   }
+
   /**
    * Muestra formulario registrar
    *
@@ -374,12 +375,11 @@ export class LoginComponent implements OnInit {
    */
   sendCredentialsDB() {
     this.submittedRecoveryPassword1 = true;
-
     console.log("Dentro de sendCredentials");
     if(this.recoveryPassword1Form.invalid) {
       return
     }
-
+    this.email = this.rpc1.email.value;
     this.authenticationService
     .recoveryPassword1(/* this.rpc1.userName.value,  */this.rpc1.email.value)
     .subscribe((results) => {
@@ -387,7 +387,6 @@ export class LoginComponent implements OnInit {
       if (results.body) {
         this.enviarPeticion = false;
         this.recoveryPassword2 = true;
-
       }
       else {
     //    this.closeRecoveryPassword1();
@@ -434,20 +433,54 @@ export class LoginComponent implements OnInit {
   sendNewPassword() {
     console.log("Dentro de sendNewPassword");
     this.submittedRecoveryPassword3 = true;
-    if(this.recoveryPassword3Form.invalid) {
-      return
+    console.log("email:", this.rpc1.email.value);
+
+     if(this.recoveryPassword3Form.invalid) {
+       return
     }
 
+
     this.authenticationService
-    .recoveryPassword3(this.rpc3.email.value, this.rpc3.password.value)
+     // .recoveryPassword3(this.rpc3.email.value, this.rpc3.password.value)
+      .recoveryPassword3(this.rpc1.email.value, this.rpc3.password.value)
+
     .subscribe((results) => {
       console.log(results.body);
       if(results.body) {
         console.log("dentro de recoveryPassword3")
         this.recoveryPassword3 = false;
         this.modalService.dismissAll();
-        // this.recoveryPassword2 = false;
-        // this.enviarPeticion = true;
+
+        // VVVVVV  LOGEARSE AUTOMATICAMENTE AL CAMBIAR CONTRASEÑAVVVVVV ///////
+        this.authenticationService
+        .login(this.rpc1.email.value, this.rpc3.password.value)
+        // .pipe(first())
+        .subscribe(
+          (results) => {
+            console.log('respuesta');
+            console.log(results.body);
+            if (results.body.id == 0) {
+              // error
+              console.log('id =0');
+              this.information = results.body.rol;
+              this.openInformationWindows();
+            } else {
+              // no error
+              console.log('id distinto 0');
+              this.router.navigate(['home'])
+                 .then(() => {
+                   window.location.reload();
+                 });
+            }
+          },
+          (error) => {
+            this.information = 'No podemos logear al usuario';
+            this.openInformationWindows();
+          }
+        );
+  	     // ^^^^  LOGEARSE AUTOMATICAMENTE ^^^^ ///////
+
+
       }
       else {
         this.closeRecoveryPassword3();
