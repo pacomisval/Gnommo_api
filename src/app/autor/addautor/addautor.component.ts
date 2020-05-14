@@ -84,6 +84,7 @@ export class AddautorComponent implements OnInit {
       fecha: ['', Validators.required],
     });
   }
+
   /**
    * AbreAbreviatura de autorForm.controls
    *

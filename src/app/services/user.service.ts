@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../models/user';
 import { Globals } from '../Global';
+import { apiUrl } from './../_helpers/configuracion';
 
 
 
@@ -10,13 +11,13 @@ import { Globals } from '../Global';
 })
 
 export class UserService {
- // Globals.apiUrl = 'http://localhost:8000/api';
+ // apiUrl = 'http://localhost:8000/api';
   currentUserType;
 
   constructor(private http: HttpClient) { }
 
-  createUser(data) { 
-    return this.http.post<any>(Globals.apiUrl + '/usuarios', data);
+  createUser(data) {
+    return this.http.post<any>(apiUrl + '/usuarios', data);
   }
 
   userAdmin() {
@@ -26,6 +27,6 @@ export class UserService {
   }
 
   devolverEmail(data) {
-    return this.http.get<any>(Globals.apiUrl + '/email/'+data);
+    return this.http.get<any>(apiUrl + '/email/'+data);
   }
 }

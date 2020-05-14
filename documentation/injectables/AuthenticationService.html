@@ -339,7 +339,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>recoveryPassword1(nombre, email)</code>
+<code>recoveryPassword1(email)</code>
                 </td>
             </tr>
 
@@ -366,17 +366,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>nombre</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                    </td>
-                                </tr>
                                 <tr>
                                     <td>email</td>
 
@@ -715,11 +704,11 @@ export class AuthenticationService {
    * Envio de credenciales al servidor para su verificación.
    * Si es true, se inicia el proceso de recuperación de contraseña.
    */
-  recoveryPassword1(nombre, email) {
+  recoveryPassword1(/* nombre, */ email) {
     console.log(&quot;Dentro de autenticationService.recoveryPassword 1&quot;);
-    console.log(nombre);
+    // console.log(nombre);
     console.log(email);
-    return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/recoveryPass1&#x27;, { nombre, email },{ observe: &quot;response&quot;,  withCredentials: true,});
+    return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/recoveryPass1&#x27;, {/*  nombre,  */email },{ observe: &quot;response&quot;,  withCredentials: true,});
   }
   /**
    *

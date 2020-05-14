@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
   Administrador = false;
   error: string;
   email;
-  codigo: string = '';
+  codigo = '';
 
   user = {
     userName: '',
@@ -107,26 +107,20 @@ export class LoginComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         passwordRepeat: ['', Validators.required],
-        //image: ['', [Validators.required]],
-        // image: ['', [Validators.required, requiredFileType('png')]],
       },
       {
         validators: MustMatch('password', 'passwordRepeat'),
       }
     );
-    // get return url from route parameters or default to '/'
-    //  this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
-    this.recoveryPassword1Form = this.formBuilder.group({
-      // userName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
 
+    this.recoveryPassword1Form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
     });
     this.recoveryPassword2Form = this.formBuilder.group({
       codigo: ['', Validators.required],
     });
     this.recoveryPassword3Form = this.formBuilder.group(
       {
-      // email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       passwordRepeat: ['', Validators.required],
       },
@@ -264,38 +258,38 @@ export class LoginComponent implements OnInit {
    * @memberof LoginComponent
    */
 
-  comprobarRegistro(){
+  comprobarRegistro() {
 
-   var res =true;
-   var reg : RegExp = /^[0-9-a-zA-Z]+$/;
-   var reg2 : RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/;
-   var reg3 : RegExp =  /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,250}$/;
+   let res = true;
+   let reg: RegExp = /^[0-9-a-zA-Z]+$/;
+   let reg2: RegExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/;
+   let reg3: RegExp =  /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,250}$/;
 
-   if (this.rfc.userName.value.length>70){
-    this.information = "Has superado el límite de carácteres máximos en el campo usuario \n";
-    res=false;
-  }else if(reg.test(this.rfc.userName.value)==false){
-    this.information = "El campo usuario solo puede contener letras y numeros \n";
-    res=false;
+   if (this.rfc.userName.value.length > 70) {
+    this.information = 'Has superado el límite de carácteres máximos en el campo usuario \n';
+    res = false;
+  } else if (reg.test(this.rfc.userName.value) == false) {
+    this.information = 'El campo usuario solo puede contener letras y numeros \n';
+    res = false;
   }
 
-   if(this.rfc.email.value.length>100){
-    this.information = "Has superado el límite de carácteres máximos en el campo email \n";
-    res=false;
-  }else if(reg2.test(this.rfc.email.value)==false){
-    this.information = "Asegurese de estar introduciendo un email válido \n";
-    res=false;
+   if (this.rfc.email.value.length > 100) {
+    this.information = 'Has superado el límite de carácteres máximos en el campo email \n';
+    res = false;
+  } else if (reg2.test(this.rfc.email.value) == false) {
+    this.information = 'Asegurese de estar introduciendo un email válido \n';
+    res = false;
   }
 
-   if(reg3.test(this.rfc.password.value)==false){
-    this.information = "La contraseña tiene que tener como mínimo una mayuscula, un número y una mínuscula, ademas tiene que tener entre 6 y 250 carácteres \n";
-    res=false;
-  }else if(this.rfc.password.value != this.rfc.passwordRepeat.value){
-    this.information = "Las contraseñas tienen que coincidir \n";
-    res=false;
+   if (reg3.test(this.rfc.password.value) == false) {
+    this.information = 'La contraseña tiene que tener como mínimo una mayuscula, un número y una mínuscula, ademas tiene que tener entre 6 y 250 carácteres \n';
+    res = false;
+  } else if (this.rfc.password.value != this.rfc.passwordRepeat.value) {
+    this.information = 'Las contraseñas tienen que coincidir \n';
+    res = false;
   }
 
-   if(!res){
+   if (!res) {
     this.openInformationWindows();
   }
    return res;
@@ -304,16 +298,15 @@ export class LoginComponent implements OnInit {
   addUserDB() {
     this.userService.devolverEmail(this.rfc.email.value).subscribe(
       (data) => {
-        if(data==1){
-          this.information = "El email ya existe \n";
+        if (data == 1) {
+          this.information = 'El email ya existe \n';
           this.openInformationWindows();
-        }
-        else{
-          if(this.comprobarRegistro()){
+        } else {
+          if (this.comprobarRegistro()) {
             this.submittedRegister = true;
             console.log('registrando');
             if (this.registerForm.invalid) {
-              console.log("formulario invalido")
+              console.log('formulario invalido');
               return;
             }
             this.loading = true;
@@ -375,9 +368,9 @@ export class LoginComponent implements OnInit {
    */
   sendCredentialsDB() {
     this.submittedRecoveryPassword1 = true;
-    console.log("Dentro de sendCredentials");
-    if(this.recoveryPassword1Form.invalid) {
-      return
+    console.log('Dentro de sendCredentials');
+    if (this.recoveryPassword1Form.invalid) {
+      return;
     }
     this.email = this.rpc1.email.value;
     this.authenticationService
@@ -387,8 +380,7 @@ export class LoginComponent implements OnInit {
       if (results.body) {
         this.enviarPeticion = false;
         this.recoveryPassword2 = true;
-      }
-      else {
+      } else {
     //    this.closeRecoveryPassword1();
         this.loginOpen = true;
       }
@@ -402,28 +394,27 @@ export class LoginComponent implements OnInit {
    *  Envio de clave(código) para recuperar contraseña.
    */
   sendCodigo() {
-    console.log("Dentro de sendCodigo");
+    console.log('Dentro de sendCodigo');
     this.recoveryPassword2 = false;
     this.submittedRecoveryPassword2 = true;
-    if(this.recoveryPassword2Form.invalid) {
-      return
+    if (this.recoveryPassword2Form.invalid) {
+      return;
     }
 
     this.authenticationService
     .recoveryPassword2(this.rpc2.codigo.value)
     .subscribe((results) => {
       console.log(results);
-      if(results.body) {
+      if (results.body) {
         this.recoveryPassword3 = true;
-      }
-      else {
+      } else {
      //   this.closeRecoveryPassword2();
         this.loginOpen = true;
       }
     },
     (error) => {
       console.log(error);
-    })
+    });
   }
 
   /**
@@ -431,23 +422,21 @@ export class LoginComponent implements OnInit {
    *  Envio de nueva contraseña(email, password).
    */
   sendNewPassword() {
-    console.log("Dentro de sendNewPassword");
+    console.log('Dentro de sendNewPassword');
     this.submittedRecoveryPassword3 = true;
-    console.log("email:", this.rpc1.email.value);
+    console.log('email:', this.rpc1.email.value);
 
-     if(this.recoveryPassword3Form.invalid) {
-       return
+    if (this.recoveryPassword3Form.invalid) {
+       return;
     }
-
 
     this.authenticationService
      // .recoveryPassword3(this.rpc3.email.value, this.rpc3.password.value)
       .recoveryPassword3(this.rpc1.email.value, this.rpc3.password.value)
-
     .subscribe((results) => {
       console.log(results.body);
-      if(results.body) {
-        console.log("dentro de recoveryPassword3")
+      if (results.body) {
+        console.log('dentro de recoveryPassword3');
         this.recoveryPassword3 = false;
         this.modalService.dismissAll();
 
@@ -479,10 +468,7 @@ export class LoginComponent implements OnInit {
           }
         );
   	     // ^^^^  LOGEARSE AUTOMATICAMENTE ^^^^ ///////
-
-
-      }
-      else {
+      } else {
         this.closeRecoveryPassword3();
         this.loginOpen = true;
     //    this.modalService.dismissAll();
@@ -515,11 +501,11 @@ export class LoginComponent implements OnInit {
    * @param recoveryPassword2Modal
    */
   abrirModalPass2(recoveryPassword2Modal: any) {
-    console.log("Dentro de abrirModalPass2",recoveryPassword2Modal);
+    console.log('Dentro de abrirModalPass2', recoveryPassword2Modal);
     // cierra ventana login
     this.loginOpen = false;
     // cierra el modas recoveryPassword1 teoricamente
-    //this.closeRecoveryPassword1();
+    // this.closeRecoveryPassword1();
     // abre recoveryPassword2Modal
     this.recoveryPassword2Modal = this.modalService.open(recoveryPassword2Modal, {
       ariaLabelledBy: 'modal-basic-title',
@@ -532,7 +518,7 @@ export class LoginComponent implements OnInit {
    * @param recoveryPassword3Modal
    */
   abrirModalPass3(recoveryPassword3Modal: any) {
-    console.log("Dentro de abrirModalPass3");
+    console.log('Dentro de abrirModalPass3');
 
     this.loginOpen = false;
 
@@ -550,7 +536,7 @@ export class LoginComponent implements OnInit {
    *  Cierra la ventana modal(credenciales)
    */
   closeRecoveryPassword1() {
-    console.log("Dentro de close recoveryPassword1");
+    console.log('Dentro de close recoveryPassword1');
     this.modalService.dismissAll();
   }
 
@@ -558,7 +544,7 @@ export class LoginComponent implements OnInit {
    *  Cierra la ventana modal(código)
    */
   closeRecoveryPassword2() {
-    console.log("Dentro de close recoveryPassword2");
+    console.log('Dentro de close recoveryPassword2');
     this.modalService.dismissAll();
   }
 
@@ -566,7 +552,7 @@ export class LoginComponent implements OnInit {
    *  Cierra la ventana modal(nueva contraseña)
    */
   closeRecoveryPassword3() {
-    console.log("Dentro de close recoveryPassword2");
+    console.log('Dentro de close recoveryPassword2');
     this.modalService.dismissAll();
     this.router.navigate(['home']).then(() => window.location.reload());
   }

@@ -1264,13 +1264,19 @@ export class ListarautoresComponent implements OnInit {
                 <p class="comment">
                     <code>./listarautores.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">.selecionable:hover {
+                <pre class="line-numbers"><code class="language-scss">@import &#x27;src/styles/abstracts/variables&#x27;;
+
+.selecionable:hover {
     cursor: pointer;
     opacity: 0.7;
 }
 
 .container {
     margin-top: 90px;
+}
+
+.card-header {
+    background-color: $orange-800;
 }
 </code></pre>
     </div>

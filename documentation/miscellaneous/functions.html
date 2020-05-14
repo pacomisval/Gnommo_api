@@ -67,7 +67,7 @@
                             <a href="#checkLengthString" title="src/app/_helpers/checkField.validator.ts"><b>checkLengthString</b>&nbsp;&nbsp;&nbsp;(src/.../checkField.validator.ts)</a>
                         </li>
                         <li>
-                            <a href="#comprobacionFinal" title="src/app/_helpers/checkField.validator.ts"><b>comprobacionFinal</b>&nbsp;&nbsp;&nbsp;(src/.../checkField.validator.ts)</a>
+                            <a href="#comprobarLetras" title="src/app/_helpers/checkField.validator.ts"><b>comprobarLetras</b>&nbsp;&nbsp;&nbsp;(src/.../checkField.validator.ts)</a>
                         </li>
                         <li>
                             <a href="#MustMatch" title="src/app/_helpers/mustmach.validator.ts"><b>MustMatch</b>&nbsp;&nbsp;&nbsp;(src/.../mustmach.validator.ts)</a>
@@ -202,7 +202,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>checkLengthString(texto, maximo)</code>
+<code>checkLengthString(texto, maximo, campo)</code>
                 </td>
             </tr>
 
@@ -240,6 +240,15 @@
 
 
                                 </tr>
+                                <tr>
+                                    <td>campo</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -253,18 +262,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="comprobacionFinal"></a>
+                    <a name="comprobarLetras"></a>
                     <span class="name">
                         <b>
-                            comprobacionFinal
+                            comprobarLetras
                         </b>
-                        <a href="#comprobacionFinal"><span class="icon ion-ios-link"></span></a>
+                        <a href="#comprobarLetras"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>comprobacionFinal(resultados)</code>
+<code>comprobarLetras(valor)</code>
                 </td>
             </tr>
 
@@ -285,7 +294,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>resultados</td>
+                                    <td>valor</td>
 
                                     <td>
                                         No
@@ -328,6 +337,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Verificar que dos campos coincidan</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -336,6 +347,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -347,6 +359,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>Campo principal</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>matchingControlName</td>
@@ -356,6 +372,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>Campo a comparar</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

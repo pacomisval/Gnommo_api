@@ -1,6 +1,4 @@
 @import 'src/styles/abstracts/variables';
-
-
 .container {
     margin-top: 150px;
 }
@@ -9,3 +7,16 @@
     background-color: $orange-800;
 }
 
+#inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile--label:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}

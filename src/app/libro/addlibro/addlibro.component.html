@@ -7,7 +7,8 @@
     <div class="card-body">
         <form [formGroup]="bookForm" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="selectAutores">Selecciona el autor</label><br />
+                <label for="selectedAutores" class="text-danger" *ngIf="sumitted && this.bookForm.controls.selectedAuthor.errors ">Selecciona el autor</label>
+                <!-- <label for="selectAutores" [ngClass]="{ 'is-invalid':sumitted && this.bookForm.controls.selectedAuthor.errors }">Selecciona el autor</label><br /> -->
                 <select formControlName="selectedAuthor" (change)="changeAuthor($event)">
                   <option value="" disabled>Selecciona el autor</option>
                   <option [ngValue]="autor" *ngFor="let autor of authors">
@@ -17,21 +18,21 @@
             </div>
             <div class="form-group">
                 <label for="title">Titulo:</label>
-                <input type="text" class="form-control" id="title" formControlName="title" />
+                <input type="text" class="form-control" id="title" formControlName="title" [ngClass]="{ 'is-invalid':sumitted && this.bookForm.controls.title.errors }" />
             </div>
             <div class="form-group">
                 <label for="isbn">Isbn:</label>
-                <input class="form-control" id="isbn" formControlName="isbn" />
+                <input class="form-control" id="isbn" formControlName="isbn" [ngClass]="{ 'is-invalid':sumitted && this.bookForm.controls.isbn.errors }" />
             </div>
 
             <div class="form-group">
                 <label for="genero">Género:</label>
-                <input class="form-control" id="genero" formControlName="genero" />
+                <input class="form-control" id="genero" formControlName="genero" [ngClass]="{ 'is-invalid':sumitted && this.bookForm.controls.genero.errors }" />
             </div>
 
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <input class="form-control" id="descripcion" formControlName="descripcion" />
+                <input class="form-control" id="descripcion" formControlName="descripcion" [ngClass]="{ 'is-invalid':sumitted && this.bookForm.controls.descripcion.errors }" />
             </div>
 
 
@@ -59,7 +60,10 @@
             </div>
             <form [formGroup]="form" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="inputFile" class="form-control-file">Imagen del libro</label>
+                    <!-- <label for="inputFile" class="form-control-file">Imagen del libro</label> -->
+                    <!-- <label class="inputfile--label form-control-file" for="inputfile"> -->
+                    <!-- <img id="uploadPreview" style="width: 100px; height: 100px;" [src]="imgBook" alt="Image preview"> -->
+                    <!-- </label>
                     <table>
                         <tbody>
                             <tr>
@@ -71,7 +75,19 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
+                    <p>Selecciona una imagen</p>
+                    <label class="inputfile--label" for="inputfile">
+                      <div *ngIf="previewURL" >
+                      <img id="uploadPreview" style="width: 100px; height: 100px;" [src]="previewURL" alt="Image preview">
+                    </div>
+                    <div *ngIf="!previewURL" >
+                    <img src="./../../../assets/images/book/2121212121.jpg" style="width: 100px; height: 100px;">
+                  </div>
+                    </label>
+
+                    <input id="inputfile" type="file" accept="image/*" (change)="onFileChange($event)" formControlName="imgBook" name="imgBook" />
+
                 </div>
             </form>
         </div>

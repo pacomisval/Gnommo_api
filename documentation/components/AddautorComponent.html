@@ -944,7 +944,7 @@ export class AddautorComponent implements OnInit {
 
     var hoy &#x3D; new Date();
     var fecha &#x3D; new Date(this.afc.fecha.value);
-      
+
     console.log(this.afc.first_name.value)
     console.log(this.afc.last_name.value)
     console.log(this.afc.nacionalidad.value)
@@ -974,7 +974,7 @@ export class AddautorComponent implements OnInit {
           res&#x3D;false;
         }
 
-        if(fecha.getTime()&gt;hoy.getTime()/*  || !Date.parse(fecha) */){
+        if(fecha.getTime()&gt;hoy.getTime()){
           this.information &#x3D; &quot;-Asegurese de estar introduciendo una fecha válida&quot;;
           res&#x3D;false;
        }
@@ -984,7 +984,7 @@ export class AddautorComponent implements OnInit {
     if(!res){
       this.openInformationWindows();
     }
-    
+
     return res;
    }
 
@@ -1033,9 +1033,9 @@ export class AddautorComponent implements OnInit {
   backRoute() {
     if (this.authorService.comesAddLibro) {
       this.authorService.comesAddLibro &#x3D; false;
-      this.router.navigate([&#x27;agregarLibro&#x27;]);
+      this.router.navigate([&#x27;addLibro&#x27;]);
     } else {
-      this.router.navigate([&#x27;listarAutores&#x27;]);
+      this.router.navigate([&#x27;autores&#x27;]);
     }
   }
 
@@ -1060,7 +1060,7 @@ export class AddautorComponent implements OnInit {
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container&quot;&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container pt-5 mt-5&quot;&gt;
     &lt;div class&#x3D;&quot;card&quot;&gt;
         &lt;div class&#x3D;&quot;card-header&quot;&gt;
             &lt;h3&gt;Agregar Autor&lt;/h3&gt;
@@ -1139,7 +1139,15 @@ export class AddautorComponent implements OnInit {
                 <p class="comment">
                     <code>./addautor.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss"></code></pre>
+                <pre class="line-numbers"><code class="language-scss">@import &#x27;src/styles/abstracts/variables&#x27;;
+
+.container {
+    margin-top: 150px;
+}
+
+.card-header {
+    background-color: $orange-800;
+}</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-tree">
@@ -1167,7 +1175,7 @@ export class AddautorComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="container">    <div class="card">        <div class="card-header">            <h3>Agregar Autor</h3>        </div>    </div>    <div class="card-body">         <form [formGroup]="authorForm" >         <!-- <form name="authorForm">  -->            <div class="form-group">                <label for="first_name">Nombre:</label>                <!-- <input type="text" class="form-control" formControlName="first_name" [(ngModel)]="autor.first_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.first_name.errors }" /> -->                <input type="text" class="form-control" formControlName="first_name"  [ngClass]="{ \'is-invalid\': submittedAuthor && afc.first_name.errors }" />                                                          <div *ngIf="submittedAuthor && afc.first_name.errors" class="invalid-feedback">                    <div *ngIf="afc.first_name.errors.required">Nombre is required</div>                </div>            </div>            <div class="form-group">                <label for="">Apellido:</label>                <!-- <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.last_name.errors }" /> -->                <input class="form-control" type="text" formControlName="last_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.last_name.errors }" />                                             <div *ngIf="submittedAuthor && afc.last_name.errors" class="invalid-feedback">                    <div *ngIf="afc.last_name.errors.required">Apellido is required</div>                </div>            </div>            <div class="form-group">                <label for="">Nacionalidad:</label>                <!-- <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.last_name.errors }" /> -->                <input class="form-control" type="text" formControlName="nacionalidad" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.nacionalidad.errors }" />                                             <div *ngIf="submittedAuthor && afc.nacionalidad.errors" class="invalid-feedback">                    <div *ngIf="afc.nacionalidad.errors.required">Nacionalidad is required</div>                </div>            </div>            <div class="form-group">                <label for="">Fecha de nacimiento:</label>                <!-- <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.last_name.errors }" /> -->                <input type="date" class="form-control" formControlName="fecha" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.fecha.errors }" />                                             <div *ngIf="submittedAuthor && afc.fecha.errors" class="invalid-feedback">                    <div *ngIf="afc.fecha.errors.required">Fecha de nacimiento is required</div>                </div>            </div>        </form>        <button type="button" (click)="Guardar()" class="btn btn-danger">Guardar</button>    </div></div><!-- VENTANA MODAL INFORMATIVA --><ng-template #modalInformation let-modal>    <div class="modal-header">        <h4 class="modal-title" id="modal-basic-title">Gnomo`s Librery</h4>        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(\'Cross click\')"><span aria-hidden="true">&times;</span></button>    </div>    <div class="modal-body">        <p id="error">{{information}}</p>    </div>    <div class="modal-footer">        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">         Cerrar      </button>    </div></ng-template></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="container pt-5 mt-5">    <div class="card">        <div class="card-header">            <h3>Agregar Autor</h3>        </div>    </div>    <div class="card-body">         <form [formGroup]="authorForm" >         <!-- <form name="authorForm">  -->            <div class="form-group">                <label for="first_name">Nombre:</label>                <!-- <input type="text" class="form-control" formControlName="first_name" [(ngModel)]="autor.first_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.first_name.errors }" /> -->                <input type="text" class="form-control" formControlName="first_name"  [ngClass]="{ \'is-invalid\': submittedAuthor && afc.first_name.errors }" />                                                          <div *ngIf="submittedAuthor && afc.first_name.errors" class="invalid-feedback">                    <div *ngIf="afc.first_name.errors.required">Nombre is required</div>                </div>            </div>            <div class="form-group">                <label for="">Apellido:</label>                <!-- <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.last_name.errors }" /> -->                <input class="form-control" type="text" formControlName="last_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.last_name.errors }" />                                             <div *ngIf="submittedAuthor && afc.last_name.errors" class="invalid-feedback">                    <div *ngIf="afc.last_name.errors.required">Apellido is required</div>                </div>            </div>            <div class="form-group">                <label for="">Nacionalidad:</label>                <!-- <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.last_name.errors }" /> -->                <input class="form-control" type="text" formControlName="nacionalidad" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.nacionalidad.errors }" />                                             <div *ngIf="submittedAuthor && afc.nacionalidad.errors" class="invalid-feedback">                    <div *ngIf="afc.nacionalidad.errors.required">Nacionalidad is required</div>                </div>            </div>            <div class="form-group">                <label for="">Fecha de nacimiento:</label>                <!-- <input class="form-control" formControlName="last_name" required [(ngModel)]="autor.last_name" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.last_name.errors }" /> -->                <input type="date" class="form-control" formControlName="fecha" [ngClass]="{ \'is-invalid\': submittedAuthor && afc.fecha.errors }" />                                             <div *ngIf="submittedAuthor && afc.fecha.errors" class="invalid-feedback">                    <div *ngIf="afc.fecha.errors.required">Fecha de nacimiento is required</div>                </div>            </div>        </form>        <button type="button" (click)="Guardar()" class="btn btn-danger">Guardar</button>    </div></div><!-- VENTANA MODAL INFORMATIVA --><ng-template #modalInformation let-modal>    <div class="modal-header">        <h4 class="modal-title" id="modal-basic-title">Gnomo`s Librery</h4>        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(\'Cross click\')"><span aria-hidden="true">&times;</span></button>    </div>    <div class="modal-body">        <p id="error">{{information}}</p>    </div>    <div class="modal-footer">        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">         Cerrar      </button>    </div></ng-template></div>'
     var COMPONENTS = [{'name': 'AddautorComponent', 'selector': 'app-addautor'},{'name': 'AddlibroComponent', 'selector': 'app-addlibro'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'ListarautoresComponent', 'selector': 'app-listarautores'},{'name': 'ListarComponent', 'selector': 'app-listar'},{'name': 'LoginComponent', 'selector': 'app-login'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'AddautorComponent'};

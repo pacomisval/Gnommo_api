@@ -5,7 +5,7 @@ import { AuthorService } from 'src/app/services/author.service';
 import { Author } from 'src/app/models/author';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UploadService } from '../../services/upload.service';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { HashLocationStrategy } from '@angular/common';
 import {
   checkLengthString,
@@ -30,6 +30,7 @@ export class AddlibroComponent implements OnInit {
   form: FormGroup;
   file: any;
   uploadResponse = { status: '', message: '', filePath: ''};
+  sumitted = false;
   /**
    * Creates an instance of AddlibroComponent.
    * @param {Router} router Necesario para enrutar
@@ -45,9 +46,12 @@ export class AddlibroComponent implements OnInit {
     private formBuilder: FormBuilder,
     private uploadService: UploadService
   ) {}
-  previewURL;
-  imgBook;
-  bookForm: FormGroup;
+  previewURL = null;
+  previewURL1 = "./../../../assets/images/book/2121212121.jpg";
+
+  imgBook = null;
+  // imgBook = null;
+    bookForm: FormGroup;
   fileData: File;
   // fileForm: FormGroup;
   error: string;
@@ -99,12 +103,12 @@ export class AddlibroComponent implements OnInit {
    */
   ngOnInit() {
     this.bookForm = this.formBuilder.group({
-      title: '',
-      isbn: '',
-      genero: '',
-      descripcion: '',
-      imgBook: null,
-      selectedAuthor: [''],
+      title: ['', Validators.required],
+      isbn: ['', Validators.required],
+      genero: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      // imgBook: null,
+      selectedAuthor: ['', Validators.required],
     });
     this.book.title = localStorage.getItem('titulo');
     this.book.isbn = localStorage.getItem('isbn');
@@ -115,7 +119,8 @@ export class AddlibroComponent implements OnInit {
     this.getLibros();
     this.form = new FormGroup({
       avatar: new FormControl()
-   });
+    });
+
   }
 
   // comprobacionFinal(resultados) {
@@ -166,14 +171,24 @@ export class AddlibroComponent implements OnInit {
     this.message = '';
     let text = '';
 
-    text = checkLengthString(title, 50,'titulo');
+    if (this.imgBook == null) {
+    //  console.log("NULO********************");
+      text = 'Tienes que seleccionar una imagen.\n';
+      checkOK = false;
+      this.message += text;
+      text = '';
+    } else {
+      console.log('NO NULO********************');
+    }
+
+    text = checkLengthString(title, 50, 'titulo');
     if (text != '') {
       checkOK = false;
       this.message += text;
       text = '';
     }
 
-    text = checkLengthString(isbn, 15,'isbn');
+    text = checkLengthString(isbn, 15, 'isbn');
     if (text != '') {
       checkOK = false;
       this.message += text;
@@ -195,14 +210,14 @@ export class AddlibroComponent implements OnInit {
       console.log('isbn no no no no repetido');
     }
 
-    if(comprobarLetras(this.bookForm.value.genero)!=''){
+    if (comprobarLetras(this.bookForm.value.genero) != '') {
       this.message += comprobarLetras(this.bookForm.value.genero);
-      checkOK =false;
+      checkOK = false;
     }
 
-    text = checkLengthString(this.bookForm.value.genero, 50,'isbn');
-    if(checkLengthString(this.bookForm.value.genero,50,'genero')!=''){
-      checkOK =false;
+    text = checkLengthString(this.bookForm.value.genero, 50, 'isbn');
+    if (checkLengthString(this.bookForm.value.genero, 50, 'genero') != '') {
+      checkOK = false;
       this.message += text;
       text = '';
     }
@@ -219,20 +234,20 @@ export class AddlibroComponent implements OnInit {
 
   checkIsbnExits(isbn) {
     let finFor = false;
-    let check = false;
+    const check = false;
     console.log('entra en isbn', isbn);
 
-    var i = 0;
-    while(!finFor && i<this.books.length){
+    let i = 0;
+    while (!finFor && i < this.books.length) {
       console.log(i);
-      if(this.books[i].isbn==isbn){
-        console.log("aqui estoy rafa"+ this.books[i]);
+      if (this.books[i].isbn == isbn) {
+        console.log('aqui estoy rafa' + this.books[i]);
         finFor = true;
-        console.log("--------------------------",i);
+        console.log('--------------------------', i);
         this.message  += 'El libro que intenta introducir ya existe \n';
 
       }
-        i++;
+      i++;
 
     }
     return finFor;
@@ -241,7 +256,12 @@ export class AddlibroComponent implements OnInit {
 
   addBook() {
     console.log('addbook_____');
+
+    this.sumitted = true;
     console.log(this.bookForm.value);
+    if (this.bookForm.invalid) {
+      return;
+    }
     this.checkForm();
 
     if (localStorage.getItem('comprobar') == 'bien') {
@@ -333,15 +353,15 @@ export class AddlibroComponent implements OnInit {
       id: '',
       titulo: this.bookForm.value.title,
       isbn: this.bookForm.value.isbn,
-      genero:this.bookForm.value.genero,
-      descripcion:this.bookForm.value.descripcion,
+      genero: this.bookForm.value.genero,
+      descripcion: this.bookForm.value.descripcion,
       id_author: this.id_author,
       extension:  this.imgBook.name.substr(this.imgBook.name.lastIndexOf('.') + 1),
   };
   console.log('data:::::::::::::', data);
   this.bookService.createBook(data).subscribe(
     (results) => {
-        this.uploadFile();  //////no es su sitio
+        this.uploadFile();  ////// no es su sitio
         this.message = 'Libro añadido';
         this.openInformationWindows();
         this.router.navigate(['libros']);
@@ -370,8 +390,8 @@ export class AddlibroComponent implements OnInit {
    */
   uploadFile() {
     console.log('entra en uploadFile');
-    let formData = new FormData();
-    //formData.append('uploadFile', this.form.get('avatar').value);
+    const formData = new FormData();
+    // formData.append('uploadFile', this.form.get('avatar').value);
     formData.append('uploadFile', this.file);
 
 

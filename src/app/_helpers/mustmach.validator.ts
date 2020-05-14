@@ -1,6 +1,13 @@
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validator, FormControl } from '@angular/forms';
 
-// custom validator to check that two fields match
+/**
+ * Verificar que dos campos coincidan
+ *
+ * @export
+ * @param {string} controlName Campo principal
+ * @param {string} matchingControlName Campo a comparar
+ * @returns
+ */
 export function MustMatch(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
         const control = formGroup.controls[controlName];
@@ -16,4 +23,14 @@ export function MustMatch(controlName: string, matchingControlName: string) {
             matchingControl.setErrors(null);
         }
     };
+}
+
+export class FileValidator implements Validator {
+  static validate(c: FormControl): {[key: string]: any} {
+      return c.value == null || c.value.length == 0 ? { "required" : true} : null;
+  }
+
+  validate(c: FormControl): {[key: string]: any} {
+      return FileValidator.validate(c);
+  }
 }
