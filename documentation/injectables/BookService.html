@@ -139,7 +139,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/services/book.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/services/book.service.ts:11</a></div>
                             </td>
                         </tr>
 
@@ -204,8 +204,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/app/services/book.service.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">src/app/services/book.service.ts:56</a></div>
                 </td>
             </tr>
 
@@ -270,8 +270,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">src/app/services/book.service.ts:63</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/app/services/book.service.ts:67</a></div>
                 </td>
             </tr>
 
@@ -336,8 +336,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="14"
-                            class="link-to-prism">src/app/services/book.service.ts:14</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="19"
+                            class="link-to-prism">src/app/services/book.service.ts:19</a></div>
                 </td>
             </tr>
 
@@ -375,8 +375,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="24"
-                            class="link-to-prism">src/app/services/book.service.ts:24</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="28"
+                            class="link-to-prism">src/app/services/book.service.ts:28</a></div>
                 </td>
             </tr>
 
@@ -445,8 +445,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/app/services/book.service.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="23"
+                            class="link-to-prism">src/app/services/book.service.ts:23</a></div>
                 </td>
             </tr>
 
@@ -515,8 +515,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="77"
-                            class="link-to-prism">src/app/services/book.service.ts:77</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="81"
+                            class="link-to-prism">src/app/services/book.service.ts:81</a></div>
                 </td>
             </tr>
 
@@ -554,8 +554,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="41"
-                            class="link-to-prism">src/app/services/book.service.ts:41</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/app/services/book.service.ts:45</a></div>
                 </td>
             </tr>
 
@@ -620,8 +620,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/app/services/book.service.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/app/services/book.service.ts:32</a></div>
                 </td>
             </tr>
 
@@ -686,8 +686,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="57"
-                            class="link-to-prism">src/app/services/book.service.ts:57</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/app/services/book.service.ts:61</a></div>
                 </td>
             </tr>
 
@@ -756,7 +756,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/services/book.service.ts:10</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/services/book.service.ts:11</a></div>
                             </td>
                         </tr>
 
@@ -772,6 +772,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
 import { HttpClient, HttpParams } from &#x27;@angular/common/http&#x27;;
 import { Globals } from &#x27;../Global&#x27;;
+import { apiUrl } from &#x27;../_helpers/index&#x27;;
 
 
 @Injectable({
@@ -782,18 +783,21 @@ export class BookService {
 
   constructor(private http: HttpClient) {}
 
+  // getAll() {
+  //   console.log(apiUrl);
+  //   return this.http.get&lt;any&gt;(apiUrl + &#x27;/libros/all&#x27;);
+  // }
   getAll() {
-    console.log(Globals.apiUrl);
-    return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/libros/all&#x27;);
+    console.log(apiUrl);
+    return this.http.get&lt;any&gt;(apiUrl + &#x27;/libros/all&#x27;);
   }
-
   getBookId(id: number) {
     console.log(&#x60;id ${id}&#x60;);
-    return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/libros/&#x27; + id);
+    return this.http.get&lt;any&gt;(apiUrl + &#x27;/libros/&#x27; + id);
   }
 
   getBookFromAutor(id: number) {
-    return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/libros/autor/&#x27; + id);
+    return this.http.get&lt;any&gt;(apiUrl + &#x27;/libros/autor/&#x27; + id);
   }
 
   obtenerLibrosPorAutor(data) {
@@ -805,7 +809,7 @@ export class BookService {
     // Begin assigning parameters
     Params &#x3D; Params.append(&#x27;firstParameter&#x27;, data.nombre);
     Params &#x3D; Params.append(&#x27;secondParameter&#x27;, data.apellido);
-    return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/filtrar&#x27;, { params: Params }); // BUG .....
+    return this.http.get&lt;any&gt;(apiUrl + &#x27;/filtrar&#x27;, { params: Params }); // BUG .....
 
   }
 
@@ -817,22 +821,22 @@ export class BookService {
     // Begin assigning parameters
     Params &#x3D; Params.append(&#x27;firstParameter&#x27;, data.nombre);
     console.log(Params);
-    return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/buscarLibro&#x27;, { params: Params }); // BUG .....
+    return this.http.get&lt;any&gt;(apiUrl + &#x27;/buscarLibro&#x27;, { params: Params }); // BUG .....
   }
 
   createBook(data) {
     console.log(data);
-    return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/libros&#x27;, data);
+    return this.http.post&lt;any&gt;(apiUrl + &#x27;/libros&#x27;, data);
   }
 
   updateBook(data) {
     console.log(&#x27;entra en updateBook&#x27;);
     console.log(data);
-    return this.http.put&lt;any&gt;(Globals.apiUrl + &#x27;/libros/&#x27; + data.id, data);
+    return this.http.put&lt;any&gt;(apiUrl + &#x27;/libros/&#x27; + data.id, data);
   }
 
   deleteBook(id) {
-    return this.http.delete&lt;any&gt;(Globals.apiUrl + &#x27;/libros/&#x27; + id);
+    return this.http.delete&lt;any&gt;(apiUrl + &#x27;/libros/&#x27; + id);
   }
   // obtenerLibro(data) {
   //   // Initialize Params Object
@@ -842,7 +846,7 @@ export class BookService {
   //   console.log(data.nombre);
   //   // Begin assigning parameters
   //   Params &#x3D; Params.append(&#x27;firstParameter&#x27;, data.nombre);
-  //   return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/buscarLibro&#x27;, { params: Params }); // BUG .....
+  //   return this.http.get&lt;any&gt;(apiUrl + &#x27;/buscarLibro&#x27;, { params: Params }); // BUG .....
 
   // }
   getLibros() {

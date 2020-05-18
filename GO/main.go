@@ -59,7 +59,7 @@ type Libro2 struct {
 	LastName    string `json:"last_name"`
 }
 
-type Autor struct { //TODO MODIFICADO
+type Autor struct {
 	Id              string `json:"id"`
 	FirstName       string `json:"first_name"`
 	LastName        string `json:"last_name"`
@@ -76,6 +76,7 @@ type Usuario struct {
 	Tok      string `json:"tok"`
 	Codigo   string `json:"codigo"`
 }
+
 type Claims struct {
 	//Id     uint
 	Nombre string
@@ -317,7 +318,7 @@ func obtenerLibro(w http.ResponseWriter, r *http.Request) {
 
 	var libros []Libro2
 
-	// result, err := db.Query("SELECT * FROM books WHERE nombre LIKE ?", &nombre)  , a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id                                               //BUG
+	// result, err := db.Query("SELECT * FROM books WHERE nombre LIKE ?", &nombre)  , a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id                                               // REVIEW
 	//	result, err := db.Query("SELECT b.id,b.nombre,b.isbn,b.genero,b.descripcion,b.idAutor,b.portada, a.first_name, a.last_name FROM books b WHERE nombre LIKE ? INNER JOIN autor a ON b.idAutor = a.id ", &nombre) //BUG
 	result, err := db.Query("SELECT b.id,b.nombre,b.isbn,b.genero,b.descripcion,b.idAutor,b.portada, a.first_name, a.last_name FROM books b INNER JOIN autor a ON b.idAutor = a.id AND b.nombre LIKE ? ", &nombre) //BUG
 
@@ -329,7 +330,7 @@ func obtenerLibro(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var libro Libro2
-		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.Genero, &libro.Descripcion, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName) //BUG
+		err := result.Scan(&libro.Id, &libro.Nombre, &libro.Isbn, &libro.Genero, &libro.Descripcion, &libro.IdAutor, &libro.Portada, &libro.FirstName, &libro.LastName) // FIXME
 		if err != nil {
 			fmt.Println("error4 AQUI ", err)
 		}
@@ -341,10 +342,10 @@ func obtenerLibro(w http.ResponseWriter, r *http.Request) {
 }
 
 func encontrarEmail(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Entra a encontrarEmail rafa ")
+	//	fmt.Println("Entra a encontrarEmail rafa ")
 	params := mux.Vars(r)
 	email := params["email"]
-	fmt.Println(email)
+	//	fmt.Println(email)
 	rows, err2 := db.Query("Select count(*) FROM usuarios where email like ?", &email)
 	var count int
 	if err2 != nil {
@@ -352,7 +353,8 @@ func encontrarEmail(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		if err := rows.Scan(&count); err != nil {
+		err := rows.Scan(&count)
+		if err != nil {
 			fmt.Println(err)
 		}
 	}
@@ -592,37 +594,28 @@ func nuevoPassword(w http.ResponseWriter, r *http.Request) {
 /////////////////////////////  LOGIN ///////////////////////////////////////////////////////
 
 func login(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("entra en login ")
-
+	//	fmt.Println("entra en login ")
 	user := &Usuario{}
 	err := json.NewDecoder(r.Body).Decode(user)
-
 	if err != nil {
 		var resp = map[string]interface{}{"status": false, "message": "Invalid request"}
 		json.NewEncoder(w).Encode(resp)
 		return
 	}
-	fmt.Println("Va a encontrar usuario: ")
-
-	value := encontrarUsuario(user.Password, user.Email)
-	fmt.Println("Vuelve encontrar usuario: ")
-
+	// fmt.Println("Va a encontrar usuario: ")
+	value := encontrarUsuario(user.Password, user.Email) // NOTE 1 busca
+	//	fmt.Println("Vuelve encontrar usuario: ")
 	crearCookie(w, r, value)
-
-	fmt.Println("valor de value: ", value)
-
+	// fmt.Println("valor de value: ", value)
 	json.NewEncoder(w).Encode(value)
-	fmt.Println("El valor de W: ", w)
-
+	//	fmt.Println("El valor de W: ", w)
 	return
 }
 
 //////////////////////////////////////////  TOKEN  ////////////////////////////////////////
 
 func encontrarUsuario(password, email string) Value {
-
-	fmt.Println("DENTRO DE ENCONTRAR USUARIO")
-
+	//	fmt.Println("DENTRO DE ENCONTRAR USUARIO")
 	var user []Usuario
 	var ok bool
 	var id string
@@ -638,15 +631,18 @@ func encontrarUsuario(password, email string) Value {
 	if err != nil {
 		panic(err.Error())
 	}
+
 	defer result.Close()
+
 	for result.Next() {
 		resultVacio = false
-		fmt.Println("entra en for result.next")
+		//  fmt.Println("entra en for result.next")
 		var usuario Usuario
 		err := result.Scan(&usuario.Id, &usuario.Nombre, &usuario.Password, &usuario.Email, &usuario.Rol, &usuario.Tok, &usuario.Codigo)
 		if err != nil {
 			panic(err.Error())
 		}
+
 		user = append(user, usuario)
 		id = usuario.Id
 		nombre = usuario.Nombre
@@ -654,11 +650,9 @@ func encontrarUsuario(password, email string) Value {
 		mail = usuario.Email
 		rol = usuario.Rol
 	}
-
-	fmt.Println("ESTO ES ID EN ENCONTRAR USUARIO: ", id)
+	//	fmt.Println("ESTO ES LA ID EN ENCONTRAR USUARIO: ", id)
 
 	if resultVacio {
-
 		Id := "0"
 		Nombre := "error"
 		Rol := "NO se ha encontrado el Email"
@@ -702,18 +696,17 @@ func encontrarUsuario(password, email string) Value {
 
 	value := Value{id, nombre, rol, tokenString}
 
-	fmt.Println("")
-	fmt.Println("value de id: ", id)
-	fmt.Println("value de nombre: ", nombre)
-	fmt.Println("value de rol: ", rol)
-	fmt.Println("value de tokenstring: ", tokenString)
-	fmt.Println("")
+	// fmt.Println("")
+	// fmt.Println("value de id: ", id)
+	// fmt.Println("value de nombre: ", nombre)
+	// fmt.Println("value de rol: ", rol)
+	// fmt.Println("value de tokenstring: ", tokenString)
+	// fmt.Println("")
 
 	return value
 }
 
 func guardarToken(token, id string) {
-
 	var iddb string
 	var nombre string
 	var passwd string
@@ -726,6 +719,7 @@ func guardarToken(token, id string) {
 	if err != nil {
 		panic(err.Error())
 	}
+
 	defer result.Close()
 
 	var usuario Usuario
@@ -738,7 +732,7 @@ func guardarToken(token, id string) {
 	}
 
 	length := len(token)
-	fmt.Println("El tamaño de length: ", length)
+	// fmt.Println("El tamaño de length: ", length)
 	if length >= 11 {
 		iddb = usuario.Id
 		nombre = usuario.Nombre
@@ -767,8 +761,7 @@ func guardarToken(token, id string) {
 		panic(err.Error())
 	}
 
-	fmt.Println("ESTO ES GUARDAR TOKEN")
-
+	// fmt.Println("ESTO ES GUARDAR TOKEN")
 }
 
 func recuperarToken(id string) string {
@@ -1004,7 +997,7 @@ func verificarCookies(w http.ResponseWriter, r *http.Request) int {
 
 	resp := verificarToken(tknStr, secret)
 
-	if resp == 0 {
+	if resp == 0 { // NOTE refresca token
 		token := crearToken(usuario.Id, usuario.Nombre, usuario.Email)
 
 		var value Value
@@ -1161,7 +1154,7 @@ func getLibros(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(libros)
 
-	fmt.Println("ESTO ES GET LIBROS")
+	//	fmt.Println("ESTO ES GET LIBROS")
 }
 
 /////////////// GET LIBROS POR AUTOR ///////////////////////////

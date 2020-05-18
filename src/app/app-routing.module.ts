@@ -10,7 +10,7 @@ import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './home/home.component';
 
 
-const routes: Routes = [
+const routes: Routes = [ //FIXME ARREGLAR NOMBRE RUTAS
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent},
   { path: 'libros', component: ListarComponent },

@@ -2,17 +2,13 @@
 
 ### Todo
 
-- [ ] Tema Cookies  
-- [ ] Añadir imagenes  
-- [ ] Comprobar en libro si esta duplicado  
-- [ ] Comprobar si existe el autor  
-
+- [ ] CAMBIAR NOMBRE RUTAS (SIN VERBOS, COHERENCIA IDIOMAS)
+- [ ] METER MAS FILTROS
+- [ ] añadir dentro de cada pagina
+- [ ] eliminar autor en cascada con informacion;
+- [ ] No mezclar idiomas;
+- [ ] Revisar validar email en registrarse
 ### In Progress
 
-- [ ] Cambiar nombre rutas a mas amigables  
 
 ### Done ✓
-
-- [x] Corregir Añadir libro problema FK  
-- [x] Ventanas modales  
-

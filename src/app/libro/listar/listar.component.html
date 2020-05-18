@@ -6,11 +6,10 @@
             <div class="busqueda-input">
                 <label for="filtro" class="ml-5 pt-2">Buscar por:</label>
                 <select name="filtro" (click)="cambiarBusqueda()" id="filtro" class="ml-2" formControlName="filtro">
-                <option value="autor">Autor</option>
-                <option value="libro">Libro</option>
-            </select>
+          <option value="autor" selected>Autor</option>
+          <option value="libro">Libro</option>
+        </select>
                 <label for="contenido" id="textoBusqueda" class="ml-5">{{textoBusqueda}}</label>
-
             </div>
             <ng-container *ngIf="buscarXautor; then autorTemplate; else tituloTemplate">
                 <div class="busqueda-input"></div>
@@ -19,8 +18,8 @@
                 <div class="busqueda-input">
                     <input type="text" list="autores" (change)="buscar()" class="ml-2" formControlName="texto" />
                     <datalist id="autores">
-                    <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
-                </datalist>
+            <option *ngFor="let autor of authors">{{autor.first_name}}&nbsp;{{autor.last_name}}</option>
+          </datalist>
                 </div>
             </ng-template>
             <ng-template #tituloTemplate>
@@ -194,17 +193,12 @@
                 <div class="row">
                     <div class="col">
                         <p>Autor&nbsp;</p>
-
-                        <input type="text" list="autores" (change)="buscar()" class="ml-2" formControlName="textoSelect" [(ngModel)]="textoSelect" placeholder="{{book.first_name}}&nbsp;{{book.last_name}}" />
-                        <datalist id="autores">
+                        <input type="text" list="autores1" (change)="buscar()" class="ml-2" formControlName="textoSelect" [(ngModel)]="textoSelect" placeholder="{{book.first_name}}&nbsp;{{book.last_name}}" />
+                        <datalist id="autores1">
                     <option *ngFor="let autor of authors" >
-                      {{autor.id}}
-                      &nbsp;{{autor.first_name}}&nbsp;{{autor.last_name}}
+                      {{autor.id}} &nbsp;{{autor.first_name}}&nbsp;{{autor.last_name}}
                     </option>
-
                   </datalist>
-
-
                     </div>
                     <div class="col">
                         <div class="form-group">

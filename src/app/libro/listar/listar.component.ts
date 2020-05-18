@@ -112,15 +112,15 @@ export class ListarComponent implements OnInit {
   oldFile: any;
   oldNombre: any;
   findForm: FormGroup;
-  buscarXautor: boolean;
+  buscarXautor=true;
   textoBusqueda = 'Nombre del Autor';
   authors: any;
   matriz;
   sublibros2: Book[];
-  map: Map<any, any>;                
+  map: Map<any, any>;
   textoSelect;
   textoSelect1 = '';
-
+  opcion = 'autor';
   oldAuthor1: {
     // id: this.book.idAutor,
     first_name: any; last_name: any;
@@ -178,8 +178,8 @@ export class ListarComponent implements OnInit {
   }
 
   cambiarBusqueda() {
-    const opcion = this.findForm.value.filtro;
-    if (opcion == 'autor') {
+    this.opcion = this.findForm.value.filtro;
+    if (this.opcion == 'autor') {
       this.textoBusqueda = 'Nombre del Autor';
       this.buscarXautor = true;
     } else {
@@ -351,8 +351,10 @@ export class ListarComponent implements OnInit {
    * @param {*} book libro a editar
    * @memberof ListarComponent
    */
+
   openEditBookModal(editBookModal: any, book: Book) {
     console.log('libro: ', book);
+    console.log('autores', this.authors);
     this.book = book;
     this.imgBook = Globals.imagenBookURL + this.book.portada;
     // this.oldAuthor = {
@@ -375,12 +377,14 @@ export class ListarComponent implements OnInit {
     this.submittedEditBook = true;
     const okFields = this.checkFields();
     // textoSelect;
+    let idnuevo = this.book.idAutor;
     console.log("textoSelect", this.textoSelect);
-    const idnuevo = this.textoSelect.substring(0, this.textoSelect.indexOf(' '));
-
-    console.log("oldAutor -------------------", this.book.idAutor);
-    console.log("idautornuevo", idnuevo);
-
+    if (this.textoSelect != undefined) {
+      idnuevo = this.textoSelect.substring(0, this.textoSelect.indexOf(' '));
+      console.log("oldAutor -------------------", this.book.idAutor);
+      console.log("idautornuevo", idnuevo);
+     // idnuevo = this.book.idAutor;
+    }
 
     const datosAutor = {
       id: this.book.idAutor,
@@ -435,6 +439,7 @@ export class ListarComponent implements OnInit {
       descripcion:this.ebfc.descripcion.value,
       idAutor: valorId,
     };
+    console.log("datosLibro", datosLibro);
     this.bookService
       .updateBook(datosLibro)
       .toPromise()
@@ -445,7 +450,7 @@ export class ListarComponent implements OnInit {
         }
 
         this.modalService.dismissAll();
-        this.uploadFile();
+       // this.uploadFile();
         this.information = 'Se han guardado las modificaciones';
         this.openInformationWindows();
      //   location.reload();
@@ -582,14 +587,14 @@ export class ListarComponent implements OnInit {
       res = false;
     }
 
-    if (this.book.last_name.length > 50) {
-      this.information =
-        '-Has superado el límite de carácteres máximos permitidos en el campo apellido';
-      res = false;
-    } else if (sololetras.test(this.book.last_name) == false) {
-      this.information = '-En el campo apellido solo se permiten letras';
-      res = false;
-    }
+    // if (this.book.last_name.length > 50) {
+    //   this.information =
+    //     '-Has superado el límite de carácteres máximos permitidos en el campo apellido';
+    //   res = false;
+    // } else if (sololetras.test(this.book.last_name) == false) {
+    //   this.information = '-En el campo apellido solo se permiten letras';
+    //   res = false;
+    // }
 
     if(comprobarLetras(this.book.genero)!=''){
       this.information = comprobarLetras(this.book.genero);

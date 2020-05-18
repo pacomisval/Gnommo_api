@@ -5,6 +5,7 @@ import { BookService } from 'src/app/services/book.service';
 import { UserService } from 'src/app/services/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Author } from 'src/app/models/author';
+import { SortPipe } from './../../pipes/sort.pipe';
 /**
  * Componente Lista de autores READ & DELETE
  *
@@ -37,7 +38,7 @@ export class ListarautoresComponent implements OnInit {
    *
    * @memberof ListarComponent
    */
-  admin: boolean = false;
+  admin = false;
   /**
    * Lista de autores
    *
@@ -136,8 +137,8 @@ export class ListarautoresComponent implements OnInit {
    * @memberof ListarautoresComponent
    */
   deleteAuthor(/* author: Author */) {
-    var idd = this.getId()
-    console.log("Dentro de delete author");
+    const idd = this.getId();
+    console.log('Dentro de delete author');
     this.bookService.getBookFromAutor(/* author.id */idd).subscribe(
       (result) => {
         console.log(result);
@@ -187,7 +188,7 @@ export class ListarautoresComponent implements OnInit {
   }
 
   closeDeleteAutor() {
-    console.log("Dentro de close Delete autor");
+    console.log('Dentro de close Delete autor');
     this.modalService.dismissAll();
   }
 

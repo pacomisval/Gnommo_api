@@ -155,6 +155,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             <li class="link">
                                 <a href="classes/AppPage.html" data-type="entity-link">AppPage</a>
                             </li>
+                            <li class="link">
+                                <a href="classes/FileValidator.html" data-type="entity-link">FileValidator</a>
+                            </li>
                         </ul>
                     </li>
                         <li class="chapter">

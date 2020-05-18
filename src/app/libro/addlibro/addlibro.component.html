@@ -11,8 +11,10 @@
                 <!-- <label for="selectAutores" [ngClass]="{ 'is-invalid':sumitted && this.bookForm.controls.selectedAuthor.errors }">Selecciona el autor</label><br /> -->
                 <select formControlName="selectedAuthor" (change)="changeAuthor($event)">
                   <option value="" disabled>Selecciona el autor</option>
-                  <option [ngValue]="autor" *ngFor="let autor of authors">
+                  <option [ngValue]="autor" *ngFor="let autor of authors" >
+
                       &nbsp; {{ autor.first_name }}&nbsp;{{ autor.last_name }} &nbsp;
+
                   </option>
               </select>
             </div>

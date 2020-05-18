@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-//import { HeaderInterceptor } from './header.interceptor';
-//import { HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { HeaderInterceptor } from './header.interceptor';
+// import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +30,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SortPipe } from './pipes/sort.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +41,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ListarautoresComponent,
     LoginComponent,
     HomeComponent,
+    SortPipe,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     BookService,

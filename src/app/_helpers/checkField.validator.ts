@@ -25,11 +25,13 @@ export function checkLengthString(texto: string, maximo: number, campo: string) 
  */
 export function comprobarLetras(valor) {
 
-  const letras: RegExp = /^[A-Za-z]+$/;
+   const letras: RegExp = /^[A-Za-z]+$/;
+ // const letras: RegExp = /^[A-Za-z]/;
+
   let message = '';
 
   if (letras.test(valor) == false) {
-    message = '-En el campo genero solo se permiten letras';
+    message = '-En el campo genero solo se permiten letras.';
 
   }
   return message;
@@ -48,6 +50,14 @@ export function checkIsbnFormat(texto: string) {
   }
   return message;
 }
+// export function check(texto: string) {
+//   let message = '';
+//   const reg: RegExp = /^[0-9-]+$/;
+//   if (reg.test(texto) == false) {
+//     message = 'Asegurese de estar introduciendo un formato correcto en el ISBN ';
+//   }
+//   return message;
+// }
 // export function comprobacionFinal(resultados) {
 //   let mtitulo = true;
 //   let misbn = true;

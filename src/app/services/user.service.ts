@@ -27,6 +27,6 @@ export class UserService {
   }
 
   devolverEmail(data) {
-    return this.http.get<any>(apiUrl + '/email/'+data);
+    return this.http.get<any>(apiUrl + '/email/'+ data);
   }
 }

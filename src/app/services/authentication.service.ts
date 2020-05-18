@@ -87,7 +87,10 @@ export class AuthenticationService {
     console.log("valor de email: " + email)
     return this.http.post<any>(apiUrl + '/recoveryPass3', { email, password },{ observe: "response", withCredentials: true,});
   }
+  encontrarEmail(email) {
+    return this.http.post<any>(apiUrl + '/email', { email},{ observe: "response", withCredentials: true,});
 
+ }
 
 
 }

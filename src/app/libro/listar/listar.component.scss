@@ -73,11 +73,23 @@
     width: 70%;
     min-height: 300px;
     background-color: $grey-000;
-    box-shadow: 10px 10px 5px $grey-700;
+    box-shadow: 10px 10px 5px $grey-400;
     text-align: center;
     margin: 20px 25px 120px 0px;
     border: 3px solid $red-100;
+    border-radius: 5px;
     cursor: pointer;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.selecionable:hover {
+    width: 68%;
+    box-shadow: 6px 6px 3px $grey-500;
+    border: 1px solid $grey-100;
+    background-color: $grey-900;
 }
 
 .botones {
@@ -87,6 +99,11 @@
 
 .sombraLibro {
     box-shadow: 5px 5px 5px $grey-700;
+    margin: 0 auto;
+}
+
+.sombraLibro:hover {
+    box-shadow: 2px 2px 2px $grey-700;
     margin: 0 auto;
 }
 

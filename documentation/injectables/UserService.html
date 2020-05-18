@@ -121,7 +121,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/user.service.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/user.service.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -186,8 +186,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/app/services/user.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="19"
+                            class="link-to-prism">src/app/services/user.service.ts:19</a></div>
                 </td>
             </tr>
 
@@ -252,8 +252,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/app/services/user.service.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">src/app/services/user.service.ts:29</a></div>
                 </td>
             </tr>
 
@@ -318,8 +318,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="22"
-                            class="link-to-prism">src/app/services/user.service.ts:22</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="23"
+                            class="link-to-prism">src/app/services/user.service.ts:23</a></div>
                 </td>
             </tr>
 
@@ -355,7 +355,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/services/user.service.ts:14</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/services/user.service.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -372,6 +372,7 @@
 import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
 import { User } from &#x27;../models/user&#x27;;
 import { Globals } from &#x27;../Global&#x27;;
+import { apiUrl } from &#x27;./../_helpers/configuracion&#x27;;
 
 
 
@@ -380,13 +381,13 @@ import { Globals } from &#x27;../Global&#x27;;
 })
 
 export class UserService {
- // Globals.apiUrl &#x3D; &#x27;http://localhost:8000/api&#x27;;
+ // apiUrl &#x3D; &#x27;http://localhost:8000/api&#x27;;
   currentUserType;
 
   constructor(private http: HttpClient) { }
 
-  createUser(data) { 
-    return this.http.post&lt;any&gt;(Globals.apiUrl + &#x27;/usuarios&#x27;, data);
+  createUser(data) {
+    return this.http.post&lt;any&gt;(apiUrl + &#x27;/usuarios&#x27;, data);
   }
 
   userAdmin() {
@@ -396,7 +397,7 @@ export class UserService {
   }
 
   devolverEmail(data) {
-    return this.http.get&lt;any&gt;(Globals.apiUrl + &#x27;/email/&#x27;+data);
+    return this.http.get&lt;any&gt;(apiUrl + &#x27;/email/&#x27;+ data);
   }
 }
 </code></pre>
